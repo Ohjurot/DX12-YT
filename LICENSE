@@ -1,3 +1,18 @@
+WARNING: This project may contain headers, implementation, binaries 
+and/or files not licensed under the following license. Check any 
+peace you want to reuse for a custom license! Custom license are 
+stated either in the root of a subdirectory (Affects all files in 
+that directory and all following files in subdirectory) or directly in 
+the affected files. Implementation files (.cpp, .c, .cxx, .cc) will not 
+include a licence if a same named header in the same directory is 
+present. 
+
+The following libraries and external work were used:
+- ExceptionsPlusPlus Copyright (c) 2021 Ludwig Füchsl
+
+
+--- All files not fulfilling one other license as stated above are licensed under the "The Unlicense" license ---
+The Unlicense
 This is free and unencumbered software released into the public domain.
 
 Anyone is free to copy, modify, publish, use, compile, sell, or
