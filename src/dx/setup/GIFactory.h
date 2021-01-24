@@ -7,7 +7,7 @@ namespace DX {
 	/// <summary>
 	/// DXGI Factory wrapper
 	/// </summary>
-	class GIFactory : public ScopedComPointer<IDXGIFactory>{
+	class GIFactory : public ScopedComPointer<IDXGIFactory1>{
 		public:
 			/// <summary>
 			/// Creates a new factory

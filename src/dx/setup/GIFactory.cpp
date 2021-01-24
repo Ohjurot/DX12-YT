@@ -1,10 +1,10 @@
 #include "GIFactory.h"
 
 DX::GIFactory::GIFactory() :
-	ScopedComPointer<IDXGIFactory>()
+	ScopedComPointer<IDXGIFactory1>()
 {
 	// Create DXGI Factory
-	EVALUATE_HRESULT(CreateDXGIFactory(IID_PPV_ARGS(&m_comPointer)), "CreateDXGIFactory(...)");
+	EVALUATE_HRESULT(CreateDXGIFactory1(IID_PPV_ARGS(&m_comPointer)), "CreateDXGIFactory1(...)");
 }
 
 DX::GIAdapter DX::GIFactory::getAdapter(LUID preferedAdapterLuid){

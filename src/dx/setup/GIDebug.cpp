@@ -5,10 +5,6 @@
 // Static instance
 DX::GIDebug DX::GIDebug::s_instance;
 
-DX::GIDebug::GIDebug() noexcept{
-    // -
-}
-
 DX::GIDebug& DX::GIDebug::getInstance() {
     // Return static instance
     return s_instance;
@@ -27,7 +23,7 @@ void DX::GIDebug::reportLiveObjects() {
     validate();
 
     // RLO Call
-    EVALUATE_HRESULT(m_comPointer->ReportLiveObjects(DXGI_DEBUG_DXGI, (DXGI_DEBUG_RLO_FLAGS)(DXGI_DEBUG_RLO_IGNORE_INTERNAL | DXGI_DEBUG_RLO_DETAIL)), "IDXGIDebug->ReportLiveObjects(...)");
+    EVALUATE_HRESULT(m_comPointer->ReportLiveObjects(DXGI_DEBUG_ALL, (DXGI_DEBUG_RLO_FLAGS)(DXGI_DEBUG_RLO_IGNORE_INTERNAL | DXGI_DEBUG_RLO_DETAIL)), "IDXGIDebug->ReportLiveObjects(...)");
 }
 
 #endif

@@ -86,6 +86,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\dx\core\XDebug.cpp" />
+    <ClCompile Include="src\dx\core\XDebugDevice.cpp" />
+    <ClCompile Include="src\dx\core\XDevice.cpp" />
+    <ClCompile Include="src\dx\core\XInfoQueue.cpp" />
     <ClCompile Include="src\dx\setup\GIAdapter.cpp" />
     <ClCompile Include="src\dx\setup\GIDebug.cpp" />
     <ClCompile Include="src\dx\setup\GIFactory.cpp" />
@@ -95,6 +99,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DefHeader.h" />
+    <ClInclude Include="src\dx\core\XDebug.h" />
+    <ClInclude Include="src\dx\core\XDebugDevice.h" />
+    <ClInclude Include="src\dx\core\XDevice.h" />
+    <ClInclude Include="src\dx\core\XInfoQueue.h" />
     <ClInclude Include="src\dx\setup\GIDebug.h" />
     <ClInclude Include="src\dx\setup\GIFactory.h" />
     <ClInclude Include="src\dx\setup\GIAdapter.h" />

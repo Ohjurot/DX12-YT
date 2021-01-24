@@ -9,13 +9,19 @@
 #include <dx/setup/GIFactory.h>
 #include <dx/setup/GIAdapter.h>
 
+#include <dx/core/XDebug.h>
+#include <dx/core/XDebugDevice.h>
+#include <dx/core/XInfoQueue.h>
+#include <dx/core/XDevice.h>
+
 // ==== DEBUG END
 
 // Safe Winmain
 INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
-	// Validate debug interface
+	// Enable and validate debug interface
+	DEBUG_ONLY_EXECUTE(DX::XDebug::getInstance().enable());
 	DEBUG_ONLY_EXECUTE(DX::GIDebug::getInstance().validate());
-	
+
 	// Create Factory
 	DX::GIFactory factory;
 	bool tearingSupport = factory.checkTearingSupport();
@@ -25,10 +31,16 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 	DXGI_ADAPTER_DESC3 ad;
 	adapter.getDescription(&ad);
 
-	// TEMP BEGIN
-	ScopedComPointer<ID3D12Device> dev;
-	D3D12CreateDevice(adapter, D3D_FEATURE_LEVEL_12_0, IID_PPV_ARGS(dev.to()));
-	// TEMP END
+	// Create XDevice
+	DX::XDevice xDevice(adapter);
+
+	// Raytracing
+	D3D12_FEATURE_DATA_D3D12_OPTIONS5 op5;
+	bool op5ok = xDevice.getFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS5, op5);
+
+	// Debug Device
+	DX::XDebugDevice xDbgDevice(xDevice);
+	float dbgSlow = xDbgDevice.getDebugSlowdownFactor();
 
 	// Get adapter video memory
 	DXGI_QUERY_VIDEO_MEMORY_INFO memInfo;
@@ -45,9 +57,9 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 	DXGI_OUTPUT_DESC1 od;
 	output.getDescription(&od);
 
-	size_t s_com = sizeof(IDXGIFactory*);
-	size_t s_sscom = sizeof(ScopedComPointer<IDXGIFactory>);
-	size_t s_gif = sizeof(DX::GIFactory);
+	// Release decive
+	xDbgDevice.release();
+	xDevice.release();
 
 	// Debug RLO for DXGI
 	DEBUG_ONLY_EXECUTE(DX::GIDebug::getInstance().reportLiveObjects());

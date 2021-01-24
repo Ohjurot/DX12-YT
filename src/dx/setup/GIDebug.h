@@ -6,7 +6,7 @@
 
 namespace DX {
 	/// <summary>
-	/// DXGI Adapter Wrapper
+	/// DXGI Debug singelton
 	/// </summary>
 	class GIDebug : public ScopedComPointer<IDXGIDebug> {
 		// Singelton	
@@ -34,7 +34,7 @@ namespace DX {
 			/// <summary>
 			/// Create empty adapter
 			/// </summary>
-			GIDebug() noexcept;
+			GIDebug() noexcept {};
 
 			/// <summary>
 			/// Static instance of debug interface

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <WinInclude.h>
+#include <stdint.h>
 #include <vendor/ExceptionsPlusPlus.h>
 #include <vendor/ScopedPointer.h>
 #include <vendor/ScopedHandle.h>
@@ -13,9 +14,11 @@
 #ifdef _DEBUG
 #define DEBUG_ONLY_EXECUTE(args) args
 #else
-#define DEBUG_ONLY_EXECUTE(args) ##
+#define DEBUG_ONLY_EXECUTE(args) 
 #endif
 
 #define MEM_KiB(kib)		   (kib * 1024)
 #define MEM_MiB(mib)	MEM_KiB(mib * 1024)
 #define MEM_GiB(gib)	MEM_MiB(gib * 1024)
+
+#define LOGICAL_INT_INVALID	0xFFFFFFFF
