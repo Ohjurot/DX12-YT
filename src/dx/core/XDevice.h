@@ -46,6 +46,6 @@ namespace DX {
 			/// <summary>
 			/// Feature level of the device
 			/// </summary>
-			D3D_FEATURE_LEVEL m_featureLevel;
+			D3D_FEATURE_LEVEL m_featureLevel = (D3D_FEATURE_LEVEL)NULL;
 	};
 }
