@@ -1,3 +1,4 @@
+#include "DefHeader.h"
 #include "GIAdapter.h"
 
 DX::GIAdapter::GIAdapter() noexcept :

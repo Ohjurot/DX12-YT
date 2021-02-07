@@ -1,3 +1,4 @@
+#include "DefHeader.h"
 #include "XDevice.h"
 
 DX::XDevice::XDevice(IDXGIAdapter* ptrAdapter) {

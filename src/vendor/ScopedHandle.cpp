@@ -1,3 +1,4 @@
+#include "DefHeader.h"
 #include "ScopedHandle.h"
 
 ScopedHandle::ScopedHandle(HANDLE handle) {

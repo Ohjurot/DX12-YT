@@ -1,4 +1,4 @@
-#include <DefHeader.h>
+#include "DefHeader.h"
 
 #include <string>
 #include <sstream>
@@ -14,6 +14,8 @@
 #include <dx/core/XInfoQueue.h>
 #include <dx/core/XDevice.h>
 
+#include <dx/window/GISwapChain.h>
+
 // ==== DEBUG END
 
 // Safe Winmain
@@ -22,43 +24,88 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 	DEBUG_ONLY_EXECUTE(DX::XDebug::getInstance().enable());
 	DEBUG_ONLY_EXECUTE(DX::GIDebug::getInstance().validate());
 
-	// Create Factory
+	// Create Factory and adapter
 	DX::GIFactory factory;
-	bool tearingSupport = factory.checkTearingSupport();
-
-	// Get adapter and its description
 	DX::GIAdapter adapter = factory.getAdapter();
-	DXGI_ADAPTER_DESC3 ad;
-	adapter.getDescription(&ad);
 
 	// Create XDevice
 	DX::XDevice xDevice(adapter);
 
-	// Raytracing
-	D3D12_FEATURE_DATA_D3D12_OPTIONS5 op5;
-	bool op5ok = xDevice.getFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS5, op5);
+	// ==== NOT RELEVANT FOR NOW ===
+	// Create que
+	ScopedComPointer<ID3D12CommandQueue> queue;
+	ScopedComPointer<ID3D12Fence> fence;
+	UINT fenceValue = 0;
+	{
+		D3D12_COMMAND_QUEUE_DESC qd;
+		qd.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+		qd.Priority = D3D12_COMMAND_QUEUE_PRIORITY_HIGH;
+		qd.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+		qd.NodeMask = NULL;
+		EVALUATE_HRESULT(xDevice->CreateCommandQueue(&qd, IID_PPV_ARGS(queue.to())), "Cmd QUEUE");
+		EVALUATE_HRESULT(xDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(fence.to())), "FENCE");
+	}
+	// ==== END NOT RELEVANT FOR NOW ===
 
-	// Debug Device
-	DX::XDebugDevice xDbgDevice(xDevice);
-	float dbgSlow = xDbgDevice.getDebugSlowdownFactor();
+	// Create window class
+	EasyHWND::WindowClass cls(L"MyWindowCls", CS_OWNDC);
+	EXPP_ASSERT(cls, "Window class not valid");
+	
+	// Create window
+	EasyHWND::Window window(cls, L"Hello DirectX 12!", 150, 150, 1920, 1080, WS_OVERLAPPEDWINDOW);
+	EXPP_ASSERT(window, "Window not valid");
+	window.setWindowVisibility(true);
 
-	// Get adapter video memory
-	DXGI_QUERY_VIDEO_MEMORY_INFO memInfo;
-	bool xres = adapter.setVideoMemoryReservation(MEM_GiB(1));
-	adapter.getVideoMemory(&memInfo);
+	// Get factory2
+	ScopedComPointer<IDXGIFactory2> factory2;
+	EXPP_ASSERT(factory.queryInterface(factory2), "IDXGIFactory1->QueryInterface(...) for IDXGIFactory2 failed");
 
-	// Get current monitor
-	POINT mousePosition;
-	GetCursorPos(&mousePosition);
-	HMONITOR monitor = MonitorFromPoint(mousePosition, MONITOR_DEFAULTTOPRIMARY);
+	// Create swap chain
+	DX::GISwapChain swapChain(xDevice, queue, factory2, window);
 
-	// Get output and descriton
-	DX::GIOutput output = adapter.findMonitor(monitor);
-	DXGI_OUTPUT_DESC1 od;
-	output.getDescription(&od);
+	// Application loop
+	MSG msg = {};
+	while (!window.checkWindowCloseFlag()) {
+		// Window
+		while (PeekMessage(&msg, (HWND)window, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
 
-	// Release decive
-	xDbgDevice.release();
+		// === APPLICATION LOOP ===
+
+		swapChain.present();
+
+		// ==== NOT RELEVANT FOR NOW ===
+		{
+			fenceValue++;
+			queue->Signal(fence, fenceValue);
+			while (fence->GetCompletedValue() != fenceValue);
+		}
+		// ==== END NOT RELEVANT FOR NOW ===
+	}
+
+	// ==== NOT RELEVANT FOR NOW ===
+	{
+		for (int i = 0; i < swapChain.numberOfFramesInFlight() - 1; i++) {
+			fenceValue++;
+			queue->Signal(fence, fenceValue);
+			while (fence->GetCompletedValue() != fenceValue);
+		}
+	}
+	// ==== END NOT RELEVANT FOR NOW ===
+
+	// Release swapchain
+	swapChain.release();
+
+	// ==== NOT RELEVANT FOR NOW ===
+	{
+		fence.release();
+		queue.release();
+	}
+	// ====  END NOT RELEVANT FOR NOW ===
+
+	// Release device
 	xDevice.release();
 
 	// Debug RLO for DXGI

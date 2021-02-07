@@ -1,3 +1,4 @@
+#include "DefHeader.h"
 #include "XInfoQueue.h"
 
 DX::XInfoQueue::XInfoQueue(ID3D12Device* ptrDevice) {

@@ -1,3 +1,4 @@
+#include "DefHeader.h"
 #include "GIOutput.h"
 
 DX::GIOutput::GIOutput() noexcept :

@@ -1,3 +1,4 @@
+#include "DefHeader.h"
 #include "GIDebug.h"
 
 #ifdef _DEBUG

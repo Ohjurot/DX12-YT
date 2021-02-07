@@ -78,7 +78,7 @@ class ScopedComPointer {
 		/// <summary>
 		/// Releases the com pointer
 		/// </summary>
-		void release() {
+		virtual void release() {
 			if (m_comPointer) {
 				m_comPointer->Release();
 				m_comPointer = nullptr;

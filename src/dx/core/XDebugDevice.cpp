@@ -1,3 +1,4 @@
+#include "DefHeader.h"
 #include "XDebugDevice.h"
 
 DX::XDebugDevice::XDebugDevice(ID3D12Device* ptrDevice) {

@@ -1,4 +1,6 @@
+#include "DefHeader.h"
 #include "XDebug.h"
+
 
 // Instance of debug interface
 DX::XDebug DX::XDebug::s_instance;

@@ -1,3 +1,4 @@
+#include "DefHeader.h"
 #include "GIFactory.h"
 
 DX::GIFactory::GIFactory() :
