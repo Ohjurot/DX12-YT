@@ -1,7 +1,14 @@
 # DirectX 12 YouTube Tutorial ENG / DE
 Code for the DirectX12 YouTube tutorial series
+
 English video playlist: [YouTube](https://youtube.com/playlist?list=PL-m4pn2uJvXGgLezWF3tKWc4Frzc8PzvW)
+
 German video playlist: [YouTube](https://youtube.com/playlist?list=PL-m4pn2uJvXFiuAfZy0r9mItWtVfNl5gw)
+
+### Used first & second party software
+
+- [ExceptionsPlusPlus](https://github.com/Ohjurot/ExceptionsPlusPlus) by Ludwig Füchsl (MIT License)
+- [EasyHWND](https://github.com/Ohjurot/EasyHWND) by Ludwig Füchsl (MIT License)
 
 ## Video list
 
