@@ -16,6 +16,8 @@
 
 #include <dx/window/GISwapChain.h>
 
+#include <dx/cmds/CommandQueueManager.h>
+
 // ==== DEBUG END
 
 // Safe Winmain
@@ -31,20 +33,14 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 	// Create XDevice
 	DX::XDevice xDevice(adapter);
 
+	// Init command ques
+	DX::CommandQueueManager::getInstance().createInternalObjects(xDevice);
+
 	// ==== NOT RELEVANT FOR NOW ===
-	// Create que
-	ScopedComPointer<ID3D12CommandQueue> queue;
+	DX::XCommandQueue& queue = DX::CommandQueueManager::getInstance().getCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT);
 	ScopedComPointer<ID3D12Fence> fence;
 	UINT fenceValue = 0;
-	{
-		D3D12_COMMAND_QUEUE_DESC qd;
-		qd.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
-		qd.Priority = D3D12_COMMAND_QUEUE_PRIORITY_HIGH;
-		qd.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-		qd.NodeMask = NULL;
-		EVALUATE_HRESULT(xDevice->CreateCommandQueue(&qd, IID_PPV_ARGS(queue.to())), "Cmd QUEUE");
-		EVALUATE_HRESULT(xDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(fence.to())), "FENCE");
-	}
+	EVALUATE_HRESULT(xDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(fence.to())), "FENCE");
 	// ==== END NOT RELEVANT FOR NOW ===
 
 	// Create window class
@@ -61,7 +57,7 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 	EXPP_ASSERT(factory.queryInterface(factory2), "IDXGIFactory1->QueryInterface(...) for IDXGIFactory2 failed");
 
 	// Create swap chain
-	DX::GISwapChain swapChain(xDevice, queue, factory2, window);
+	DX::GISwapChain swapChain(xDevice, DX::CommandQueueManager::getInstance().getCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT), factory2, window);
 
 	// Application loop
 	MSG msg = {};
@@ -99,13 +95,11 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 	swapChain.release();
 
 	// ==== NOT RELEVANT FOR NOW ===
-	{
-		fence.release();
-		queue.release();
-	}
+	fence.release();
 	// ====  END NOT RELEVANT FOR NOW ===
 
-	// Release device
+	// Release queues and device
+	DX::CommandQueueManager::getInstance().destroyInternalObjects();
 	xDevice.release();
 
 	// Debug RLO for DXGI

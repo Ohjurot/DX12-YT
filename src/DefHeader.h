@@ -8,6 +8,8 @@
 #include <vendor/ScopedHandle.h>
 #include <vendor/ScopedComPointer.h>
 
+#include <atomic>
+
 #define EXPP_HRESULT(hr, what) EXPP_EXCEPTION(HRESULT, (HRESULT)hr, EXPP_TEXT(what))
 #define EVALUATE_HRESULT(call, what) {HRESULT hr; if(FAILED(hr = call)) {throw EXPP_HRESULT(hr, what);}}
 #define EVALUATE_HRESULT_HR(hr, call, what) if(FAILED(hr = call)) {throw EXPP_HRESULT(hr, what);}

@@ -94,6 +94,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\dx\cmds\CommandQueueManager.cpp" />
+    <ClCompile Include="src\dx\cmds\XCommandQueue.cpp" />
     <ClCompile Include="src\dx\core\XDebug.cpp" />
     <ClCompile Include="src\dx\core\XDebugDevice.cpp" />
     <ClCompile Include="src\dx\core\XDevice.cpp" />
@@ -108,6 +110,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DefHeader.h" />
+    <ClInclude Include="src\dx\cmds\CommandQueueManager.h" />
+    <ClInclude Include="src\dx\cmds\XCommandQueue.h" />
     <ClInclude Include="src\dx\core\XDebug.h" />
     <ClInclude Include="src\dx\core\XDebugDevice.h" />
     <ClInclude Include="src\dx\core\XDevice.h" />
