@@ -17,6 +17,8 @@
 #include <dx/window/GISwapChain.h>
 
 #include <dx/cmds/CommandQueueManager.h>
+#include <dx/cmds/XFence.h>
+#include <dx/cmds/FenceCounter.h>
 
 // ==== DEBUG END
 
@@ -33,15 +35,16 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 	// Create XDevice
 	DX::XDevice xDevice(adapter);
 
-	// Init command ques
+	// Init command queues
 	DX::CommandQueueManager::getInstance().createInternalObjects(xDevice);
 
-	// ==== NOT RELEVANT FOR NOW ===
+	// Create command queue
 	DX::XCommandQueue& queue = DX::CommandQueueManager::getInstance().getCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT);
-	ScopedComPointer<ID3D12Fence> fence;
-	UINT fenceValue = 0;
-	EVALUATE_HRESULT(xDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(fence.to())), "FENCE");
-	// ==== END NOT RELEVANT FOR NOW ===
+	
+	// Create fence and objects
+	DX::XFence fence(xDevice);
+	DX::FenceCounter counter(fence);
+	DX::FenceCounter::Frontend frontend = counter.newFrontend();
 
 	// Create window class
 	EasyHWND::WindowClass cls(L"MyWindowCls", CS_OWNDC);
@@ -72,31 +75,24 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 
 		swapChain.present();
 
-		// ==== NOT RELEVANT FOR NOW ===
-		{
-			fenceValue++;
-			queue->Signal(fence, fenceValue);
-			while (fence->GetCompletedValue() != fenceValue);
-		}
-		// ==== END NOT RELEVANT FOR NOW ===
+		// Wait for SwapChain finsih execution
+		queue->Signal(frontend, frontend.next());
+		frontend.getCurrentWaitObject().wait();
 	}
 
-	// ==== NOT RELEVANT FOR NOW ===
-	{
-		for (int i = 0; i < swapChain.numberOfFramesInFlight() - 1; i++) {
-			fenceValue++;
-			queue->Signal(fence, fenceValue);
-			while (fence->GetCompletedValue() != fenceValue);
-		}
+	// Flush GPU (SwapChain)
+	for (int i = 0; i < swapChain.numberOfFramesInFlight() - 1; i++) {
+		queue->Signal(frontend, frontend.next());
+		frontend.getCurrentWaitObject().wait();
 	}
-	// ==== END NOT RELEVANT FOR NOW ===
 
 	// Release swapchain
 	swapChain.release();
 
-	// ==== NOT RELEVANT FOR NOW ===
+	// Release fence
+	frontend.release();
+	counter.release();
 	fence.release();
-	// ====  END NOT RELEVANT FOR NOW ===
 
 	// Release queues and device
 	DX::CommandQueueManager::getInstance().destroyInternalObjects();
@@ -109,12 +105,13 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 }
 
 // Unsafe (unhandled) winmain
-INT WINAPI wWinMain(HINSTANCE _In_ hInstance, HINSTANCE _In_opt_ hPrevInstance, PWSTR _In_ cmdArgs, INT _In_ cmdShow) noexcept{
+INT WINAPI wWinMain(HINSTANCE _In_ hInstance, HINSTANCE _In_opt_ hPrevInstance, PWSTR _In_ cmdArgs, INT _In_ cmdShow){
 	// Invoke safe winmain
 	EXPP::InvocationResult<INT> wWinMain_CallResult = EXPP::invoke<INT>(&s_wWinMain, hInstance, cmdArgs, cmdShow);
 	// Return return value on succeed
-	if (wWinMain_CallResult.succeeded())
+	if (wWinMain_CallResult.succeeded()) {
 		return wWinMain_CallResult.returnValue();
+	}
 
 	// Build base exeption header
 	std::wstringstream wss;

@@ -12,7 +12,6 @@ namespace DX {
 	class CommandQueueManager {
 		// Class
 		public:
-
 			/// <summary>
 			/// Create all command ques
 			/// </summary>

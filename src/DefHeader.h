@@ -15,14 +15,16 @@
 #define EVALUATE_HRESULT_HR(hr, call, what) if(FAILED(hr = call)) {throw EXPP_HRESULT(hr, what);}
 #define EXPP_ASSERT(expr, message) if(!(expr)) {throw EXPP_EXCEPTION(std::exception, std::exception("Assertion failed!"), EXPP_TEXT(message));}
 
+#define THREAD_PAUSE_FUNCTION() _mm_pause()
+
 #ifdef _DEBUG
 #define DEBUG_ONLY_EXECUTE(args) args
+#define EXPP_ASSERT_DBG(expr, message) if(!(expr)) {throw EXPP_EXCEPTION(std::exception, std::exception("Debug assertion failed!"), EXPP_TEXT(message));}
 #else
 #define DEBUG_ONLY_EXECUTE(args) 
+#define EXPP_ASSERT_DBG(expr, message) 
 #endif
 
 #define MEM_KiB(kib)		   (kib * 1024)
 #define MEM_MiB(mib)	MEM_KiB(mib * 1024)
 #define MEM_GiB(gib)	MEM_MiB(gib * 1024)
-
-#define LOGICAL_INT_INVALID	0xFFFFFFFF
