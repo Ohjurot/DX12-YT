@@ -131,15 +131,14 @@ void DX::GISwapChain::operator=(GISwapChain& other){
 
 	// Move critical pointers
 	m_comPointer = std::move(other.m_comPointer);
-	m_ptrRtvHeap = std::move(other.m_ptrRtvHeap);
-	m_ptrDevice = std::move(other.m_ptrDevice);
+	m_ptrRtvHeap = other.m_ptrRtvHeap;
+	m_ptrDevice = other.m_ptrDevice;
 	for (unsigned int i = 0; i < other.m_uiUsedBuffers; i++) {
 		m_arrPtrBuffers[i] = std::move(other.m_arrPtrBuffers[i]);
 	}
 
-	// Invalidate others com pointer
+	// Null other
 	other.m_comPointer = NULL;
-	*other.m_ptrRtvHeap.to() = NULL;
 }
 
 void DX::GISwapChain::dropBuffer() {

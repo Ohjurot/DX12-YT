@@ -108,6 +108,7 @@
     <ClCompile Include="src\dx\setup\GIDebug.cpp" />
     <ClCompile Include="src\dx\setup\GIFactory.cpp" />
     <ClCompile Include="src\dx\setup\GIOutput.cpp" />
+    <ClCompile Include="src\dx\window\GfxWindow.cpp" />
     <ClCompile Include="src\dx\window\GISwapChain.cpp" />
     <ClCompile Include="src\vendor\ScopedHandle.cpp" />
     <ClCompile Include="src\wWinMain.cpp" />
@@ -126,6 +127,7 @@
     <ClInclude Include="src\dx\setup\GIFactory.h" />
     <ClInclude Include="src\dx\setup\GIAdapter.h" />
     <ClInclude Include="src\dx\setup\GIOutput.h" />
+    <ClInclude Include="src\dx\window\GfxWindow.h" />
     <ClInclude Include="src\dx\window\GISwapChain.h" />
     <ClInclude Include="src\vendor\EasyHWND.h" />
     <ClInclude Include="src\vendor\ExceptionsPlusPlus.h" />

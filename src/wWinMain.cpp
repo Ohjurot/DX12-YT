@@ -14,11 +14,9 @@
 #include <dx/core/XInfoQueue.h>
 #include <dx/core/XDevice.h>
 
-#include <dx/window/GISwapChain.h>
+#include <dx/window/GfxWindow.h>
 
 #include <dx/cmds/CommandQueueManager.h>
-#include <dx/cmds/XFence.h>
-#include <dx/cmds/FenceCounter.h>
 
 // ==== DEBUG END
 
@@ -38,61 +36,30 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 	// Init command queues
 	DX::CommandQueueManager::getInstance().createInternalObjects(xDevice);
 
-	// Create command queue
-	DX::XCommandQueue& queue = DX::CommandQueueManager::getInstance().getCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT);
-	
-	// Create fence and objects
-	DX::XFence fence(xDevice);
-	DX::FenceCounter counter(fence);
-	DX::FenceCounter::Frontend frontend = counter.newFrontend();
-
-	// Create window class
-	EasyHWND::WindowClass cls(L"MyWindowCls", CS_OWNDC);
-	EXPP_ASSERT(cls, "Window class not valid");
-	
-	// Create window
-	EasyHWND::Window window(cls, L"Hello DirectX 12!", 150, 150, 1920, 1080, WS_OVERLAPPEDWINDOW);
-	EXPP_ASSERT(window, "Window not valid");
-	window.setWindowVisibility(true);
-
 	// Get factory2
 	ScopedComPointer<IDXGIFactory2> factory2;
 	EXPP_ASSERT(factory.queryInterface(factory2), "IDXGIFactory1->QueryInterface(...) for IDXGIFactory2 failed");
 
-	// Create swap chain
-	DX::GISwapChain swapChain(xDevice, DX::CommandQueueManager::getInstance().getCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT), factory2, window);
-
-	// Application loop
-	MSG msg = {};
-	while (!window.checkWindowCloseFlag()) {
-		// Window
-		while (PeekMessage(&msg, (HWND)window, 0, 0, PM_REMOVE)) {
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+	// Create window class
+	EasyHWND::WindowClass cls(L"MyWindowCls", CS_OWNDC, NULL, LoadCursor(NULL, IDC_ARROW));
+	EXPP_ASSERT(cls, "Window class not valid");
+	
+	// Create window
+	DX::GfxWindow window(cls, xDevice, factory2, L"DirectX 12", DX::GfxWindow_Stlye::BORDERLESS);
+	window.setWindowVisibility(true);
+	while (window) {
+		// Check if tread needs to be paused
+		if (!window.isVisble()) {
+			THREAD_PAUSE_FUNCTION();
+			continue;
 		}
 
-		// === APPLICATION LOOP ===
 
-		swapChain.present();
 
-		// Wait for SwapChain finsih execution
-		queue->Signal(frontend, frontend.next());
-		frontend.getCurrentWaitObject().wait();
+		// Present frame
+		window.present(true);
 	}
-
-	// Flush GPU (SwapChain)
-	for (int i = 0; i < swapChain.numberOfFramesInFlight() - 1; i++) {
-		queue->Signal(frontend, frontend.next());
-		frontend.getCurrentWaitObject().wait();
-	}
-
-	// Release swapchain
-	swapChain.release();
-
-	// Release fence
-	frontend.release();
-	counter.release();
-	fence.release();
+	window.release();
 
 	// Release queues and device
 	DX::CommandQueueManager::getInstance().destroyInternalObjects();
