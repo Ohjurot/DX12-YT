@@ -12,7 +12,7 @@ German video playlist: [YouTube](https://youtube.com/playlist?list=PL-m4pn2uJvXF
 
 ## Video list
 
-**I. Settingup DirectX and DXGI** 
+**I. Setting up DirectX and DXGI** 
 
 | Video | Topic                 | Code                                                         | :gb: Video-Link                                       | :de: Video-Link                                          |
 | ----- | --------------------- | :----------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
@@ -22,9 +22,8 @@ German video playlist: [YouTube](https://youtube.com/playlist?list=PL-m4pn2uJvXF
 
 **II. GPU Commands and Execution**
 
-| Video | Topic                       | Code           | :gb: Video-Link | :de: Video-Link |
-| ----- | --------------------------- | :------------- | --------------- | --------------- |
-| 1     | Command Queue               | Code for VII.1 | -- RECORD --    | -- RECORD --    |
-| 2     | Command Allocators and List |                | -- RECORD --    | -- RECORD --    |
-| 3     | Cross list synchronization  |                | -- RECORD --    | -- RECORD --    |
+| Video | Topic                       | Code                                                         | :gb: Video-Link                                       | :de: Video-Link                                          |
+| ----- | --------------------------- | :----------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
+| 1     | Command Queue               | [Code for VII.1](https://github.com/Ohjurot/DX12-YT/releases/tag/VII.1) | [:tv: Watch on YouTube](https://youtu.be/k7tPjz2cyLQ) | [:tv: Auf YouTube ansehen](https://youtu.be/CHnNqPvUoLs) |
+| 2     | Command Allocators and List | [Code for VII.2](https://github.com/Ohjurot/DX12-YT/releases/tag/VII.2) | :tv: Watch on YouTube                                 | :tv: Auf YouTube ansehen                                 |
 
