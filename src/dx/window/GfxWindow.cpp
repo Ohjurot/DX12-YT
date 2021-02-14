@@ -94,7 +94,7 @@ void DX::GfxWindow::flushGpu() {
 	EXPP_ASSERT(m_bDXValid, "Windows DirectX context is not valid");
 
 	// Wait for execution
-	for (int i = 0; i < m_swapChain.numberOfFramesInFlight(); i++) {
+	for (unsigned int i = 0; i < m_swapChain.numberOfFramesInFlight(); i++) {
 		m_queue->Signal(m_fenceCounterFrontend, m_fenceCounterFrontend.next());
 		m_fenceCounterFrontend.getCurrentWaitObject().wait();
 	}
@@ -126,6 +126,48 @@ void DX::GfxWindow::present(bool vsync) {
 
 	// Signal fence
 	m_queue->Signal(m_fenceCounterFrontend, m_fenceCounterFrontend.next());
+}
+
+void DX::GfxWindow::beginFrame(ID3D12GraphicsCommandList* ptrGfxCmdList) {
+	EXPP_ASSERT(m_bDXValid, "Windows DirectX context is not valid");
+
+	// Resource barrier for RT
+	D3D12_RESOURCE_BARRIER barr;
+	barr.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barr.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	barr.Transition.pResource = m_swapChain.getCurrentBuffer();
+	barr.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
+	barr.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	barr.Transition.Subresource = NULL;
+
+	// Execute barrier
+	ptrGfxCmdList->ResourceBarrier(1, &barr);
+
+	// Get RTV handle
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = m_swapChain.getCurrentRtvHandle();
+
+	// Clear RTV
+	static const float clearColor[] = { 0.0f,0.0f,0.0f,0.0f };
+	ptrGfxCmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, NULL);
+
+	// Set RTV
+	ptrGfxCmdList->OMSetRenderTargets(1, &rtvHandle, FALSE, NULL);
+}
+
+void DX::GfxWindow::endFrame(ID3D12GraphicsCommandList* ptrGfxCmdList) {
+	EXPP_ASSERT(m_bDXValid, "Windows DirectX context is not valid");
+
+	// Resource barrier for RT
+	D3D12_RESOURCE_BARRIER barr;
+	barr.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barr.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	barr.Transition.pResource = m_swapChain.getCurrentBuffer();
+	barr.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	barr.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
+	barr.Transition.Subresource = NULL;
+
+	// Execute barrier
+	ptrGfxCmdList->ResourceBarrier(1, &barr);
 }
 
 DX::GfxWindow::operator bool() {

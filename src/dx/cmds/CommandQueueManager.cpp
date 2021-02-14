@@ -27,6 +27,23 @@ void DX::CommandQueueManager::destroyInternalObjects() noexcept {
 
 DX::XCommandQueue& DX::CommandQueueManager::getCommandQueue(D3D12_COMMAND_LIST_TYPE type) {
     // Find command list
+    int idx = indexAtType(type);
+
+    // Assert index and command queue
+    EXPP_ASSERT(idx >= 0, "No command queue for given command list type");
+    EXPP_ASSERT(m_arrCommandQueues[idx], "Command queue is not valid");
+
+    // Return list reference
+    return m_arrCommandQueues[idx];
+}
+
+D3D12_COMMAND_LIST_TYPE DX::CommandQueueManager::typeAtIndex(unsigned int idx) {
+    EXPP_ASSERT(idx < CLS_DX_CommandQueueManager__NUM_COMMAND_QUEUES, "Index out of range");
+    
+    return mc_arrCommandQueueTypes[idx];
+}
+
+int DX::CommandQueueManager::indexAtType(D3D12_COMMAND_LIST_TYPE type) {
     int idx = -1;
     for (int i = 0; i < CLS_DX_CommandQueueManager__NUM_COMMAND_QUEUES; i++) {
         // If type matches set idx to i
@@ -35,12 +52,7 @@ DX::XCommandQueue& DX::CommandQueueManager::getCommandQueue(D3D12_COMMAND_LIST_T
         }
     }
 
-    // Assert index and command queue
-    EXPP_ASSERT(idx >= 0, "No command queue for given command list type");
-    EXPP_ASSERT(m_arrCommandQueues[idx], "Command queue is not valid");
-
-    // Return list reference
-    return m_arrCommandQueues[idx];
+    return idx;
 }
 
 DX::CommandQueueManager& DX::CommandQueueManager::getInstance() {

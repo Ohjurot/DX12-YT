@@ -706,7 +706,7 @@ namespace EXPP {
 	/// <typeparam name="...AT">Function argumen type</typeparam>
 	/// <param name="functionPtr">Function pointer</param>
 	/// <param name="...args">Arguments</param>
-	/// <returns>InvocationResult<T,ST></returns>
+	/// <returns>InvocationResult T,ST </returns>
 	template<typename T, typename ST = EXPP_STRING_TYPE, typename FT, typename... AT>
 	InvocationResult<T, ST> invoke(FT functionPtr, AT... args) {
 		try {

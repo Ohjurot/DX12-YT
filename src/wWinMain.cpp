@@ -17,6 +17,8 @@
 #include <dx/window/GfxWindow.h>
 
 #include <dx/cmds/CommandQueueManager.h>
+#include <dx/cmds/CommandListManager.h>
+#include <dx/cmds/CommandListAccessObject.h>
 
 // ==== DEBUG END
 
@@ -33,8 +35,9 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 	// Create XDevice
 	DX::XDevice xDevice(adapter);
 
-	// Init command queues
+	// Init command queues and lists
 	DX::CommandQueueManager::getInstance().createInternalObjects(xDevice);
+	DX::CommandListManager::getInstance().createInternalObjects(xDevice);
 
 	// Get factory2
 	ScopedComPointer<IDXGIFactory2> factory2;
@@ -43,10 +46,15 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 	// Create window class
 	EasyHWND::WindowClass cls(L"MyWindowCls", CS_OWNDC, NULL, LoadCursor(NULL, IDC_ARROW));
 	EXPP_ASSERT(cls, "Window class not valid");
-	
+
 	// Create window
 	DX::GfxWindow window(cls, xDevice, factory2, L"DirectX 12", DX::GfxWindow_Stlye::BORDERLESS);
 	window.setWindowVisibility(true);
+
+	// AO
+	DX::CommandListAccessObject lao(D3D12_COMMAND_LIST_TYPE_DIRECT);
+
+	// Loop
 	while (window) {
 		// Check if tread needs to be paused
 		if (!window.isVisble()) {
@@ -54,14 +62,22 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 			continue;
 		}
 
+		window.beginFrame(lao);
+		window.endFrame(lao);
+		auto wo = lao.executeExchange();
 
+		while (!wo.isDone()) {
+			DX::CommandListManager::getInstance().refreshInternal();
+		}
 
 		// Present frame
-		window.present(true);
+		window.present(false);
 	}
+	lao.release();
 	window.release();
 
 	// Release queues and device
+	DX::CommandListManager::getInstance().destroyInternalObjects();
 	DX::CommandQueueManager::getInstance().destroyInternalObjects();
 	xDevice.release();
 

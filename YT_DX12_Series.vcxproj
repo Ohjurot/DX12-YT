@@ -64,6 +64,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>DefHeader.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -82,6 +83,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>DefHeader.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -96,8 +98,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\dx\cmds\CommandListAccessObject.cpp" />
+    <ClCompile Include="src\dx\cmds\CommandListManager.cpp" />
     <ClCompile Include="src\dx\cmds\CommandQueueManager.cpp" />
     <ClCompile Include="src\dx\cmds\FenceCounter.cpp" />
+    <ClCompile Include="src\dx\cmds\XCommandList.cpp" />
     <ClCompile Include="src\dx\cmds\XCommandQueue.cpp" />
     <ClCompile Include="src\dx\cmds\XFence.cpp" />
     <ClCompile Include="src\dx\core\XDebug.cpp" />
@@ -115,8 +120,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DefHeader.h" />
+    <ClInclude Include="src\dx\cmds\CommandListAccessObject.h" />
+    <ClInclude Include="src\dx\cmds\CommandListManager.h" />
     <ClInclude Include="src\dx\cmds\CommandQueueManager.h" />
     <ClInclude Include="src\dx\cmds\FenceCounter.h" />
+    <ClInclude Include="src\dx\cmds\XCommandList.h" />
     <ClInclude Include="src\dx\cmds\XCommandQueue.h" />
     <ClInclude Include="src\dx\cmds\XFence.h" />
     <ClInclude Include="src\dx\core\XDebug.h" />

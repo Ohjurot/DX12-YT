@@ -30,6 +30,20 @@ namespace DX {
 			/// <returns>Command queue reference</returns>
 			XCommandQueue& getCommandQueue(D3D12_COMMAND_LIST_TYPE type);
 
+			/// <summary>
+			/// Retrives the type at an index
+			/// </summary>
+			/// <param name="idx">Index</param>
+			/// <returns>Command list type</returns>
+			D3D12_COMMAND_LIST_TYPE typeAtIndex(unsigned int idx);
+
+			/// <summary>
+			/// Get index at type
+			/// </summary>
+			/// <param name="type">input type</param>
+			/// <returns>index</returns>
+			int indexAtType(D3D12_COMMAND_LIST_TYPE type);
+
 		private:
 			/// <summary>
 			/// Array of command ques

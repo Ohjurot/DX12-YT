@@ -69,6 +69,18 @@ namespace DX {
 			void present(bool vsync = false);
 
 			/// <summary>
+			/// Begin a frame on the window
+			/// </summary>
+			/// <param name="ptrGfxCmdList">Pointer to command list</param>
+			void beginFrame(ID3D12GraphicsCommandList* ptrGfxCmdList);
+
+			/// <summary>
+			/// End a frame on the window
+			/// </summary>
+			/// <param name="ptrGfxCmdList">Pointer to command list</param>
+			void endFrame(ID3D12GraphicsCommandList* ptrGfxCmdList);
+
+			/// <summary>
 			/// Window loop operator
 			/// </summary>
 			/// <returns>True if window is not closed</returns>
