@@ -31,8 +31,15 @@ void DX::XCommandList::release() {
 	if (m_fenceFrontend) {
 		m_fenceFrontend.getCurrentWaitObject().wait();
 	}
-	
-	// Invalidate
+
+	// Releaee own
+	ScopedComPointer::release();
+
+	// Release allocator
+	m_allocator.release();
+	m_fenceFrontend.release();
+
+	// Set state
 	m_state = XCommandList_State::INVALID;
 
 	// Unreference queue
@@ -40,16 +47,6 @@ void DX::XCommandList::release() {
 		m_ptrCommandQueue->decrementRef();
 		m_ptrCommandQueue = nullptr;
 	}
-
-	// Release allocator
-	m_allocator.release();
-	m_fenceFrontend.release();
-	
-	// Releaee own
-	ScopedComPointer::release();
-
-	// Set state
-	m_state = XCommandList_State::INVALID;
 }
 
 DX::XCommandList_State DX::XCommandList::getState() {
@@ -61,6 +58,9 @@ DX::XCommandList_State DX::XCommandList::getState() {
 }
 
 void DX::XCommandList::refresh(){
+	static std::atomic_flag guard = ATOMIC_FLAG_INIT;
+	while (guard.test_and_set(std::memory_order_acquire));
+
 	// Check if list is done executing
 	if (m_state == XCommandList_State::QUEUE_EXECUTING && m_fenceFrontend.getCurrentWaitObject().isDone()) {
 		// Reset all
@@ -71,6 +71,8 @@ void DX::XCommandList::refresh(){
 		// Increment iteration
 		m_uiIteration++;
 	}
+
+	guard.clear(std::memory_order_release);
 }
 
 DX::XCommandList::WaitObject DX::XCommandList::close() {
@@ -118,5 +120,21 @@ DX::XCommandList::WaitObject::WaitObject(XCommandList* ptrCommandList, UINT64 va
 bool DX::XCommandList::WaitObject::isDone() {
 	EXPP_ASSERT(m_ptrCommandList, "Invalid call on NULL Object");
 
+	m_ptrCommandList->refresh();
 	return m_value < m_ptrCommandList->getCurrentItteration();
+}
+
+void DX::XCommandList::WaitObject::wait() {
+	// While not done pause
+	while (!isDone()) {
+		THREAD_PAUSE_FUNCTION();
+	}
+}
+
+DX::XCommandList::WaitObject::operator bool() {
+	return isDone();
+}
+
+void DX::XCommandList::WaitObject::operator()() {
+	wait();
 }

@@ -156,6 +156,21 @@ namespace DX {
 					/// </summary>
 					/// <returns></returns>
 					bool isDone();
+
+					/// <summary>
+					/// Wait until execution is done
+					/// </summary>
+					void wait();
+
+					/// <summary>
+					/// Check if it is done
+					/// </summary>
+					operator bool();
+
+					/// <summary>
+					/// Call wait
+					/// </summary>
+					void operator()();
 				private:
 					/// <summary>
 					/// Value of wait object

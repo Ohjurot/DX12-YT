@@ -1,5 +1,6 @@
 #include "DefHeader.h"
 #include "XFence.h"
+#include "XCommandList.h"
 
 DX::XFence::XFence(ID3D12Device* ptrDevice) {
 	// Create fence

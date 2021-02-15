@@ -8,12 +8,12 @@ DX::CommandListAccessObject::CommandListAccessObject(D3D12_COMMAND_LIST_TYPE typ
 }
 
 DX::CommandListAccessObject::~CommandListAccessObject() {
-	executeClose();
+	release();
 }
 
 void DX::CommandListAccessObject::release() {
 	// Execute close
-	executeClose();
+	if(m_ptrCommandList) executeClose();
 }
 
 DX::XCommandList::WaitObject DX::CommandListAccessObject::executeExchange() {
@@ -34,21 +34,21 @@ DX::XCommandList::WaitObject DX::CommandListAccessObject::executeExchange() {
 }
 
 DX::XCommandList::WaitObject DX::CommandListAccessObject::executeClose() {
+	EXPP_ASSERT(m_ptrCommandList, "Invalid call on empty access object");
+	
 	// NULL wait object
 	XCommandList::WaitObject wo;
 	
-	if (m_ptrCommandList) {
-		// Only is list was used
-		if (m_bIsDirty) {
-			// Close list
-			wo = m_ptrCommandList->close();
-		}
-
-		// Execute return
-		DX::CommandListManager::getInstance().unlockList(m_ptrCommandList, m_bIsDirty);
-		m_ptrCommandList = nullptr;
-		m_bIsDirty = false;
+	// Only is list was used
+	if (m_bIsDirty) {
+		// Close list
+		wo = m_ptrCommandList->close();
 	}
+
+	// Execute return
+	DX::CommandListManager::getInstance().unlockList(m_ptrCommandList, m_bIsDirty);
+	m_ptrCommandList = nullptr;
+	m_bIsDirty = false;
 
 	// Return wait object
 	return wo;

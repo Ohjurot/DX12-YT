@@ -48,7 +48,7 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 	EXPP_ASSERT(cls, "Window class not valid");
 
 	// Create window
-	DX::GfxWindow window(cls, xDevice, factory2, L"DirectX 12", DX::GfxWindow_Stlye::BORDERLESS);
+	DX::GfxWindow window(cls, xDevice, factory2, L"DirectX 12", DX::GfxWindow_Stlye::WINDOWED);
 	window.setWindowVisibility(true);
 
 	// AO
@@ -64,11 +64,7 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 
 		window.beginFrame(lao);
 		window.endFrame(lao);
-		auto wo = lao.executeExchange();
-
-		while (!wo.isDone()) {
-			DX::CommandListManager::getInstance().refreshInternal();
-		}
+		lao.executeExchange().wait();
 
 		// Present frame
 		window.present(false);

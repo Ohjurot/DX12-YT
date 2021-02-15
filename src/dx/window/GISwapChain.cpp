@@ -81,6 +81,7 @@ void DX::GISwapChain::resize(unsigned int width, unsigned int height) {
 
 	// Resize swap chain
 	EVALUATE_HRESULT(m_comPointer->ResizeBuffers(m_uiUsedBuffers, width, height, DXGI_FORMAT_UNKNOWN, DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING | DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH), "IDXGISwapChain1->ResizeBuffers(...)");
+	m_uiCurrentBuffer = 0;
 
 	// Recreate buffer
 	retriveBuffer();

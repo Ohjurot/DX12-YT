@@ -42,12 +42,8 @@ void DX::CommandListManager::refreshInternal() {
     // For all lists
     for (unsigned int ti = 0; ti < CLS_DX_CommandQueueManager__NUM_COMMAND_QUEUES; ti++) {
         for (unsigned int li = 0; li < CLS_DX_CommandListManager__NUM_COMMAND_LISTS_PER_TYPE; li++) {
-            // Try to lock
-            if (m_commandList2DArr[ti][li].locked_flag.test_and_set(std::memory_order_acquire) == 0) {
-                // Refresh and unlock
-                m_commandList2DArr[ti][li].commandList.refresh();
-                m_commandList2DArr[ti][li].locked_flag.clear(std::memory_order_release);
-            }
+            // Refresh
+            m_commandList2DArr[ti][li].commandList.refresh();
         }
     }
         
@@ -73,6 +69,8 @@ DX::XCommandList* DX::CommandListManager::lockList(D3D12_COMMAND_LIST_TYPE type)
                 m_commandList2DArr[typeIndex][i].locked_flag.clear(std::memory_order_release);
             }
         }
+
+        THREAD_PAUSE_FUNCTION();
     }
 }
 
