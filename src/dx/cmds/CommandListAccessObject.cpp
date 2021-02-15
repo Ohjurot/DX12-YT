@@ -4,7 +4,6 @@
 DX::CommandListAccessObject::CommandListAccessObject(D3D12_COMMAND_LIST_TYPE type) {
 	// Retrive command list pointer
 	m_ptrCommandList = DX::CommandListManager::getInstance().lockList(type);
-	EXPP_ASSERT(m_ptrCommandList->getState() == XCommandList_State::OPEN, "Invalid command list recived");
 }
 
 DX::CommandListAccessObject::~CommandListAccessObject() {
@@ -13,7 +12,9 @@ DX::CommandListAccessObject::~CommandListAccessObject() {
 
 void DX::CommandListAccessObject::release() {
 	// Execute close
-	if(m_ptrCommandList) executeClose();
+	if (m_ptrCommandList) {
+		executeClose();
+	}
 }
 
 DX::XCommandList::WaitObject DX::CommandListAccessObject::executeExchange() {
@@ -27,7 +28,6 @@ DX::XCommandList::WaitObject DX::CommandListAccessObject::executeExchange() {
 
 	// Get new
 	m_ptrCommandList = DX::CommandListManager::getInstance().lockList(type);
-	EXPP_ASSERT(m_ptrCommandList->getState() == XCommandList_State::OPEN, "Invalid command list recived");
 
 	// Return wo
 	return wo;

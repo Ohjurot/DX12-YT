@@ -37,7 +37,7 @@ DX::GISwapChain::GISwapChain(ID3D12Device* ptrDevice, ID3D12CommandQueue* ptrCmd
 	swapChainDesc.SampleDesc = { 1, 0 }; // No MSAA (not supported by D3D12 here)
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapChainDesc.BufferCount = (unsigned int)bufferingMode;
-	swapChainDesc.Scaling = DXGI_SCALING_NONE;
+	swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 	swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH | DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING;

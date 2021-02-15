@@ -131,6 +131,10 @@ void DX::XCommandList::WaitObject::wait() {
 	}
 }
 
+bool DX::XCommandList::WaitObject::isValid() {
+	return m_ptrCommandList;
+}
+
 DX::XCommandList::WaitObject::operator bool() {
 	return isDone();
 }

@@ -163,6 +163,12 @@ namespace DX {
 					void wait();
 
 					/// <summary>
+					/// Checks if wait object is valid
+					/// </summary>
+					/// <returns>True if valid</returns>
+					bool isValid();
+
+					/// <summary>
 					/// Check if it is done
 					/// </summary>
 					operator bool();

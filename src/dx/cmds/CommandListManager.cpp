@@ -100,6 +100,7 @@ void DX::CommandListManager::unlockList(XCommandList* ptrList, bool execute) {
     for (int i = 0; i < CLS_DX_CommandListManager__NUM_COMMAND_LISTS_PER_TYPE; i++) {
         if (&m_commandList2DArr[typeIndex][i].commandList == ptrList) {
             m_commandList2DArr[typeIndex][i].locked_flag.clear(std::memory_order_release);
+            break;
         }
     }
 }

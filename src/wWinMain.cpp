@@ -39,13 +39,13 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 	DX::CommandQueueManager::getInstance().createInternalObjects(xDevice);
 	DX::CommandListManager::getInstance().createInternalObjects(xDevice);
 
-	// Get factory2
-	ScopedComPointer<IDXGIFactory2> factory2;
-	EXPP_ASSERT(factory.queryInterface(factory2), "IDXGIFactory1->QueryInterface(...) for IDXGIFactory2 failed");
-
 	// Create window class
 	EasyHWND::WindowClass cls(L"MyWindowCls", CS_OWNDC, NULL, LoadCursor(NULL, IDC_ARROW));
 	EXPP_ASSERT(cls, "Window class not valid");
+
+	// Get factory2
+	ScopedComPointer<IDXGIFactory2> factory2;
+	EXPP_ASSERT(factory.queryInterface(factory2), "IDXGIFactory1->QueryInterface(...) for IDXGIFactory2 failed");
 
 	// Create window
 	DX::GfxWindow window(cls, xDevice, factory2, L"DirectX 12", DX::GfxWindow_Stlye::WINDOWED);
