@@ -20,6 +20,24 @@
 #include <dx/cmds/CommandListManager.h>
 #include <dx/cmds/CommandListAccessObject.h>
 
+
+
+
+#include <thread>
+static volatile bool initOk = false;
+static void fpsKiller(DX::XCommandList::WaitObject* ptrWo) {
+	// Create and extrace
+	DX::CommandListAccessObject ao(D3D12_COMMAND_LIST_TYPE_COPY);
+	*ptrWo = ao.createWaitObject();
+	initOk = true;
+
+	// Evil block
+	Sleep(10);
+
+	// Execute
+	ao.executeClose();
+}
+
 // ==== DEBUG END
 
 // Safe Winmain
@@ -48,7 +66,7 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 	EXPP_ASSERT(factory.queryInterface(factory2), "IDXGIFactory1->QueryInterface(...) for IDXGIFactory2 failed");
 
 	// Create window
-	DX::GfxWindow window(cls, xDevice, factory2, L"DirectX 12", DX::GfxWindow_Stlye::WINDOWED);
+	DX::GfxWindow window(cls, xDevice, factory2, L"DirectX 12", DX::GfxWindow_Stlye::BORDERLESS);
 	window.setWindowVisibility(true);
 
 	// AO
@@ -61,10 +79,23 @@ INT s_wWinMain(HINSTANCE hInstance, PWSTR cmdArgs, INT cmdShow) {
 			THREAD_PAUSE_FUNCTION();
 			continue;
 		}
+		
+		// VERY VERY BAD ;)
+		initOk = false;
+		DX::XCommandList::WaitObject wo;
+		std::thread thread(fpsKiller, &wo);
+		while (!initOk);
+		
+		lao.addDependency(wo);
+		// BAD END
 
 		window.beginFrame(lao);
 		window.endFrame(lao);
 		lao.executeExchange().wait();
+
+		// BAD
+		thread.join();
+		// BAD END
 
 		// Present frame
 		window.present(false);

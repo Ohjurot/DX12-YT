@@ -94,6 +94,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\common\MTLocks\SpinLock.cpp" />
     <ClCompile Include="src\DefHeader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -119,6 +120,7 @@
     <ClCompile Include="src\wWinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\common\MTLocks\SpinLock.h" />
     <ClInclude Include="src\DefHeader.h" />
     <ClInclude Include="src\dx\cmds\CommandListAccessObject.h" />
     <ClInclude Include="src\dx\cmds\CommandListManager.h" />
@@ -137,6 +139,7 @@
     <ClInclude Include="src\dx\setup\GIOutput.h" />
     <ClInclude Include="src\dx\window\GfxWindow.h" />
     <ClInclude Include="src\dx\window\GISwapChain.h" />
+    <ClInclude Include="src\vendor\LockTools.h" />
     <ClInclude Include="src\vendor\EasyHWND.h" />
     <ClInclude Include="src\vendor\ExceptionsPlusPlus.h" />
     <ClInclude Include="src\vendor\ScopedComPointer.h" />

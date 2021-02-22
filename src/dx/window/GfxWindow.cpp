@@ -9,7 +9,7 @@ DX::GfxWindow::GfxWindow(EasyHWND::WindowClass& windowClass, ID3D12Device* ptrDe
 	// Count on queue
 	m_queue.incrementRef();
 
-	// Swap chain
+	// Swap
 	GISwapChain tempChain = GISwapChain(ptrDevice, m_queue, ptrFactory, *this);
 	m_swapChain = tempChain;
 
@@ -43,6 +43,7 @@ DX::GfxWindow::GfxWindow(EasyHWND::WindowClass& windowClass, ID3D12Device* ptrDe
 		case GfxWindow_Stlye::WINDOWED:
 			this->setWindowPosition(monitorInfo.rcMonitor.left, monitorInfo.rcMonitor.top);
 			this->setWindowSize(monitorInfo.rcWork.right - monitorInfo.rcWork.left, monitorInfo.rcWork.bottom - monitorInfo.rcWork.top);
+			ShowWindow(this->operator HWND(), SW_MAXIMIZE);
 			break;
 
 		// Borderless window
@@ -120,7 +121,7 @@ void DX::GfxWindow::present(bool vsync) {
 	else {
 		m_fenceCounterFrontend.getCurrentWaitObject().wait();
 	}
-	
+
 	// Present frame
 	m_swapChain.present(vsync);
 

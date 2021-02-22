@@ -52,7 +52,7 @@ void DX::CommandListManager::refreshInternal() {
 DX::XCommandList* DX::CommandListManager::lockList(D3D12_COMMAND_LIST_TYPE type) {
     // Get type index
     int typeIndex = DX::CommandQueueManager::getInstance().indexAtType(type);
-    EXPP_ASSERT(typeIndex >= 0, "Illegal or Invalid command list type");
+    EXPP_ASSERT_DBG(typeIndex >= 0, "Illegal or Invalid command list type");
     
     // As long as time goes on
     while (true) {
@@ -75,7 +75,10 @@ DX::XCommandList* DX::CommandListManager::lockList(D3D12_COMMAND_LIST_TYPE type)
 }
 
 void DX::CommandListManager::unlockList(XCommandList* ptrList, bool execute) {
-    // Assert open state
+    // Get type index
+    int typeIndex = DX::CommandQueueManager::getInstance().indexAtType(ptrList->ptr()->GetType());
+    
+    EXPP_ASSERT_DBG(typeIndex >= 0, "Illegal or Invalid command list type");
     EXPP_ASSERT(ptrList->getState() == XCommandList_State::CLOSED || ptrList->getState() == XCommandList_State::OPEN, "Invalid state of command list");
 
     // Check if execute is required
@@ -85,16 +88,9 @@ void DX::CommandListManager::unlockList(XCommandList* ptrList, bool execute) {
             ptrList->close();
         }
 
-        // TODO: RESOURCE MANGEMEN RESOLVE EXECUTE
-
-        ptrList->execute();
-
-        // TODO: POST EXECUTE RESOURCE MANAGEMENT 
+        // Check if execution can be done 
+        ptrList->execute(m_fences);
     }
-
-    // Get type index
-    int typeIndex = DX::CommandQueueManager::getInstance().indexAtType(ptrList->ptr()->GetType());
-    EXPP_ASSERT(typeIndex >= 0, "Illegal or Invalid command list type");
 
     // Unlock list
     for (int i = 0; i < CLS_DX_CommandListManager__NUM_COMMAND_LISTS_PER_TYPE; i++) {

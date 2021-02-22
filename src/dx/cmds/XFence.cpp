@@ -29,29 +29,37 @@ DX::XFence::WaitObject DX::XFence::createWaitObject(UINT64 value) {
 }
 
 DX::XFence::WaitObject::WaitObject(XFence& refFence, UINT64 value) :
-	m_fence(refFence),
+	m_ptrFence(&refFence),
 	m_value(value)
 {
-	EXPP_ASSERT(m_fence.getValue() != UINT64_MAX, "Invalid fence");
+	EXPP_ASSERT(m_ptrFence && m_ptrFence->getValue() != UINT64_MAX, "Invalid fence");
 }
 
 bool DX::XFence::WaitObject::isDone() noexcept {
-	return (UINT64)m_fence >= m_value;
+	return m_ptrFence->getValue() >= m_value;
 }
 
 void DX::XFence::WaitObject::wait() {
-	EXPP_ASSERT(m_fence.getValue() != UINT64_MAX, "Invalid fence value");
+	EXPP_ASSERT(m_ptrFence && m_ptrFence->getValue() != UINT64_MAX, "Invalid fence value");
 
 	while (!isDone()) {
 		THREAD_PAUSE_FUNCTION();
-		EXPP_ASSERT_DBG(m_fence.getValue() != UINT64_MAX, "Invalid fence value");
+		EXPP_ASSERT_DBG(m_ptrFence && m_ptrFence->getValue() != UINT64_MAX, "Invalid fence value");
 	}
 }
 
-DX::XFence::WaitObject::operator bool() noexcept {
-	return isDone();
+UINT64 DX::XFence::WaitObject::value() noexcept {
+	return m_value;
 }
 
-void DX::XFence::WaitObject::operator()(){
+void DX::XFence::WaitObject::operator()() {
 	wait();
+}
+
+bool DX::XFence::WaitObject::operator==(const WaitObject& other) {
+	return other.m_ptrFence == m_ptrFence;
+}
+
+DX::XFence::WaitObject::operator bool() noexcept {
+	return m_ptrFence;
 }

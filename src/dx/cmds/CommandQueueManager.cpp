@@ -30,7 +30,7 @@ DX::XCommandQueue& DX::CommandQueueManager::getCommandQueue(D3D12_COMMAND_LIST_T
     int idx = indexAtType(type);
 
     // Assert index and command queue
-    EXPP_ASSERT(idx >= 0, "No command queue for given command list type");
+    EXPP_ASSERT_DBG(idx >= 0, "No command queue for given command list type");
     EXPP_ASSERT(m_arrCommandQueues[idx], "Command queue is not valid");
 
     // Return list reference

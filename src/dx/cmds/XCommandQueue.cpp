@@ -22,6 +22,16 @@ void DX::XCommandQueue::release() {
 	ScopedComPointer::release();
 }
 
+void DX::XCommandQueue::lock() noexcept {
+	while (m_executionFlag.test_and_set(std::memory_order_acquire)) {
+		THREAD_PAUSE_FUNCTION();
+	}
+}
+
+void DX::XCommandQueue::unlock() noexcept {
+	m_executionFlag.clear(std::memory_order_release);
+}
+
 DX::XCommandQueue::XCommandQueue(ID3D12Device* ptrDevice, D3D12_COMMAND_LIST_TYPE type) :
 	m_type(type)
 {

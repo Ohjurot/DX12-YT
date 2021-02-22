@@ -54,6 +54,24 @@ DX::XCommandList::WaitObject DX::CommandListAccessObject::executeClose() {
 	return wo;
 }
 
+DX::XCommandList::WaitObject DX::CommandListAccessObject::createWaitObject() {
+	EXPP_ASSERT(m_ptrCommandList, "Invalid call on empty access object");
+
+	// Now externaly referenced -> execute required
+	m_bIsDirty = true;
+
+	// return wait object
+	return m_ptrCommandList->getUniversalWaitObject();
+}
+
+void DX::CommandListAccessObject::addDependency(XCommandList::WaitObject& waitObject) {
+	EXPP_ASSERT(m_ptrCommandList, "Invalid call on empty access object");
+
+	m_bIsDirty = true;
+
+	m_ptrCommandList->injectDependency(waitObject);
+}
+
 ID3D12GraphicsCommandList* DX::CommandListAccessObject::operator->() {
 	EXPP_ASSERT(m_ptrCommandList, "Invalid call on empty access object");
 	

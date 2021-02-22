@@ -55,6 +55,11 @@ namespace DX {
 			class WaitObject {
 				public:
 					/// <summary>
+					/// Default wait object
+					/// </summary>
+					WaitObject() = default;
+
+					/// <summary>
 					/// Create wait object
 					/// </summary>
 					/// <param name="refFence">Reference fence</param>
@@ -73,25 +78,36 @@ namespace DX {
 					void wait();
 
 					/// <summary>
-					/// Check if completed
+					/// Extract the wait object value
+					/// </summary>
+					/// <returns>Value</returns>
+					UINT64 value() noexcept;
+
+					/// <summary>
+					/// Execute operator (wait)
+					/// </summary>
+					void operator()();
+
+					/// <summary>
+					/// Equal operator
+					/// </summary>
+					bool operator==(const WaitObject& other);
+
+					/// <summary>
+					/// Check if is valid
 					/// </summary>
 					/// <returns></returns>
 					operator bool() noexcept;
-
-					/// <summary>
-					/// Execute operator
-					/// </summary>
-					void operator()();
 				private:
 					/// <summary>
-					/// Reference to fence
+					/// Pointer to fence
 					/// </summary>
-					XFence& m_fence;
+					XFence* m_ptrFence = nullptr;
 
 					/// <summary>
 					/// Wait value
 					/// </summary>
-					const UINT64 m_value;
+					UINT64 m_value = 0;
 			};
 	};
 }

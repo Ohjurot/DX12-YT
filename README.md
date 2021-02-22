@@ -5,7 +5,7 @@ English video playlist: [YouTube](https://youtube.com/playlist?list=PL-m4pn2uJvX
 
 German video playlist: [YouTube](https://youtube.com/playlist?list=PL-m4pn2uJvXFiuAfZy0r9mItWtVfNl5gw)
 
-### Used first & second party software
+### Used first, second & third party software
 
 - [ExceptionsPlusPlus](https://github.com/Ohjurot/ExceptionsPlusPlus) by Ludwig Füchsl (MIT License)
 - [EasyHWND](https://github.com/Ohjurot/EasyHWND) by Ludwig Füchsl (MIT License)
@@ -25,5 +25,8 @@ German video playlist: [YouTube](https://youtube.com/playlist?list=PL-m4pn2uJvXF
 | Video | Topic                       | Code                                                         | :gb: Video-Link                                       | :de: Video-Link                                          |
 | ----- | --------------------------- | :----------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
 | 1     | Command Queue               | [Code for VII.1](https://github.com/Ohjurot/DX12-YT/releases/tag/VII.1) | [:tv: Watch on YouTube](https://youtu.be/k7tPjz2cyLQ) | [:tv: Auf YouTube ansehen](https://youtu.be/CHnNqPvUoLs) |
-| 2     | Command Allocators and List | [Code for VII.2](https://github.com/Ohjurot/DX12-YT/releases/tag/VII.2) | :tv: Watch on YouTube                                 | :tv: Auf YouTube ansehen                                 |
+| 2     | Command Allocators and List | [Code for VII.2](https://github.com/Ohjurot/DX12-YT/releases/tag/VII.2_ii) | :tv: Watch on YouTube                                 | [:tv: Auf YouTube ansehen](https://youtu.be/Tekce8OeO6M) |
+| 3     | Command List Dependencies   | [Code for VII.3](https://github.com/Ohjurot/DX12-YT/releases/tag/VII.3) | :tv: Watch on YouTube                                 | :tv: Auf YouTube ansehen                                 |
+
+**III. Resource Management**
 

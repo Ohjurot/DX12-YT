@@ -40,6 +40,18 @@ namespace DX {
 			DX::XCommandList::WaitObject executeClose();
 
 			/// <summary>
+			/// Precreates a work object (marks list dirty)
+			/// </summary>
+			/// <returns>wait object</returns>
+			DX::XCommandList::WaitObject createWaitObject();
+
+			/// <summary>
+			/// Add dependency to list
+			/// </summary>
+			/// <param name="waitObject">Input dependancy</param>
+			void addDependency(XCommandList::WaitObject& waitObject);
+
+			/// <summary>
 			/// Pointer operator for GFX Command list
 			/// </summary>
 			/// <returns></returns>

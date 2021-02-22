@@ -7,6 +7,7 @@
 #include <vendor/ScopedPointer.h>
 #include <vendor/ScopedHandle.h>
 #include <vendor/ScopedComPointer.h>
+#include <vendor/LockTools.h>
 
 #include <atomic>
 

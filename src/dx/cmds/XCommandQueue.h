@@ -29,6 +29,16 @@ namespace DX {
 			/// Release function
 			/// </summary>
 			void release() override;
+
+			/// <summary>
+			/// Lock the que
+			/// </summary>
+			void lock() noexcept;
+
+			/// <summary>
+			/// Unlock the queu
+			/// </summary>
+			void unlock() noexcept;
 		protected:
 			// Allow command queue manager access
 			friend class CommandQueueManager;
@@ -51,6 +61,11 @@ namespace DX {
 			/// <param name="other"></param>
 			XCommandQueue& operator=(XCommandQueue& other);
 		private:
+			/// <summary>
+			/// Atomic flag for execution
+			/// </summary>
+			std::atomic_flag m_executionFlag = ATOMIC_FLAG_INIT;
+
 			/// <summary>
 			/// Type of the command list
 			/// </summary>
