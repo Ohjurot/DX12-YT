@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -15,7 +15,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{80ee78e8-387c-4e19-a5df-ac73f505057b}</ProjectGuid>
     <RootNamespace>YTDX12Series</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.20303.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -70,6 +70,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>dxgi.lib;dxguid.lib;d3d12.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>
+      </StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -84,6 +86,8 @@
       <PrecompiledHeaderFile>DefHeader.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
+      <Optimization>MaxSpeed</Optimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -91,10 +95,13 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>dxgi.lib;dxguid.lib;d3d12.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>
+      </StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\common\MTLocks\SpinLock.cpp" />
+    <ClCompile Include="src\application\MainJob.cpp" />
+    <ClCompile Include="src\common\Time\StopWatch.cpp" />
     <ClCompile Include="src\DefHeader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -116,11 +123,28 @@
     <ClCompile Include="src\dx\setup\GIOutput.cpp" />
     <ClCompile Include="src\dx\window\GfxWindow.cpp" />
     <ClCompile Include="src\dx\window\GISwapChain.cpp" />
+    <ClCompile Include="src\job\system\EntryJob.cpp" />
+    <ClCompile Include="src\job\system\IJob.cpp" />
+    <ClCompile Include="src\job\system\JobFiberPool.cpp" />
+    <ClCompile Include="src\job\system\JobPause.cpp" />
+    <ClCompile Include="src\job\system\JobQueue.cpp" />
+    <ClCompile Include="src\job\system\JobSystem.cpp" />
+    <ClCompile Include="src\job\system\JobWaitObject.cpp" />
+    <ClCompile Include="src\job\system\PreparedJob.cpp" />
+    <ClCompile Include="src\job\system\SystemInstance.cpp" />
+    <ClCompile Include="src\job\threading\Fiber.cpp" />
+    <ClCompile Include="src\job\threading\LocalStorageProvider.cpp" />
+    <ClCompile Include="src\job\threading\MultiThreadDispatcher.cpp" />
+    <ClCompile Include="src\job\threading\Thread.cpp" />
     <ClCompile Include="src\vendor\ScopedHandle.cpp" />
     <ClCompile Include="src\wWinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\common\MTLocks\SpinLock.h" />
+    <ClInclude Include="src\common\Container\FixedSizeQueue.h" />
+    <ClInclude Include="src\common\Exceptions\EXPP_Handler.h" />
+    <ClInclude Include="src\common\Memory\QuadTreePoolAllocator.h" />
+    <ClInclude Include="src\common\MT\Locks\SpinLock.h" />
+    <ClInclude Include="src\common\Time\StopWatch.h" />
     <ClInclude Include="src\DefHeader.h" />
     <ClInclude Include="src\dx\cmds\CommandListAccessObject.h" />
     <ClInclude Include="src\dx\cmds\CommandListManager.h" />
@@ -139,6 +163,24 @@
     <ClInclude Include="src\dx\setup\GIOutput.h" />
     <ClInclude Include="src\dx\window\GfxWindow.h" />
     <ClInclude Include="src\dx\window\GISwapChain.h" />
+    <ClInclude Include="src\job\system\IJob.h" />
+    <ClInclude Include="src\job\system\Job.h" />
+    <ClInclude Include="src\job\system\JobData.h" />
+    <ClInclude Include="src\job\system\JobFiber.h" />
+    <ClInclude Include="src\job\system\JobFiberPool.h" />
+    <ClInclude Include="src\job\system\JobPause.h" />
+    <ClInclude Include="src\job\system\JobQueue.h" />
+    <ClInclude Include="src\job\system\JobSystem.h" />
+    <ClInclude Include="src\job\system\EntryJob.h" />
+    <ClInclude Include="src\job\system\JobWaitObject.h" />
+    <ClInclude Include="src\job\system\PreparedJob.h" />
+    <ClInclude Include="src\job\system\SystemInstance.h" />
+    <ClInclude Include="src\job\system\WinEntry.h" />
+    <ClInclude Include="src\job\threading\Fiber.h" />
+    <ClInclude Include="src\job\threading\LocalStorageProvider.h" />
+    <ClInclude Include="src\job\threading\MultiThreadDispatcher.h" />
+    <ClInclude Include="src\job\threading\Thread.h" />
+    <ClInclude Include="src\job\threading\ThreadingExecution.h" />
     <ClInclude Include="src\vendor\LockTools.h" />
     <ClInclude Include="src\vendor\EasyHWND.h" />
     <ClInclude Include="src\vendor\ExceptionsPlusPlus.h" />
@@ -146,6 +188,9 @@
     <ClInclude Include="src\vendor\ScopedHandle.h" />
     <ClInclude Include="src\vendor\ScopedPointer.h" />
     <ClInclude Include="src\WinInclude.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

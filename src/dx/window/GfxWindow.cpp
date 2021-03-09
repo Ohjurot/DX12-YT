@@ -174,7 +174,7 @@ void DX::GfxWindow::endFrame(ID3D12GraphicsCommandList* ptrGfxCmdList) {
 DX::GfxWindow::operator bool() {
 	// Window loop
 	MSG msg = {};
-	while (PeekMessage(&msg, this->operator HWND(), 0, 0, PM_REMOVE)) {
+	while (PeekMessage(&msg, operator HWND(), 0, 0, PM_REMOVE)) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}

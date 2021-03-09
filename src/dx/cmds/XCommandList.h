@@ -5,7 +5,7 @@
 #include <dx/cmds/FenceCounter.h>
 #include <dx/cmds/CommandQueueManager.h>
 
-#include <common/MTLocks/SpinLock.h>
+#include <common/MT/Locks/SpinLock.h>
 
 #define CLS_DX_XCommandList__MAX_DEPENDENCYS 128
 
@@ -213,7 +213,7 @@ namespace DX {
 			/// <summary>
 			/// Dependants of the class
 			/// </summary>
-			MT::ObjectGuard<XCommandList_DependantsList<CLS_DX_XCommandList__MAX_DEPENDENCYS>, MT::SpinLock> m_dependants;
+			MT::ObjectGuard<XCommandList_DependantsList<CLS_DX_XCommandList__MAX_DEPENDENCYS>, MT::SpinLock<THREAD_PAUSE_FUNCTION_F>> m_dependants;
 			
 		// Subclass
 		public:
