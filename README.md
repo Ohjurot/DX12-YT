@@ -22,11 +22,17 @@ German video playlist: [YouTube](https://youtube.com/playlist?list=PL-m4pn2uJvXF
 
 **II. GPU Commands and Execution**
 
-| Video | Topic                       | Code                                                         | :gb: Video-Link                                       | :de: Video-Link                                          |
-| ----- | --------------------------- | :----------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
-| 1     | Command Queue               | [Code for VII.1](https://github.com/Ohjurot/DX12-YT/releases/tag/VII.1) | [:tv: Watch on YouTube](https://youtu.be/k7tPjz2cyLQ) | [:tv: Auf YouTube ansehen](https://youtu.be/CHnNqPvUoLs) |
-| 2     | Command Allocators and List | [Code for VII.2](https://github.com/Ohjurot/DX12-YT/releases/tag/VII.2_ii) | :tv: Watch on YouTube                                 | [:tv: Auf YouTube ansehen](https://youtu.be/Tekce8OeO6M) |
-| 3     | Command List Dependencies   | [Code for VII.3](https://github.com/Ohjurot/DX12-YT/releases/tag/VII.3) | :tv: Watch on YouTube                                 | :tv: Auf YouTube ansehen                                 |
+| Video | Topic                             | Code                                                         | :gb: Video-Link                                       | :de: Video-Link                                          |
+| ----- | --------------------------------- | :----------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
+| 1     | The GPU and GPU commands          | [Code for VII.1](https://github.com/Ohjurot/DX12-YT/releases/tag/VII.1) | [:tv: Watch on YouTube](https://youtu.be/k7tPjz2cyLQ) | [:tv: Auf YouTube ansehen](https://youtu.be/CHnNqPvUoLs) |
+| 2     | Command Queue, Allocator and List | [Code for VII.2](https://github.com/Ohjurot/DX12-YT/releases/tag/VII.2_ii) | [:tv: Watch on YouTube](https://youtu.be/Ahoc0F0p-o0) | [:tv: Auf YouTube ansehen](https://youtu.be/Tekce8OeO6M) |
+| 3     | Command List Dependencies         | [Code for VII.3](https://github.com/Ohjurot/DX12-YT/releases/tag/VII.3) | [:tv: Watch on YouTube](https://youtu.be/KvuArtOtmiw) | [:tv: Auf YouTube ansehen](https://youtu.be/Tekce8OeO6M) |
 
 **III. Resource Management**
+
+| Video | Topic                           | Code                                                         | :gb: Video-Link       | :de: Video-Link          |
+| ----- | ------------------------------- | :----------------------------------------------------------- | --------------------- | ------------------------ |
+| 1     | GPU Heap and Memory types       | [Code for VIII.1](https://github.com/Ohjurot/DX12-YT/releases/tag/VIII.1) | :tv: Watch on YouTube | :tv: Auf YouTube ansehen |
+| 2     | GPU Primitives and CPU GPU Copy | [Code for VIII.2](https://github.com/Ohjurot/DX12-YT/releases/tag/VIII.2_ii) | :tv: Watch on YouTube | :tv: Auf YouTube ansehen |
+| 3     | Resources Manager               | [Code for VIII.3](https://github.com/Ohjurot/DX12-YT/releases/tag/VIII.3) | :tv: Watch on YouTube | :tv: Auf YouTube ansehen |
 
