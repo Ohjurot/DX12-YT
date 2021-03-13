@@ -17,6 +17,13 @@ Job::JobSystem::JobSystem(int threadCount) {
     m_flsJobCookie = FlsAlloc(NULL);
     EXPP_ASSERT(m_flsJobCookie, "FlsAlloc(...)");
 
+    // Create fibers
+    for (unsigned int i = 0; i < JOB_NUM_FIBERS - threadCount; i++) {
+        JobFiber* ptrFiber = m_fiberPool.notifyFiberCreation();
+        m_arrFibers[i].init(this, ptrFiber);
+        ptrFiber->m_address = m_arrFibers[i].getAddress();
+    }
+
     // Dispatch threads
     m_ptrMtd = new Threading::MultiThreadDispatcher(threadCount, this, nullptr);
 }
@@ -46,7 +53,7 @@ void Job::JobSystem::exit() noexcept {
     m_bKeepRunning = false;
 }
 
-void Job::JobSystem::wait() noexcept {
+void Job::JobSystem::wait() {
     // Infinite wait loop
     while (true) {
         // Sleep
@@ -56,6 +63,9 @@ void Job::JobSystem::wait() noexcept {
         if (m_bKeepRunning && m_jobCount.load(std::memory_order_acquire) > 0) {
             // Keepup threads
             if (!m_ptrMtd->keepUpThreads()) {
+                m_bKeepRunning = false;
+                m_ptrMtd->terminateKillWait(1000);
+                m_ptrMtd->raisExeception();
                 return;
             }
         }
@@ -80,6 +90,7 @@ void Job::JobSystem::jobPauseFunction() {
     if (ptrFiber) {
         // Get next fiber
         Job::JobFiber* ptrNextFiber;
+        Job::JobQueueDesc nextJobDesc;
         if (m_fiberPool.takeFiber(&ptrNextFiber)) {
             // Check fiber
             if (ptrNextFiber->queuDesc.ptrJob && !ptrNextFiber->queuDesc.ptrJob->hasDependencys()) {
@@ -91,6 +102,13 @@ void Job::JobSystem::jobPauseFunction() {
             else {
                 // Return next fiber
                 EXPP_ASSERT(m_fiberPool.returnFiber(ptrNextFiber), "Return of previously fetched fiber impossible");
+            }
+        }
+        // Get next job
+        else if (m_jobQueue.getNextJob(&nextJobDesc)) {
+            // Load job into fiber
+            if (!m_fiberPool.enableFiber(nextJobDesc)) {
+                m_jobQueue.queueJob(nextJobDesc);
             }
         }
     }
@@ -113,8 +131,9 @@ DWORD Job::JobSystem::threadExecute(void* parameter) {
     Thread::convertToFiber();
 
     // Send fiber to pool
-    JobFiber* ptrJobFiber = m_fiberPool.notifyFiberCreation(Thread::get().getFiberAddress());
+    JobFiber* ptrJobFiber = m_fiberPool.notifyFiberCreation();
     EXPP_ASSERT(ptrJobFiber, "Invalid fiber value");
+    ptrJobFiber->m_address = Thread::get().getFiberAddress();
     FlsSetValue(m_flsJobCookie, ptrJobFiber);
 
     // Call jobsystemmain

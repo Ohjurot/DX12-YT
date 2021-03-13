@@ -151,7 +151,10 @@ namespace Memory {
 			QuadTreePoolAllocator() :
 				m_ptrClearable(nullptr),
 				m_clearMask(0xFF)
-			{}
+			{
+				auto flag = m_treeFlags.get();
+				*flag.ptr() = 0x00;
+			}
 
 			/// <summary>
 			/// Recursion constructor
@@ -187,7 +190,7 @@ namespace Memory {
 			/// <param name="mask"></param>
 			void clear(unsigned char mask = 0xFF) override {
 				// Read old and clear
-				unsigned char oldValue = m_treeFlags;
+				unsigned char oldValue = *m_treeFlags.get().ptr();
 				__internal__flagClear(mask);
 
 				// Recursion
@@ -205,16 +208,16 @@ namespace Memory {
 			/// <param name="mask">Mask</param>
 			/// <returns>True is succeed</returns>
 			bool __internal__flagCheckAndSet(unsigned char mask) {
-				// Load current value
-				unsigned char oldValue = m_treeFlags.load(std::memory_order_acquire);
+				MT::LockedObjectProxy<unsigned char> flag = m_treeFlags.get();
 				
-				// If bit is unset fail
-				if ((oldValue & mask) == mask) {
+				// Check
+				if ((*flag.ptr() & mask) == mask) {
 					return false;
 				}
 
-				// Return compare exchange result (expecting old value)
-				return m_treeFlags.compare_exchange_strong(oldValue, oldValue | mask, std::memory_order_release);
+				// Set
+				*flag.ptr() = *flag.ptr() | mask;
+				return true;
 			}
 
 			/// <summary>
@@ -222,11 +225,8 @@ namespace Memory {
 			/// </summary>
 			/// <param name="mask"></param>
 			void __internal__flagClear(unsigned char mask) {
-				unsigned char oldV, newV;
-				do {
-					oldV = m_treeFlags.load(std::memory_order_acquire);
-					newV = ((~mask) & oldV);
-				} while (!m_treeFlags.compare_exchange_strong(oldV, newV));
+				MT::LockedObjectProxy<unsigned char> flag = m_treeFlags.get();
+				*flag.ptr() = ((~mask) & *flag.ptr());
 			}
 
 			/// <summary>
@@ -241,7 +241,8 @@ namespace Memory {
 					if (__internal__flagCheckAndSet(1U << i)) {
 						// Allocate and check if recursive set is required
 						if (m_subTreeStructure[i].__internal__allocate(ptrProxy)) {
-							if (m_treeFlags == 0x0F) {
+							MT::LockedObjectProxy<unsigned char> flag = m_treeFlags.get();
+							if (*flag.ptr() == 0x0F) {
 								return true;
 							}
 							return false;
@@ -278,7 +279,7 @@ namespace Memory {
 			/// <summary>
 			/// Occupation mask
 			/// </summary>
-			std::atomic<unsigned char> m_treeFlags = 0x00;
+			MT::ObjectGuard<unsigned char, MT::SpinLock<>> m_treeFlags;
 	};
 
 	/// <summary>

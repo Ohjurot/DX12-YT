@@ -12,9 +12,8 @@ namespace Job {
 			/// <summary>
 			/// Notify the pool that a fiber was created
 			/// </summary>
-			/// <param name="fiberAddress"></param>
 			/// <returns>JobFiber pointer</returns>
-			JobFiber* notifyFiberCreation(LPVOID fiberAddress) noexcept;
+			JobFiber* notifyFiberCreation() noexcept;
 
 			/// <summary>
 			/// Enable a fiber
@@ -41,7 +40,12 @@ namespace Job {
 			/// <summary>
 			/// JobFiber allocator
 			/// </summary>
-			Memory::QuadTreePoolAllocator<JobFiber, JOB_NUM_FIBERS> m_allocator;
+			JobFiber m_allocator[JOB_NUM_FIBERS];
+
+			/// <summary>
+			/// Current usage of allocator
+			/// </summary>
+			std::atomic<unsigned int> m_allocatorUsage = 0;
 
 			/// <summary>
 			/// Idle fibers

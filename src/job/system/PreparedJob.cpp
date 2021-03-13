@@ -31,6 +31,14 @@ Job::WaitObject Job::PreparedJob::stageExecution() noexcept {
 		return WaitObject();
 	}
 
+	// Check if already done
+	if (m_prepareDesc.numThreads == 0) {
+		return WaitObject(m_ptrJob, 0);
+	}
+
+	// Output wait object
+	WaitObject wo(m_ptrJob, m_prepareDesc.numThreads);
+
 	// Stage all jobs
 	for (unsigned i = 0; i < m_prepareDesc.numThreads; i++) {
 		// Build job queue description
@@ -39,14 +47,14 @@ Job::WaitObject Job::PreparedJob::stageExecution() noexcept {
 		qd.jobPriority = m_prepareDesc.priority;
 		qd.ptrJob = m_ptrJob;
 
-		// Output wait object
-		WaitObject wo(m_ptrJob);
-
 		// Kickoff job
-		if (SystemInstance::getSystem()->stageExecution(qd)) {
-			return wo;
+		if (!SystemInstance::getSystem()->stageExecution(qd)) {
+			return WaitObject();
 		}
 	}
+
+	// return wo
+	return wo;
 
 	// Previously gennerated wait object
 	return WaitObject();

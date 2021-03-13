@@ -2,6 +2,10 @@
 
 #include <DefHeader.h>
 
+#include <iostream>
+#include <string>
+#include <sstream>
+
 namespace common {
 	/// <summary>
 	/// EXPP Default Handling / Reporting

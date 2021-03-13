@@ -19,7 +19,8 @@ namespace Job {
 			/// Creare wait object for job
 			/// </summary>
 			/// <param name="ptrJob">Input job</param>
-			WaitObject(IJob* ptrJob) noexcept;
+			/// <param name="pitch">Job pitch</param>
+			WaitObject(IJob* ptrJob, unsigned int pitch = 1) noexcept;
 
 			/// <summary>
 			/// Return the state of the wait object

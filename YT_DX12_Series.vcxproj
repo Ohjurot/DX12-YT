@@ -137,7 +137,6 @@
     <ClCompile Include="src\job\threading\MultiThreadDispatcher.cpp" />
     <ClCompile Include="src\job\threading\Thread.cpp" />
     <ClCompile Include="src\vendor\ScopedHandle.cpp" />
-    <ClCompile Include="src\wWinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\Container\FixedSizeQueue.h" />

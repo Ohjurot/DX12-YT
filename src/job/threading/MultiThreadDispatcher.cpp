@@ -84,25 +84,17 @@ bool Threading::MultiThreadDispatcher::keepUpThreads() {
 	}
 
 	// Check if terminates now regularay
-	if (threadRunCount == 0) {
-		return false;
-	}
-
-	if (hasExeption) {
-		// Terminate join all
-		for (unsigned int i = 0; i < m_cNumThreads; i++) {
-			if (!m_arrThreads[i].join(MAX_THREAD_TIMEOUT_TIME_MS)) {
-				m_arrThreads[i].kill();
-			}
-		}
-
-		// Rais exeption
-		m_storedResult.rais();
-
+	if (threadRunCount == 0 || hasExeption) {
 		return false;
 	}
 
 	return true;
+}
+
+void Threading::MultiThreadDispatcher::raisExeception() {
+	if (m_storedResult.failed()) {
+		// m_storedResult.rais();
+	}
 }
 
 DWORD Threading::MultiThreadDispatcher::threadExecute(void* parameter) {
@@ -116,6 +108,7 @@ void Threading::MultiThreadDispatcher::threadHandleExeception(EXPP::InvocationRe
 
 	// Check if threads need to terminate
 	if (refResult.failed() && !m_exceptionFlag.test_and_set(std::memory_order_acquire)) {
+		common::EXPPHandler::reportExeption(refResult);
 		m_storedResult = refResult;
 	}
 }

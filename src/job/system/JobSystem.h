@@ -15,6 +15,9 @@
 namespace Job {
 	class SystemInstance;
 
+	/// <summary>
+	/// Job System
+	/// </summary>
 	class JobSystem : public Threading::IThread, public Threading::IFiber{
 		public:
 			/// <summary>
@@ -43,7 +46,7 @@ namespace Job {
 			/// <summary>
 			/// Waits for the job system
 			/// </summary>
-			void wait() noexcept;
+			void wait();
 
 		protected:
 			friend class Job::SystemInstance;
@@ -76,6 +79,11 @@ namespace Job {
 			/// Multithread object
 			/// </summary>
 			Threading::MultiThreadDispatcher* m_ptrMtd;
+
+			/// <summary>
+			/// Fiber array
+			/// </summary>
+			Fiber m_arrFibers[JOB_NUM_FIBERS];
 
 			/// <summary>
 			/// Number of jobs currently in system

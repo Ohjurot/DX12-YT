@@ -2,6 +2,7 @@
 #include <DefHeader.h>
 
 #include <job/threading/Thread.h>
+#include <common/Exceptions/EXPP_Handler.h>
 
 namespace Threading {	
 	/// <summary>
@@ -59,6 +60,11 @@ namespace Threading {
 			/// </summary>
 			/// <returns>false on exit</returns>
 			bool keepUpThreads();
+
+			/// <summary>
+			/// Rais any pending execeptions
+			/// </summary>
+			void raisExeception();
 
 		protected:
 			/// <summary>

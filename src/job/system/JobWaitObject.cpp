@@ -1,12 +1,13 @@
 #include "DefHeader.h"
 #include "JobWaitObject.h"
 
-Job::WaitObject::WaitObject(IJob* ptrJob) noexcept :
+Job::WaitObject::WaitObject(IJob* ptrJob, unsigned int pitch) noexcept :
 	m_ptrJob(ptrJob),
-	m_value(ptrJob->p_finishIndex + 1)
+	m_value(ptrJob->p_finishIndex + pitch)
 {}
 
 bool Job::WaitObject::isDone() noexcept {
+	if (!m_ptrJob) return true;
 	return m_ptrJob->p_finishIndex >= m_value;
 }
 

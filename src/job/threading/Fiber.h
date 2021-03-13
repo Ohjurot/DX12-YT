@@ -44,7 +44,7 @@ class Fiber {
 		/// </summary>
 		/// <param name="ptrImplementation">Fiber implementation</param>
 		/// <param name="ptrUserData">Fiber userdata</param>
-		Fiber(Threading::IFiber* ptrImplementation, void* ptrUserData);
+		Fiber(Threading::IFiber* ptrImplementation, void* ptrUserData = nullptr);
 
 		/// <summary>
 		/// Destructor
@@ -56,7 +56,7 @@ class Fiber {
 		/// </summary>
 		/// <param name="ptrImplementation">Fiber implementation</param>
 		/// <param name="ptrUserData">Fiber userdata</param>
-		void init(Threading::IFiber* ptrImplementation, void* ptrUserData);
+		void init(Threading::IFiber* ptrImplementation, void* ptrUserData = nullptr);
 
 		/// <summary>
 		/// Release fiber

@@ -1,13 +1,13 @@
 #include "DefHeader.h"
 #include "JobFiberPool.h"
 
-Job::JobFiber* Job::JobFiberPool::notifyFiberCreation(LPVOID fiberAddress) noexcept {
-	// Allocator
-	Memory::QuadTreePoolAllocator_AllocatioProxy<JobFiber> proxy;
-	if (m_allocator.allocate(proxy)) {
+Job::JobFiber* Job::JobFiberPool::notifyFiberCreation() noexcept {
+	// Allocate
+	if (m_allocatorUsage < JOB_NUM_FIBERS) {
 		// Store persist
-		JobFiber* ptrFiber = proxy.ptr();
-		proxy.persist();
+		JobFiber* ptrFiber = &m_allocator[m_allocatorUsage++];
+		ptrFiber->m_address = 0;
+		ptrFiber->queuDesc = JobQueueDesc();
 
 		// Push and return
 		m_idleFiber.push<JobFiber*>(ptrFiber);
@@ -26,7 +26,8 @@ bool Job::JobFiberPool::enableFiber(JobQueueDesc& description) noexcept {
 		JobFiber* m_ptrFiber;
 		if (popElement.takeover(&m_ptrFiber)) {
 			m_ptrFiber->queuDesc = description;
-
+			returnFiber(m_ptrFiber);
+			return true;
 		}
 	}
 

@@ -69,6 +69,7 @@ MAIN_JOB(ytDirectXMain) {
 
 		// Debug RLO for DXGI
 		DEBUG_ONLY_EXECUTE(DX::GIDebug::getInstance().reportLiveObjects());
+
 		return Job::JobReturnValue::JOB_DONE;
 	}
 };
