@@ -1,5 +1,11 @@
 #pragma once
 
+#include <string>
+#include <sstream>
+
+template <typename T>
+inline const wchar_t* typeNameW();
+
 /// <summary>
 /// Scoped com pointer
 /// </summary>
@@ -83,6 +89,24 @@ class ScopedComPointer {
 				m_comPointer->Release();
 				m_comPointer = nullptr;
 			}
+		}
+
+		/// <summary>
+		/// Name the com pointer
+		/// </summary>
+		/// <param name="name">Input name</param>
+		void name(LPCWSTR name) {
+			// Early return
+			if (!m_comPointer) {
+				return;
+			}
+
+			// Build name
+			std::wstringstream wss;
+			wss << typeNameW<T>() << L" (" << name << L")";
+
+			// Set name
+			m_comPointer->SetName(wss.str().c_str());
 		}
 
 		/// <summary>

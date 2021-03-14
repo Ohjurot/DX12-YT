@@ -10,7 +10,12 @@ void DX::CommandListManager::createInternalObjects(ID3D12Device* ptrDevice) {
         XFence ft(ptrDevice);
         m_fences[ti] = ft;
         m_fenceCounters[ti] = ft;
-        
+
+        // Name fence
+        std::wstringstream wss;
+        wss << L"Manged Fence for Type #" << ti;
+        m_fences[ti].name(wss.str().c_str());
+
         // Retrive type and queu
         const D3D12_COMMAND_LIST_TYPE type = DX::CommandQueueManager::getInstance().typeAtIndex(ti);
         DX::XCommandQueue& queue = DX::CommandQueueManager::getInstance().getCommandQueue(type);
@@ -18,6 +23,11 @@ void DX::CommandListManager::createInternalObjects(ID3D12Device* ptrDevice) {
         // Create lists
         for (unsigned int li = 0; li < CLS_DX_CommandListManager__NUM_COMMAND_LISTS_PER_TYPE; li++) {
             m_commandList2DArr[ti][li].commandList.init(ptrDevice, queue, m_fenceCounters[ti]);
+
+            // Name command list
+            wss.str(L"");
+            wss << L"Managed Command List #" << li << L" for type #" << ti;
+            m_commandList2DArr[ti][li].commandList.name(wss.str().c_str());
         }
     }
 }

@@ -182,6 +182,7 @@
     <ClInclude Include="src\job\threading\MultiThreadDispatcher.h" />
     <ClInclude Include="src\job\threading\Thread.h" />
     <ClInclude Include="src\job\threading\ThreadingExecution.h" />
+    <ClInclude Include="src\vendor\DirectX_TypeName.h" />
     <ClInclude Include="src\vendor\LockTools.h" />
     <ClInclude Include="src\vendor\EasyHWND.h" />
     <ClInclude Include="src\vendor\ExceptionsPlusPlus.h" />

@@ -6,6 +6,9 @@ DX::GfxWindow::GfxWindow(EasyHWND::WindowClass& windowClass, ID3D12Device* ptrDe
 	m_queue(DX::CommandQueueManager::getInstance().getCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT)),
 	m_fence(ptrDevice)
 {
+	// Name fence
+	m_fence.name(L"Window Fence");
+
 	// Count on queue
 	m_queue.incrementRef();
 

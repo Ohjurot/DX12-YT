@@ -15,6 +15,11 @@ void DX::CommandQueueManager::createInternalObjects(ID3D12Device* ptrDevice) {
         // Create queue and assign it
         XCommandQueue queue(ptrDevice, mc_arrCommandQueueTypes[i]);
         m_arrCommandQueues[i].operator=(queue);
+        
+        // Build name
+        std::wstringstream wss;
+        wss << L"Managed Command Queue #" << i;
+        m_arrCommandQueues[i].name(wss.str().c_str());
     }
 }
 

@@ -9,6 +9,8 @@
 #include <vendor/ScopedComPointer.h>
 #include <vendor/LockTools.h>
 
+#include <vendor/DirectX_TypeName.h>
+
 #include <job/system/JobPause.h>
 
 #include <atomic>

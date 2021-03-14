@@ -29,6 +29,7 @@ MAIN_JOB(ytDirectXMain) {
 
 		// Create XDevice
 		DX::XDevice xDevice(adapter);
+		xDevice.name(L"Main Device");
 
 		// Init command queues and lists
 		DX::CommandQueueManager::getInstance().createInternalObjects(xDevice);
@@ -47,8 +48,8 @@ MAIN_JOB(ytDirectXMain) {
 		window.setWindowVisibility(true);
 
 		// DEBUG HEAP
-		DX::XHeap heap;
-		heap = DX::XHeap(xDevice, MEM_GiB(1));
+		DX::XHeap heap = DX::XHeap(xDevice, MEM_GiB(1));
+		heap.name(L"Debug Heap");
 		DX::XFence::WaitObject woHeap;
 		EVALUATE_HRESULT(heap.makeResident(woHeap), "DX::XHeap::makeResident(...)");
 		woHeap.wait();

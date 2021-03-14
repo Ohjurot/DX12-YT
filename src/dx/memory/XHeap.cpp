@@ -24,6 +24,7 @@ DX::XHeap::XHeap(ID3D12Device* ptrDevice, UINT64 size, D3D12_HEAP_TYPE type, D3D
 	m_counterFrontent = m_fenceCounter.newFrontend();
 
 	// Get device
+	EXPP_ASSERT(ptrDevice, "Invalid device pointer");
 	EVALUATE_HRESULT(ptrDevice->QueryInterface(IID_PPV_ARGS(m_ptrDevice.to())), "ID3D12Device->QueryInterface(...) for ID3D12Device3");
 
 	// Create Heap descriptor
@@ -46,6 +47,10 @@ DX::XHeap::XHeap(ID3D12Device* ptrDevice, UINT64 size, D3D12_HEAP_TYPE type, D3D
 }
 
 void DX::XHeap::release() {
+	// Evict
+	evict();
+
+	// Release
 	m_counterFrontent.release();
 	m_fenceCounter.release();
 	m_fence.release();
@@ -66,7 +71,7 @@ HRESULT DX::XHeap::makeResident(XFence::WaitObject& refWaitObject) {
 			m_bResident = true;
 		}
 
-		// Return HRESULTf
+		// Return HRESULT
 		return hr;
 	}
 
@@ -79,7 +84,7 @@ HRESULT DX::XHeap::evict() {
 
 	// Evict if required
 	if (m_bResident) {
-		HRESULT hr = m_ptrDevice->Evict(1, (ID3D12Pageable* const*)to());
+		HRESULT hr = m_ptrDevice->Evict(1, (ID3D12Pageable* const*)&m_comPointer);
 		if (SUCCEEDED(hr)) {
 			m_bResident = false;
 		}
