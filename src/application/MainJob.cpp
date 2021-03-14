@@ -14,6 +14,7 @@
 
 // DEBUG
 #include <dx/cmds/CommandListAccessObject.h>
+#include <dx/memory/XHeap.h>
 // DEBUG
 
 MAIN_JOB(ytDirectXMain) {
@@ -45,6 +46,13 @@ MAIN_JOB(ytDirectXMain) {
 		DX::GfxWindow window(cls, xDevice, factory2, L"DirectX 12", DX::GfxWindow_Stlye::BORDERLESS);
 		window.setWindowVisibility(true);
 
+		// DEBUG HEAP
+		DX::XHeap heap;
+		heap = DX::XHeap(xDevice, MEM_GiB(1));
+		DX::XFence::WaitObject woHeap;
+		EVALUATE_HRESULT(heap.makeResident(woHeap), "DX::XHeap::makeResident(...)");
+		woHeap.wait();
+
 		// AO
 		DX::CommandListAccessObject lao(D3D12_COMMAND_LIST_TYPE_DIRECT);
 
@@ -57,6 +65,9 @@ MAIN_JOB(ytDirectXMain) {
 			window.present();
 		}
 		lao.release();
+
+		EVALUATE_HRESULT(heap.evict(), "XHeap::evict(...)");
+		heap.release();
 
 		// Destroy window
 		window.release();
