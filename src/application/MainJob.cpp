@@ -15,6 +15,7 @@
 // DEBUG
 #include <dx/cmds/CommandListAccessObject.h>
 #include <dx/memory/XHeap.h>
+#include <dx/memory/XResource.h>
 // DEBUG
 
 MAIN_JOB(ytDirectXMain) {
@@ -47,15 +48,58 @@ MAIN_JOB(ytDirectXMain) {
 		DX::GfxWindow window(cls, xDevice, factory2, L"DirectX 12", DX::GfxWindow_Stlye::BORDERLESS);
 		window.setWindowVisibility(true);
 
-		// DEBUG HEAP
-		DX::XHeap heap = DX::XHeap(xDevice, MEM_GiB(1));
-		heap.name(L"Debug Heap");
+		// === DEBUG HEAP
+
+		// PRODUCTION
+		DX::XHeap heap = DX::XHeap(xDevice, MEM_MiB(1));
+		heap.name(L"Production Heap");
 		DX::XFence::WaitObject woHeap;
 		EVALUATE_HRESULT(heap.makeResident(woHeap), "DX::XHeap::makeResident(...)");
 		woHeap.wait();
 
+		// UPLOAD
+		DX::XHeap uHeap = DX::XHeap(xDevice, MEM_MiB(1), D3D12_HEAP_TYPE_UPLOAD);
+		uHeap.name(L"Upload Heap");
+		EVALUATE_HRESULT(uHeap.makeResident(woHeap), "DX::XHeap::makeResident(...)");
+		woHeap.wait();
+
+		// RESOURCE DEF
+		D3D12_RESOURCE_DESC desc = {};
+		desc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+		desc.Width = sizeof(unsigned char) * 256;
+		desc.Height = 1;
+		desc.DepthOrArraySize = 1;
+		desc.MipLevels = 1;
+		desc.SampleDesc.Count = 1;
+		desc.SampleDesc.Quality = 0;
+		desc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+		// RESOURCE CPU / GPU
+		DX::XResource resCpu = DX::XResource(xDevice, uHeap, 0, &desc, nullptr);
+		resCpu.name(L"CPU Buffer");
+		DX::XResource resGpu = DX::XResource(xDevice, heap, 0, &desc, nullptr, D3D12_RESOURCE_STATE_COPY_DEST);
+		resGpu.name(L"GPU Buffer");
+
+		// Fill cpu
+		unsigned char* pChar;
+		EVALUATE_HRESULT(resCpu->Map(0, nullptr, (void**)&pChar), "MAP");
+		for (unsigned int i = 0; i < 256; i++) pChar[i] = i;
+		resCpu->Unmap(0, nullptr);
+
+		// Copy
+		DX::CommandListAccessObject laoCopy(D3D12_COMMAND_LIST_TYPE_COPY);
+		laoCopy->CopyBufferRegion(resGpu, 0, resCpu, 0, sizeof(unsigned char) * 256);
+		laoCopy.executeClose().wait();
+
+		EVALUATE_HRESULT(resCpu->Map(0, nullptr, (void**)&pChar), "MAP");
+		ZeroMemory(pChar, sizeof(unsigned int) * 256);
+		resCpu->Unmap(0, nullptr);
+
+		// ===
+
 		// AO
 		DX::CommandListAccessObject lao(D3D12_COMMAND_LIST_TYPE_DIRECT);
+		resGpu.resourceTransition(lao, D3D12_RESOURCE_STATE_GENERIC_READ);
 
 		// Window job
 		while (window) {
@@ -67,8 +111,12 @@ MAIN_JOB(ytDirectXMain) {
 		}
 		lao.release();
 
+		resCpu.release();
+		resGpu.release();
+
 		EVALUATE_HRESULT(heap.evict(), "XHeap::evict(...)");
 		heap.release();
+		uHeap.release();
 
 		// Destroy window
 		window.release();

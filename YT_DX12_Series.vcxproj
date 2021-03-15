@@ -118,6 +118,7 @@
     <ClCompile Include="src\dx\core\XDevice.cpp" />
     <ClCompile Include="src\dx\core\XInfoQueue.cpp" />
     <ClCompile Include="src\dx\memory\XHeap.cpp" />
+    <ClCompile Include="src\dx\memory\XResource.cpp" />
     <ClCompile Include="src\dx\setup\GIAdapter.cpp" />
     <ClCompile Include="src\dx\setup\GIDebug.cpp" />
     <ClCompile Include="src\dx\setup\GIFactory.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="src\dx\core\XDevice.h" />
     <ClInclude Include="src\dx\core\XInfoQueue.h" />
     <ClInclude Include="src\dx\memory\XHeap.h" />
+    <ClInclude Include="src\dx\memory\XResource.h" />
     <ClInclude Include="src\dx\setup\GIDebug.h" />
     <ClInclude Include="src\dx\setup\GIFactory.h" />
     <ClInclude Include="src\dx\setup\GIAdapter.h" />

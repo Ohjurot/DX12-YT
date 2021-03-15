@@ -82,3 +82,15 @@ inline const wchar_t* typeNameW<ID3D12Fence1>() { return L"ID3D12Fence1"; }
 
 template <>
 inline const wchar_t* typeNameW<ID3D12Heap>() { return L"ID3D12Heap"; }
+
+// Resource
+
+template <>
+inline const wchar_t* typeNameW<ID3D12Resource>() { return L"ID3D12Resource"; }
+
+template <>
+inline const wchar_t* typeNameW<ID3D12Resource1>() { return L"ID3D12Resource1"; }
+
+template <>
+inline const wchar_t* typeNameW<ID3D12Resource2>() { return L"ID3D12Resource2"; }
+
