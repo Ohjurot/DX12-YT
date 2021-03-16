@@ -4,7 +4,7 @@
 DX::XResource::XResource(ID3D12Device* ptrDevice, XHeap& refHeap, UINT64 heapOffset, D3D12_RESOURCE_DESC* ptrDesc, D3D12_CLEAR_VALUE* ptrClear, D3D12_RESOURCE_STATES state) {
 	// Assert pointer
 	EXPP_ASSERT(ptrDevice, "Invalid device pointer");
-	EXPP_ASSERT(refHeap, "Invalid heap pointer");
+	EXPP_ASSERT(refHeap, "Invalid heap");
 
 	// Get and assert size
 	D3D12_RESOURCE_ALLOCATION_INFO info = ptrDevice->GetResourceAllocationInfo(NULL, 1, ptrDesc);

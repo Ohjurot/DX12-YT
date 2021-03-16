@@ -113,8 +113,6 @@ MAIN_JOB(ytDirectXMain) {
 
 		resCpu.release();
 		resGpu.release();
-
-		EVALUATE_HRESULT(heap.evict(), "XHeap::evict(...)");
 		heap.release();
 		uHeap.release();
 
