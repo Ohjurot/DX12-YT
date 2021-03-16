@@ -88,7 +88,7 @@ MAIN_JOB(ytDirectXMain) {
 
 		// Copy
 		DX::CommandListAccessObject laoCopy(D3D12_COMMAND_LIST_TYPE_COPY);
-		laoCopy->CopyBufferRegion(resGpu, 0, resCpu, 0, sizeof(unsigned char) * 256);
+		laoCopy->CopyResource(resGpu, resCpu);
 		laoCopy.executeClose().wait();
 
 		EVALUATE_HRESULT(resCpu->Map(0, nullptr, (void**)&pChar), "MAP");
