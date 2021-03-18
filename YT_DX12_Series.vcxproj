@@ -127,9 +127,6 @@
     <ClCompile Include="src\dx\setup\GIOutput.cpp" />
     <ClCompile Include="src\dx\window\GfxWindow.cpp" />
     <ClCompile Include="src\dx\window\GISwapChain.cpp" />
-    <ClCompile Include="src\engine\rxManager\RxAllocator.cpp" />
-    <ClCompile Include="src\engine\rxManager\RxHash.cpp" />
-    <ClCompile Include="src\engine\rxManager\RxTools.cpp" />
     <ClCompile Include="src\job\system\EntryJob.cpp" />
     <ClCompile Include="src\job\system\IJob.cpp" />
     <ClCompile Include="src\job\system\JobFiberPool.cpp" />
@@ -171,10 +168,6 @@
     <ClInclude Include="src\dx\setup\GIOutput.h" />
     <ClInclude Include="src\dx\window\GfxWindow.h" />
     <ClInclude Include="src\dx\window\GISwapChain.h" />
-    <ClInclude Include="src\engine\rxManager\Resource.h" />
-    <ClInclude Include="src\engine\rxManager\RxAllocator.h" />
-    <ClInclude Include="src\engine\rxManager\RxHash.h" />
-    <ClInclude Include="src\engine\rxManager\RxTools.h" />
     <ClInclude Include="src\job\system\IJob.h" />
     <ClInclude Include="src\job\system\Job.h" />
     <ClInclude Include="src\job\system\JobData.h" />
