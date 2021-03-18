@@ -1,4 +1,4 @@
-WARNING: This project may contain headers, implementation, binaries 
+WARNING: This project may contain headers, implementations, binaries 
 and/or files not licensed under the following license. Check any 
 peace you want to reuse for a custom license! Custom license are 
 stated either in the root of a subdirectory (Affects all files in 
@@ -8,7 +8,8 @@ include a licence if a same named header in the same directory is
 present. 
 
 The following libraries and external work were used:
-- ExceptionsPlusPlus Copyright (c) 2021 Ludwig Füchsl
+- xxHash v0.8.0 (c) 2012-2020 Yann Collet (Refer to the file "xxHash_LICENSE")
+- ExceptionsPlusPlus, EasyHWND Copyright (c) 2021 Ludwig Füchsl
 
 
 --- All files not fulfilling one other license as stated above are licensed under the "The Unlicense" license ---

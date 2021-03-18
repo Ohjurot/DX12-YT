@@ -47,13 +47,15 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\im\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)src\vendor\xxHash\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)src\vendor\xxHash\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\im\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)src\vendor\xxHash\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)src\vendor\xxHash\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -69,7 +71,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>dxgi.lib;dxguid.lib;d3d12.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxgi.lib;dxguid.lib;d3d12.lib;xxhash.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <StackReserveSize>
       </StackReserveSize>
     </Link>
@@ -94,7 +96,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>dxgi.lib;dxguid.lib;d3d12.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxgi.lib;dxguid.lib;d3d12.lib;xxhash.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <StackReserveSize>
       </StackReserveSize>
     </Link>
@@ -125,6 +127,9 @@
     <ClCompile Include="src\dx\setup\GIOutput.cpp" />
     <ClCompile Include="src\dx\window\GfxWindow.cpp" />
     <ClCompile Include="src\dx\window\GISwapChain.cpp" />
+    <ClCompile Include="src\engine\rxManager\RxAllocator.cpp" />
+    <ClCompile Include="src\engine\rxManager\RxHash.cpp" />
+    <ClCompile Include="src\engine\rxManager\RxTools.cpp" />
     <ClCompile Include="src\job\system\EntryJob.cpp" />
     <ClCompile Include="src\job\system\IJob.cpp" />
     <ClCompile Include="src\job\system\JobFiberPool.cpp" />
@@ -166,6 +171,10 @@
     <ClInclude Include="src\dx\setup\GIOutput.h" />
     <ClInclude Include="src\dx\window\GfxWindow.h" />
     <ClInclude Include="src\dx\window\GISwapChain.h" />
+    <ClInclude Include="src\engine\rxManager\Resource.h" />
+    <ClInclude Include="src\engine\rxManager\RxAllocator.h" />
+    <ClInclude Include="src\engine\rxManager\RxHash.h" />
+    <ClInclude Include="src\engine\rxManager\RxTools.h" />
     <ClInclude Include="src\job\system\IJob.h" />
     <ClInclude Include="src\job\system\Job.h" />
     <ClInclude Include="src\job\system\JobData.h" />

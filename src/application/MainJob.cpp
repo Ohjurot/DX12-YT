@@ -11,12 +11,19 @@
 #include <dx/window/GfxWindow.h>
 #include <dx/cmds/CommandQueueManager.h>
 #include <dx/cmds/CommandListManager.h>
+#include <dx/cmds/CommandListAccessObject.h>
 
 // DEBUG
-#include <dx/cmds/CommandListAccessObject.h>
-#include <dx/memory/XHeap.h>
-#include <dx/memory/XResource.h>
+#include <engine/rxManager/RxAllocator.h>
+#include <engine/rxManager/Resource.h>
+#include <engine/rxManager/RxHash.h>
+#include <engine/rxManager/RxTools.h>
 // DEBUG
+
+bool resProc(_RX_DATA* ptrData, RX_PAGE_TYPE source, RX_PAGE_TYPE target, void* context) {
+
+	return true;
+}
 
 MAIN_JOB(ytDirectXMain) {
 	JOB_EXECUTE_FUNCTION(unsigned int index) {
@@ -36,6 +43,9 @@ MAIN_JOB(ytDirectXMain) {
 		DX::CommandQueueManager::getInstance().createInternalObjects(xDevice);
 		DX::CommandListManager::getInstance().createInternalObjects(xDevice);
 
+		// Init engine
+		engine::RxAllocator::init();
+
 		// Create window class
 		EasyHWND::WindowClass cls(L"MyWindowCls", CS_OWNDC, NULL, LoadCursor(NULL, IDC_ARROW), NULL, NULL, m_hInstance);
 		EXPP_ASSERT(cls, "Window class not valid");
@@ -48,58 +58,32 @@ MAIN_JOB(ytDirectXMain) {
 		DX::GfxWindow window(cls, xDevice, factory2, L"DirectX 12", DX::GfxWindow_Stlye::BORDERLESS);
 		window.setWindowVisibility(true);
 
-		// === DEBUG HEAP
+		// === DEBUG
 
-		// PRODUCTION
-		DX::XHeap heap = DX::XHeap(xDevice, MEM_MiB(1));
-		heap.name(L"Production Heap");
-		DX::XFence::WaitObject woHeap;
-		EVALUATE_HRESULT(heap.makeResident(woHeap), "DX::XHeap::makeResident(...)");
-		woHeap.wait();
+		DX::XHeap heap(xDevice, MEM_MiB(1));
 
-		// UPLOAD
-		DX::XHeap uHeap = DX::XHeap(xDevice, MEM_MiB(1), D3D12_HEAP_TYPE_UPLOAD);
-		uHeap.name(L"Upload Heap");
-		EVALUATE_HRESULT(uHeap.makeResident(woHeap), "DX::XHeap::makeResident(...)");
-		woHeap.wait();
+		RESOURCE rx = engine::RxTools::createResource(L"Resource 1234", &resProc, &resProc, RX_PAGE_READ_ONLY, RX_PAGE_WRITE_ONLY, RX_PAGE_UNAVAILIBLE);
+		MessageBox(NULL, RESOURCE_NAME(rx), L"Name of Resource", MB_OK);
 
-		// RESOURCE DEF
-		D3D12_RESOURCE_DESC desc = {};
-		desc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-		desc.Width = sizeof(unsigned char) * 256;
-		desc.Height = 1;
-		desc.DepthOrArraySize = 1;
-		desc.MipLevels = 1;
-		desc.SampleDesc.Count = 1;
-		desc.SampleDesc.Quality = 0;
-		desc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+		D3D12_RESOURCE_DESC buffer;
+		ZeroMemory(&buffer, sizeof(D3D12_RESOURCE_DESC));
+		buffer.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+		buffer.Width = sizeof(unsigned char) * 256;
+		buffer.Height = 1;
+		buffer.DepthOrArraySize = 1;
+		buffer.MipLevels = 1;
+		buffer.SampleDesc.Count = 1;
+		buffer.SampleDesc.Quality = 0;
+		buffer.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-		// RESOURCE CPU / GPU
-		DX::XResource resCpu = DX::XResource(xDevice, uHeap, 0, &desc, nullptr);
-		resCpu.name(L"CPU Buffer");
-		DX::XResource resGpu = DX::XResource(xDevice, heap, 0, &desc, nullptr, D3D12_RESOURCE_STATE_COPY_DEST);
-		resGpu.name(L"GPU Buffer");
+		engine::RxTools::resourceAllocGpu(rx, xDevice, heap, 0, &buffer);
 
-		// Fill cpu
-		unsigned char* pChar;
-		EVALUATE_HRESULT(resCpu->Map(0, nullptr, (void**)&pChar), "MAP");
-		for (unsigned int i = 0; i < 256; i++) pChar[i] = i;
-		resCpu->Unmap(0, nullptr);
-
-		// Copy
-		DX::CommandListAccessObject laoCopy(D3D12_COMMAND_LIST_TYPE_COPY);
-		laoCopy->CopyResource(resGpu, resCpu);
-		laoCopy.executeClose().wait();
-
-		EVALUATE_HRESULT(resCpu->Map(0, nullptr, (void**)&pChar), "MAP");
-		ZeroMemory(pChar, sizeof(unsigned int) * 256);
-		resCpu->Unmap(0, nullptr);
+		RX_UPDATE_RESULT res = engine::RxTools::resourcePageUpdate(rx, RX_PAGE_TYPE_DISK, RX_PAGE_TYPE_CPU);
 
 		// ===
 
 		// AO
 		DX::CommandListAccessObject lao(D3D12_COMMAND_LIST_TYPE_DIRECT);
-		resGpu.resourceTransition(lao, D3D12_RESOURCE_STATE_GENERIC_READ);
 
 		// Window job
 		while (window) {
@@ -111,14 +95,17 @@ MAIN_JOB(ytDirectXMain) {
 		}
 		lao.release();
 
-		resCpu.release();
-		resGpu.release();
+		// === 
+		engine::RxTools::resourceFreeGpu(rx);
 		heap.release();
-		uHeap.release();
+		// ===
 
 		// Destroy window
 		window.release();
 		factory2.release();
+
+		// Shutdown engine
+		engine::RxAllocator::shutdown();
 
 		// Release queues and device
 		DX::CommandListManager::getInstance().destroyInternalObjects();
