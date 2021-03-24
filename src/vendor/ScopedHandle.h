@@ -37,6 +37,16 @@ class ScopedHandle {
 		/// <param name="handle">Input handle</param>
 		void set(HANDLE handle);
 
+		/// <summary>
+		/// Bool operator
+		/// </summary>
+		operator bool() noexcept;
+
+		/// <summary>
+		/// Handle conversion
+		/// </summary>
+		operator HANDLE() noexcept;
+
 		// Delete unnsed
 		ScopedHandle(const ScopedHandle&) = delete;
 		void operator=(const ScopedHandle&) = delete;

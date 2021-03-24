@@ -13,7 +13,7 @@ void DX::CommandListManager::createInternalObjects(ID3D12Device* ptrDevice) {
 
         // Name fence
         std::wstringstream wss;
-        wss << L"Manged Fence for Type #" << ti;
+        wss << L"Managed Fence for Type #" << ti;
         m_fences[ti].name(wss.str().c_str());
 
         // Retrive type and queu

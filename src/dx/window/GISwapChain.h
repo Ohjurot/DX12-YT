@@ -1,6 +1,9 @@
 #pragma once
 #include <DefHeader.h>
 
+#include <string>
+#include <sstream>
+
 namespace DX {
 	/// <summary>
 	/// Buffering mode of the swap chain

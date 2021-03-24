@@ -3,6 +3,7 @@
 #include <DefHeader.h>
 
 #include <dx/memory/XHeap.h>
+#include <engine/resources/HeapTools/HeapAllocation.h>
 
 namespace DX {
 	/// <summary>
@@ -11,9 +12,28 @@ namespace DX {
 	class XResource : public ScopedComPointer<ID3D12Resource> {
 		public:
 			/// <summary>
+			/// Retrive size for a description
+			/// </summary>
+			/// <param name="ptrDevice">Device pointer</param>
+			/// <param name="ptrDesc">Description pointer</param>
+			/// <returns>Heap size required for object</returns>
+			static UINT64 size(ID3D12Device* ptrDevice, D3D12_RESOURCE_DESC* ptrDesc);
+
+		public:
+			/// <summary>
 			/// Default constructor
 			/// </summary>
 			XResource() = default;
+
+			/// <summary>
+			/// Create resource
+			/// </summary>
+			/// <param name="ptrDevice">Device pointer</param>
+			/// <param name="allocation">Heap allocation for placement</param>
+			/// <param name="ptrDesc">Resource description</param>
+			/// <param name="ptrClear">Clear description</param>
+			/// <param name="state">Initaial state</param>
+			XResource(ID3D12Device* ptrDevice, HEAP_ALLOCATION& allocation, D3D12_RESOURCE_DESC* ptrDesc, D3D12_CLEAR_VALUE* ptrClear, D3D12_RESOURCE_STATES state = D3D12_RESOURCE_STATE_GENERIC_READ);
 
 			/// <summary>
 			/// Create Resource

@@ -42,9 +42,29 @@ bool DX::XFence::WaitObject::isDone() noexcept {
 void DX::XFence::WaitObject::wait() {
 	EXPP_ASSERT(m_ptrFence && m_ptrFence->getValue() != UINT64_MAX, "Invalid fence value");
 
-	while (!isDone()) {
-		THREAD_PAUSE_FUNCTION();
-		EXPP_ASSERT_DBG(m_ptrFence && m_ptrFence->getValue() != UINT64_MAX, "Invalid fence value");
+	if (!isDone()) {
+		// Gennerate event
+		ScopedHandle e = CreateEvent(NULL, TRUE, FALSE, NULL);
+		if (e) {
+			if (SUCCEEDED(m_ptrFence->m_comPointer->SetEventOnCompletion(m_value, e))) {
+				// Wait for event
+				DWORD waitResult;
+				while ((waitResult = WaitForSingleObject(e, 0)) == WAIT_TIMEOUT) {
+					THREAD_PAUSE_FUNCTION();
+				}
+
+				// Check if done
+				if (waitResult == WAIT_OBJECT_0) {
+					return;
+				}
+			}
+		}
+
+		// Fallback wait
+		while (!isDone()) {
+			THREAD_PAUSE_FUNCTION();
+			EXPP_ASSERT_DBG(m_ptrFence && m_ptrFence->getValue() != UINT64_MAX, "Invalid fence value");
+		}
 	}
 }
 

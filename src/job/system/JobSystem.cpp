@@ -18,7 +18,7 @@ Job::JobSystem::JobSystem(int threadCount) {
     EXPP_ASSERT(m_flsJobCookie, "FlsAlloc(...)");
 
     // Create fibers
-    for (unsigned int i = 0; i < JOB_NUM_FIBERS - threadCount; i++) {
+    for (int i = 0; i < JOB_NUM_FIBERS - threadCount; i++) {
         JobFiber* ptrFiber = m_fiberPool.notifyFiberCreation();
         m_arrFibers[i].init(this, ptrFiber);
         ptrFiber->m_address = m_arrFibers[i].getAddress();
@@ -117,6 +117,9 @@ void Job::JobSystem::jobPauseFunction() {
 }
 
 DWORD Job::JobSystem::threadExecute(void* parameter) {
+    // CoInit
+    EVALUATE_HRESULT(CoInitialize(NULL), "CoInitialize(...)");
+
     // MTD Args
     Threading::MTD_ThreadArgs* ptrArgs = (Threading::MTD_ThreadArgs*)parameter;
 
@@ -138,6 +141,9 @@ DWORD Job::JobSystem::threadExecute(void* parameter) {
 
     // Call jobsystemmain
     jobSystemExecute(ptrJobFiber);
+
+    // CoUninit
+    CoUninitialize();
 
     // Return zero
     return 0;

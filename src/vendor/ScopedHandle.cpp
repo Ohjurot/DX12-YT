@@ -26,3 +26,11 @@ void ScopedHandle::close() {
 void ScopedHandle::set(HANDLE handle){
 	m_handle = handle;
 }
+
+ScopedHandle::operator bool() noexcept {
+	return m_handle != INVALID_HANDLE_VALUE;
+}
+
+ScopedHandle::operator HANDLE() noexcept {
+	return m_handle;
+}

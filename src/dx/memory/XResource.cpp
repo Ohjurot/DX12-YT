@@ -1,6 +1,31 @@
 #include "DefHeader.h"
 #include "XResource.h"
 
+UINT64 DX::XResource::size(ID3D12Device* ptrDevice, D3D12_RESOURCE_DESC* ptrDesc) {
+	EXPP_ASSERT(ptrDevice, "Invalid device pointer");
+
+	// Get and return size
+	D3D12_RESOURCE_ALLOCATION_INFO info = ptrDevice->GetResourceAllocationInfo(NULL, 1, ptrDesc);
+	return info.SizeInBytes;
+}
+
+DX::XResource::XResource(ID3D12Device* ptrDevice, HEAP_ALLOCATION& allocation, D3D12_RESOURCE_DESC* ptrDesc, D3D12_CLEAR_VALUE* ptrClear, D3D12_RESOURCE_STATES state) {
+	// Assert pointer
+	EXPP_ASSERT(ptrDevice, "Invalid device pointer");
+	EXPP_ASSERT(allocation.ptrHeap && *allocation.ptrHeap, "Invalid heap");
+
+	// Get and assert size
+	D3D12_RESOURCE_ALLOCATION_INFO info = ptrDevice->GetResourceAllocationInfo(NULL, 1, ptrDesc);
+	EXPP_ASSERT(allocation.size >= info.SizeInBytes, "Insufficient allocation");
+
+	// Create resource
+	EVALUATE_HRESULT(ptrDevice->CreatePlacedResource(*allocation.ptrHeap, allocation.offset, ptrDesc, state, ptrClear, IID_PPV_ARGS(&m_comPointer)), "ID3D12Device->CreatePlacedResource(...)");
+
+	// Set parameters
+	m_size = info.SizeInBytes;
+	m_lastSetState = state;
+}
+
 DX::XResource::XResource(ID3D12Device* ptrDevice, XHeap& refHeap, UINT64 heapOffset, D3D12_RESOURCE_DESC* ptrDesc, D3D12_CLEAR_VALUE* ptrClear, D3D12_RESOURCE_STATES state) {
 	// Assert pointer
 	EXPP_ASSERT(ptrDevice, "Invalid device pointer");

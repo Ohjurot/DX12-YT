@@ -16,6 +16,7 @@ DX::GISwapChain::GISwapChain(ID3D12Device* ptrDevice, ID3D12CommandQueue* ptrCmd
 
 	// Create heap
 	EVALUATE_HRESULT(m_ptrDevice->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(m_ptrRtvHeap.to())), "ID3D12Device->CreateDescriptorHeap(...) for Heap type D3D12_DESCRIPTOR_HEAP_TYPE_RTV");
+	m_ptrRtvHeap.name(L"SwapChain RTV Heap");
 
 	// Get heap increment size
 	m_uiRTVHeapIncrement = m_ptrDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
@@ -166,5 +167,10 @@ void DX::GISwapChain::retriveBuffer(){
 
 		// Create RTV
 		m_ptrDevice->CreateRenderTargetView(m_arrPtrBuffers[i], NULL, heapHandleCpu);
+
+		// Name buffer
+		std::wstringstream wss;
+		wss << L"Back Buffer #" << i;
+		m_arrPtrBuffers[i].name(wss.str().c_str());
 	}
 }

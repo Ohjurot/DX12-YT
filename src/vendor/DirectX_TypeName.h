@@ -94,3 +94,7 @@ inline const wchar_t* typeNameW<ID3D12Resource1>() { return L"ID3D12Resource1"; 
 template <>
 inline const wchar_t* typeNameW<ID3D12Resource2>() { return L"ID3D12Resource2"; }
 
+// Descriptor Heap
+
+template <>
+inline const wchar_t* typeNameW<ID3D12DescriptorHeap>() { return L"ID3D12DescriptorHeap"; }

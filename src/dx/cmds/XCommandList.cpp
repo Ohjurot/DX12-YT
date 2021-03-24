@@ -235,7 +235,15 @@ bool DX::XCommandList::WaitObject::isDone() {
 void DX::XCommandList::WaitObject::wait() {
 	// While not done pause
 	while (!isDone()) {
-		THREAD_PAUSE_FUNCTION();
+		// Try conversion
+		auto wo = convertToFenceWaitObject();
+		if (wo) {
+			wo.wait();
+		}
+		// Default wait
+		else {
+			THREAD_PAUSE_FUNCTION();
+		}
 	}
 }
 

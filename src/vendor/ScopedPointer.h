@@ -24,11 +24,9 @@ class ScopedPointer {
 
 		// Destruct
 		~ScopedPointer() {
-			if (m_pointer) {
-				delete m_pointer;
-			}
+			deletePointer();
 		}
-
+		
 		/// <summary>
 		/// Deletes the pointer
 		/// </summary>
