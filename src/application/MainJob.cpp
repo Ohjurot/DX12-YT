@@ -84,8 +84,8 @@ MAIN_JOB(ytDirectXMain) {
 
 		// Upload pool
 		HEAP_ALLOCATION uploadAllocation;
-		EXPP_ASSERT(m_uHeap.alloc(uploadAllocation, MEM_MiB(1)), "Allocation failed");
-		engine::GpuUploadTexturePool pool(xDevice, uploadAllocation);
+		EXPP_ASSERT(m_uHeap.alloc(uploadAllocation, MEM_MiB(2)), "Allocation failed");
+		engine::GpuUploadTexturePool pool(xDevice, uploadAllocation, 32, 128);
 		pool.name(L"Texture upload pool");
 		
 		// Texture load & copy
