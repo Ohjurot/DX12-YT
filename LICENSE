@@ -8,6 +8,7 @@ include a licence if a same named header in the same directory is
 present. 
 
 The following libraries and external work were used:
+- Microsoft DirectXShaderCompiler (Refer to the file "dxc_LICENSE")
 - xxHash v0.8.0 (c) 2012-2020 Yann Collet (Refer to the file "xxHash_LICENSE")
 - ExceptionsPlusPlus, EasyHWND Copyright (c) 2021 Ludwig Füchsl
 
