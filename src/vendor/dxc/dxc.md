@@ -1,0 +1,1 @@
+See DirectXShaderCompiler: https://github.com/microsoft/DirectXShaderCompiler

@@ -1,5 +1,7 @@
-*bin/
+/bin
 *.vs/
 **.exe
 *.vcxproj.user
 *.vcxproj.filters
+
+!/src/vendor/dxcompiler/bin/x64/dxc.exe
