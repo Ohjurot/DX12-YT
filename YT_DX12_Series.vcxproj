@@ -76,8 +76,8 @@
       </StackReserveSize>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxcompiler.dll" "$(TargetDir)"
-xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxil.dll" "$(TargetDir)"</Command>
+      <Command>xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxcompiler.dll" "$(TargetDir)" /Y
+xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxil.dll" "$(TargetDir)" /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -105,8 +105,8 @@ xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxil.dll" "$(TargetDir)"</Command>
       </StackReserveSize>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxcompiler.dll" "$(TargetDir)"
-xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxil.dll" "$(TargetDir)"</Command>
+      <Command>xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxcompiler.dll" "$(TargetDir)" /Y
+xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxil.dll" "$(TargetDir)" /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
