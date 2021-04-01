@@ -13,20 +13,8 @@
 #include <dx/cmds/CommandListManager.h>
 #include <dx/cmds/CommandListAccessObject.h>
 
-//
-#include <engine/resources/copyProviders/GpuUploadTexturePool.h>
-#include <engine/resources/HeapTools/GpuStackHeap.h>
-#include <application/jobs/loading/ImageLoadJob.h>
-#include <common/Image/WICMeta.h>
-#include <common/Image/WICImageProcessor.h>
-//
-
 MAIN_JOB(ytDirectXMain) {
 	JOB_EXECUTE_FUNCTION(unsigned int index) {
-		// Enable and validate debug interface
-		DEBUG_ONLY_EXECUTE(DX::XDebug::getInstance().enable());
-		DEBUG_ONLY_EXECUTE(DX::GIDebug::getInstance().validate());
-
 		// Create Factory and adapter
 		DX::GIFactory factory;
 		DX::GIAdapter adapter = factory.getAdapter();
@@ -51,52 +39,6 @@ MAIN_JOB(ytDirectXMain) {
 		DX::GfxWindow window(cls, xDevice, factory2, L"DirectX 12", DX::GfxWindow_Stlye::BORDERLESS);
 		window.setWindowVisibility(true);
 
-		// ===
-		// Production heap
-		engine::GpuStackHeap m_heap(xDevice, MEM_MiB(64));
-		m_heap.name(L"Production heap");
-
-		// Heap UPL
-		engine::GpuStackHeap m_uHeap(xDevice, MEM_MiB(8), D3D12_HEAP_TYPE_UPLOAD);
-		m_uHeap.name(L"Upload heap");
-
-		// WIC Load
-		common::image::WIC_META imageMeta;
-		EXPP_ASSERT(common::image::WicIO::open(L"./test.png", imageMeta), "common::image::WicIO::open(...)");
-
-		// DX Texture
-		D3D12_RESOURCE_DESC desc;
-		ZeroMemory(&desc, sizeof(D3D12_RESOURCE_DESC));
-		desc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-		desc.Width = imageMeta.width;
-		desc.Height = imageMeta.height;
-		desc.DepthOrArraySize = 1;
-		desc.MipLevels = 1;
-		desc.Format = imageMeta.targetGiFormat;
-		desc.SampleDesc.Count = 1;
-		desc.SampleDesc.Quality = 0;
-		desc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-
-		HEAP_ALLOCATION textureAllocation;
-		EXPP_ASSERT(m_heap.alloc(textureAllocation, DX::XResource::size(xDevice, &desc)), "Allocation failed");
-		DX::XResource m_res(xDevice, textureAllocation, &desc, nullptr, D3D12_RESOURCE_STATE_COPY_DEST);
-		m_res.name(L"Texture");
-
-		// Upload pool
-		HEAP_ALLOCATION uploadAllocation;
-		EXPP_ASSERT(m_uHeap.alloc(uploadAllocation, MEM_MiB(2)), "Allocation failed");
-		engine::GpuUploadTexturePool pool(xDevice, uploadAllocation, 32, 128);
-		pool.name(L"Texture upload pool");
-		
-		// Texture load & copy
-		app::ImageLoadJob load(imageMeta, pool, m_res);
-		Job::prepare(load).stageExecution().wait();
-
-		// Close image
-		common::image::WicIO::close(imageMeta);
-
-		// ===
-
 		// AO
 		DX::CommandListAccessObject lao(D3D12_COMMAND_LIST_TYPE_DIRECT);
 
@@ -109,13 +51,6 @@ MAIN_JOB(ytDirectXMain) {
 			window.present();
 		}
 		lao.release();
-
-		//
-		pool.release();
-		m_res.release();
-		m_heap.release();
-		m_uHeap.release();
-		//
 
 		// Destroy window
 		window.release();

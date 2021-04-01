@@ -7,7 +7,7 @@ German video playlist: [YouTube](https://youtube.com/playlist?list=PL-m4pn2uJvXF
 
 ### Used first, second & third party software
 
-- [xxHash](https://github.com/Cyan4973/xxHash) by Yann Collet (See: [xxHash_license](https://github.com/Ohjurot/DX12-YT/blob/main/xxHash_LICENSE))
+- [xxHash](https://github.com/Cyan4973/xxHash) and [LZ4](https://github.com/lz4/lz4) by Yann Collet (See: [xxHash_license](https://github.com/Ohjurot/DX12-YT/blob/main/xxHash_LICENSE) and [LZ4_license](https://github.com/Ohjurot/DX12-YT/blob/main/lz4_LICENSE))
 - [DirectX Shader Compiler](https://github.com/microsoft/DirectXShaderCompiler) by Microsoft (See: [dxc_license](https://github.com/Ohjurot/DX12-YT/blob/main/dxc_LICENSE))
 - [ExceptionsPlusPlus](https://github.com/Ohjurot/ExceptionsPlusPlus) by Ludwig Füchsl (MIT License)
 - [EasyHWND](https://github.com/Ohjurot/EasyHWND) by Ludwig Füchsl (MIT License)

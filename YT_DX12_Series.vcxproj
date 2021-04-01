@@ -47,15 +47,15 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\im\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)src\vendor\dxc\inc;$(ProjectDir)src\vendor\xxHash\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)src\vendor\dxc\lib\x64\;$(ProjectDir)src\vendor\xxHash\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)src\vendor\dxc\inc;$(ProjectDir)src\vendor\lz4\include;$(ProjectDir)src\vendor\xxHash\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)src\vendor\dxc\lib\x64\;$(ProjectDir)src\vendor\lz4\lib\;$(ProjectDir)src\vendor\xxHash\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\im\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)src\vendor\dxc\inc;$(ProjectDir)src\vendor\xxHash\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)src\vendor\dxc\lib\x64\;$(ProjectDir)src\vendor\xxHash\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)src\vendor\dxc\inc;$(ProjectDir)src\vendor\lz4\include;$(ProjectDir)src\vendor\xxHash\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)src\vendor\dxc\lib\x64\;$(ProjectDir)src\vendor\lz4\lib\;$(ProjectDir)src\vendor\xxHash\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -71,13 +71,14 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>dxgi.lib;dxguid.lib;d3d12.lib;xxhash.lib;dxcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxgi.lib;dxguid.lib;d3d12.lib;xxhash.lib;liblz4.lib;dxcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <StackReserveSize>
       </StackReserveSize>
     </Link>
     <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxcompiler.dll" "$(TargetDir)" /Y
-xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxil.dll" "$(TargetDir)" /Y</Command>
+xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxil.dll" "$(TargetDir)" /Y
+xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -100,13 +101,14 @@ xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxil.dll" "$(TargetDir)" /Y</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>dxgi.lib;dxguid.lib;d3d12.lib;xxhash.lib;dxcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxgi.lib;dxguid.lib;d3d12.lib;xxhash.lib;liblz4.lib;dxcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <StackReserveSize>
       </StackReserveSize>
     </Link>
     <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxcompiler.dll" "$(TargetDir)" /Y
-xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxil.dll" "$(TargetDir)" /Y</Command>
+xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxil.dll" "$(TargetDir)" /Y
+xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -136,6 +138,8 @@ xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxil.dll" "$(TargetDir)" /Y</Command>
     <ClCompile Include="src\dx\setup\GIDebug.cpp" />
     <ClCompile Include="src\dx\setup\GIFactory.cpp" />
     <ClCompile Include="src\dx\setup\GIOutput.cpp" />
+    <ClCompile Include="src\dx\shader\BscFormat\BscBinary.cpp" />
+    <ClCompile Include="src\dx\shader\BscFormat\BscWriter.cpp" />
     <ClCompile Include="src\dx\window\GfxWindow.cpp" />
     <ClCompile Include="src\dx\window\GISwapChain.cpp" />
     <ClCompile Include="src\engine\resources\copyProviders\GpuUploadRingbuffer.cpp" />
@@ -184,6 +188,9 @@ xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxil.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="src\dx\setup\GIFactory.h" />
     <ClInclude Include="src\dx\setup\GIAdapter.h" />
     <ClInclude Include="src\dx\setup\GIOutput.h" />
+    <ClInclude Include="src\dx\shader\BscFormat\BscBinary.h" />
+    <ClInclude Include="src\dx\shader\BscFormat\BscConfig.h" />
+    <ClInclude Include="src\dx\shader\BscFormat\BscWriter.h" />
     <ClInclude Include="src\dx\window\GfxWindow.h" />
     <ClInclude Include="src\dx\window\GISwapChain.h" />
     <ClInclude Include="src\engine\resources\copyProviders\GpuUploadRingbuffer.h" />
@@ -220,6 +227,9 @@ xcopy "$(ProjectDir)src\vendor\dxc\bin\x64\dxil.dll" "$(TargetDir)" /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\dx\shader\BscFormat\FiletypeBSC.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

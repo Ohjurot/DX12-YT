@@ -1,0 +1,1 @@
+See LZ4: https://github.com/lz4/lz4

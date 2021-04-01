@@ -1,0 +1,44 @@
+=== INFORMATION HEADER ===
+File-Ending: .BSC (Binary Shader Container)
+Author: Ludwig Füchsl
+Version: 0.1
+
+Changes:
+- V0.1: First Revision
+
+=== FILE NAMING ===
+XXH64("Shadername") + ".BSC"
+
+=== FILE CONTENT ===
+Address		Content (ASCII / $ Variable )		Description (HR = Human Readable / NHR = Not Human Readable)
+0x00:		BSC-V-0-1-0\n						Type header (HR)
+0x0C:		$Shadername \n						Name of content (HR)
+0x??:		$FEATURE_MASK\n						Binary Feature mask (NHR)
+0x??:		$BINARY								Binary Shader data (NHR)
+
+=== VARIABLES ===
+"Shadername"		: Human-Readable name of the shader
+
+"FEATURE_MASK"		-->
+: UINT8		- Target Shader Modell (See "SHADER MODELL")
+: UINT8		- Target Shader
+: UINT8		- Encoding Type (See: "BINARY ENCODING")
+: UINT64	- Source Hash Low Byte
+: UINT64	- SOURCE Hash Hight Byte
+: UINT64	- Final Data Size (Total size after Encoding resolve)
+: UINT64	- Shader Bytecode Len (into final)
+: UINT64	- Shader Debug Info Len (into final)
+: UINT64	- Shader Reflection Info Len (into final)
+
+"BINARY"			: Binary Packed / Compressed / Encryped Shader data
+
+=== SHADER MODELL ===
+High 4 Bit: Major Version
+Low 4 Bit: Minor Version
+Example: 6.4 - Major: 6 = 0110 && Minor: 4 = 0100 ---> 01100100 / 0x64
+
+=== BINARY ENCODING ===
+Code	Name				Encoding	Compression				Encryption		Description
+0x10	Binary				BIN			-						-				Binary Data
+0x20	Binary / LZ4		BIN			LZ4 default (v1.9.0)	-				LZ4 Compressed binary data
+
