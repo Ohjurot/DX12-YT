@@ -1,3 +1,5 @@
 /Debug
 /im
 /Release
+!/source/**
+!*.bat

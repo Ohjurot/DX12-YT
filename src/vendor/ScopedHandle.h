@@ -17,6 +17,18 @@ class ScopedHandle {
 		/// <param name="handle">Input handle</param>
 		ScopedHandle(HANDLE handle);
 
+		/// <summary>
+		/// Assign construct
+		/// </summary>
+		/// <param name=""></param>
+		ScopedHandle(ScopedHandle&& other);
+
+		/// <summary>
+		/// Assign operator
+		/// </summary>
+		/// <param name=""></param>
+		ScopedHandle& operator=(ScopedHandle&& other);
+
 		// Destructor
 		~ScopedHandle();
 
@@ -46,10 +58,6 @@ class ScopedHandle {
 		/// Handle conversion
 		/// </summary>
 		operator HANDLE() noexcept;
-
-		// Delete unnsed
-		ScopedHandle(const ScopedHandle&) = delete;
-		void operator=(const ScopedHandle&) = delete;
 	private:
 		/// <summary>
 		/// Handle

@@ -114,6 +114,7 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
   <ItemGroup>
     <ClCompile Include="src\application\jobs\loading\ImageLoadJob.cpp" />
     <ClCompile Include="src\application\MainJob.cpp" />
+    <ClCompile Include="src\common\File\FileHash.cpp" />
     <ClCompile Include="src\common\Image\WICImageProcessor.cpp" />
     <ClCompile Include="src\common\Image\WICMeta.cpp" />
     <ClCompile Include="src\common\Time\StopWatch.cpp" />
@@ -138,8 +139,8 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClCompile Include="src\dx\setup\GIDebug.cpp" />
     <ClCompile Include="src\dx\setup\GIFactory.cpp" />
     <ClCompile Include="src\dx\setup\GIOutput.cpp" />
-    <ClCompile Include="src\dx\shader\BscFormat\BscBinary.cpp" />
-    <ClCompile Include="src\dx\shader\BscFormat\BscWriter.cpp" />
+    <ClCompile Include="src\dx\shader\Shader.cpp" />
+    <ClCompile Include="src\dx\shader\ShaderCompiler.cpp" />
     <ClCompile Include="src\dx\window\GfxWindow.cpp" />
     <ClCompile Include="src\dx\window\GISwapChain.cpp" />
     <ClCompile Include="src\engine\resources\copyProviders\GpuUploadRingbuffer.cpp" />
@@ -165,6 +166,7 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="src\application\jobs\loading\ImageLoadJob.h" />
     <ClInclude Include="src\common\Container\FixedSizeQueue.h" />
     <ClInclude Include="src\common\Exceptions\EXPP_Handler.h" />
+    <ClInclude Include="src\common\File\FileHash.h" />
     <ClInclude Include="src\common\Image\WICImageProcessor.h" />
     <ClInclude Include="src\common\Image\WICMeta.h" />
     <ClInclude Include="src\common\Memory\QuadTreePoolAllocator.h" />
@@ -188,9 +190,9 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="src\dx\setup\GIFactory.h" />
     <ClInclude Include="src\dx\setup\GIAdapter.h" />
     <ClInclude Include="src\dx\setup\GIOutput.h" />
-    <ClInclude Include="src\dx\shader\BscFormat\BscBinary.h" />
-    <ClInclude Include="src\dx\shader\BscFormat\BscConfig.h" />
-    <ClInclude Include="src\dx\shader\BscFormat\BscWriter.h" />
+    <ClInclude Include="src\dx\shader\Shader.h" />
+    <ClInclude Include="src\dx\shader\ShaderCompiler.h" />
+    <ClInclude Include="src\dx\shader\ShaderTypes.h" />
     <ClInclude Include="src\dx\window\GfxWindow.h" />
     <ClInclude Include="src\dx\window\GISwapChain.h" />
     <ClInclude Include="src\engine\resources\copyProviders\GpuUploadRingbuffer.h" />
@@ -227,9 +229,6 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="src\dx\shader\BscFormat\FiletypeBSC.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
