@@ -14,12 +14,13 @@
 #include <dx/cmds/CommandListAccessObject.h>
 
 #include <dx/shader/Shader.h>
+#include <json.h>
 
 MAIN_JOB(ytDirectXMain) {
 	JOB_EXECUTE_FUNCTION(unsigned int index) {
 		dx::Shader s;
 		s = std::move(dx::Shader(L"test1234", SHADER_TYPE_VERTEX));
-		
+
 		// Create Factory and adapter
 		DX::GIFactory factory;
 		DX::GIAdapter adapter = factory.getAdapter();

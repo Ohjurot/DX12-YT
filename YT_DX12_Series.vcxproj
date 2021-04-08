@@ -47,14 +47,14 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\im\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)src\vendor\dxc\inc;$(ProjectDir)src\vendor\lz4\include;$(ProjectDir)src\vendor\xxHash\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)src\vendor\json;$(ProjectDir)src\vendor\dxc\inc;$(ProjectDir)src\vendor\lz4\include;$(ProjectDir)src\vendor\xxHash\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)src\vendor\dxc\lib\x64\;$(ProjectDir)src\vendor\lz4\lib\;$(ProjectDir)src\vendor\xxHash\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\im\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)src\vendor\dxc\inc;$(ProjectDir)src\vendor\lz4\include;$(ProjectDir)src\vendor\xxHash\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)src\vendor\json;$(ProjectDir)src\vendor\dxc\inc;$(ProjectDir)src\vendor\lz4\include;$(ProjectDir)src\vendor\xxHash\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)src\vendor\dxc\lib\x64\;$(ProjectDir)src\vendor\lz4\lib\;$(ProjectDir)src\vendor\xxHash\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -219,6 +219,7 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="src\job\threading\Thread.h" />
     <ClInclude Include="src\job\threading\ThreadingExecution.h" />
     <ClInclude Include="src\vendor\DirectX_TypeName.h" />
+    <ClInclude Include="src\vendor\json\json.h" />
     <ClInclude Include="src\vendor\LockTools.h" />
     <ClInclude Include="src\vendor\EasyHWND.h" />
     <ClInclude Include="src\vendor\ExceptionsPlusPlus.h" />
