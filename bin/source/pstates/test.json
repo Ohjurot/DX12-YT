@@ -1,0 +1,133 @@
+{
+    "type": "gfx",
+    
+    "(no)_shaders": {
+        "rootsignature": "myroot",
+        "vertex": "vertexShader",
+        "pixel": "pixelShader"
+    },
+
+    "streamOutput": {
+        "semantics": [
+            {
+                "stream": 0, 
+                "name": "POSITION",
+                "index": 0,
+                "component" : {
+                    "start": 0,
+                    "count": 4
+                },
+                "slot" : 0
+            }
+        ],
+        "strides": [0],
+        "stream": 0
+    },
+
+    "blend" : {
+        "alphaToCoverage" : false,
+        "independentBlend" : false,
+        "blends" : [
+            {
+                "enable" : true,
+                "srcBlend" : "D3D12_BLEND_ONE",
+                "destBlend" : "D3D12_BLEND_ZERO",
+                "blendOp" : "D3D12_BLEND_OP_ADD",
+                "srcBlendAlpha" : "D3D12_BLEND_ONE",
+                "destBlendAlpha" : "D3D12_BLEND_ZERO",
+                "blendOpAlpha" : "D3D12_BLEND_OP_ADD",
+
+                "logicOpEnable" : false,
+                "logicOp" : "D3D12_LOGIC_OP_SET",
+                
+                "writeMask" : "RGBA"
+            },
+            {
+                "enable" : false
+            }
+        ]
+    },
+
+    "sampleMask" : 0,
+
+    "rasterizer" : {
+        "fillMode" : "D3D12_FILL_MODE_SOLID",
+        "cullMode" : "D3D12_CULL_MODE_BACK",
+        "frontCounterClockwise" : false,
+        
+        "bias" : {
+            "depthBias" : 1,
+            "depthBiasClamp" : 0.0,
+            "slopeScaledDepthBias" : 0.0
+        },
+
+        "depthClipEnable" : false,
+        
+        "multisampleEnable" : false,
+        "antialiasedLineEnable" : false,
+        "forcedSampleCount" : 0,
+
+        "conservativeRasterizer" : true
+    },
+
+    "depth" : {
+        "buffer" : {
+            "enable" : true,
+            "depthWrite" : false,
+            "function" : "D3D12_COMPARISON_FUNC_GREATER_EQUAL"
+        },
+
+        "stencil" : {
+            "enable" : false,
+            "readMask" : 255,
+            "writeMask" : 255,
+            
+            "frontFaces" : {
+                "opFail" : "D3D12_STENCIL_OP_KEEP",
+                "opDepthFail" : "D3D12_STENCIL_OP_KEEP",
+                "opPass" : "D3D12_STENCIL_OP_REPLACE",
+                "function" : "D3D12_COMPARISON_FUNC_EQUAL"
+            },
+            "backFacecs" : {
+                "opFail" : "D3D12_STENCIL_OP_KEEP",
+                "opDepthFail" : "D3D12_STENCIL_OP_KEEP",
+                "opPass" : "D3D12_STENCIL_OP_REPLACE",
+                "function" : "D3D12_COMPARISON_FUNC_EQUAL"
+            }
+        }
+    },
+
+    "inputLayout" : [
+        {
+            "name" : "POSITION",
+            "index" : 0,
+            "format" : "DXGI_FORMAT_R8G8B8A8_UINT",
+            "inputSlot" : 0,
+            "offset" : 0,
+            "class" : "D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA",
+            "stepRate" : 0
+        },
+        {
+            "name" : "COLOR",
+            "index" : 0,
+            "format" : "DXGI_FORMAT_R11G11B10_FLOAT",
+            "inputSlot" : 0,
+            "offset" : 16,
+            "class" : "D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA",
+            "stepRate" : 0
+        }
+    ],
+
+    "stripCut" : "D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED",
+    "primitiveTopology" : "D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE",
+    "renderTargetCount" : 1,
+    "renderTargetFormats" : [
+        "DXGI_FORMAT_R16G16B16A16_UNORM"
+    ],
+    "depthFormat" : "DXGI_FORMAT_D24_UNORM_S8_UINT",
+    
+    "sample" : {
+        "count" : 1,
+        "quality" : 0
+    }
+}

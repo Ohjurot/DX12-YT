@@ -49,6 +49,12 @@ namespace dx {
 			Shader& operator=(const Shader& other);
 
 			/// <summary>
+			/// Bool conversion operator
+			/// </summary>
+			/// <returns>true if object is valid</returns>
+			operator bool() noexcept;
+
+			/// <summary>
 			/// Set buffer details
 			/// </summary>
 			/// <param name="ppVoid">Pointer to target void pointer</param>

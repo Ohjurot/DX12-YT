@@ -13,13 +13,12 @@
 #include <dx/cmds/CommandListManager.h>
 #include <dx/cmds/CommandListAccessObject.h>
 
-#include <dx/shader/Shader.h>
-#include <json.h>
+#include <dx/pso/PsoFile.h>
 
 MAIN_JOB(ytDirectXMain) {
 	JOB_EXECUTE_FUNCTION(unsigned int index) {
-		dx::Shader s;
-		s = std::move(dx::Shader(L"test1234", SHADER_TYPE_VERTEX));
+		dx::PsoState state;
+		dx::PsoFile::read(L"./source/pstates/test.json", state);
 
 		// Create Factory and adapter
 		DX::GIFactory factory;

@@ -11,6 +11,8 @@
 
 #include <vendor/DirectX_TypeName.h>
 
+#include <json.h>
+
 #include <job/system/JobPause.h>
 
 #include <atomic>

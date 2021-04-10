@@ -61,6 +61,10 @@ dx::Shader& dx::Shader::operator=(const Shader& other) {
 	return *this;
 }
 
+dx::Shader::operator bool() noexcept {
+	return m_ptrBlob != nullptr;
+}
+
 bool dx::Shader::setBuffer(void** ppVoid, UINT64* ptrSize) noexcept {
 	// Check if blob is allocated
 	if (m_ptrBlob) {

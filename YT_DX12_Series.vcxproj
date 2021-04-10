@@ -117,6 +117,8 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClCompile Include="src\common\File\FileHash.cpp" />
     <ClCompile Include="src\common\Image\WICImageProcessor.cpp" />
     <ClCompile Include="src\common\Image\WICMeta.cpp" />
+    <ClCompile Include="src\common\String\StrConverter.cpp" />
+    <ClCompile Include="src\common\String\StrHash.cpp" />
     <ClCompile Include="src\common\Time\StopWatch.cpp" />
     <ClCompile Include="src\DefHeader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -135,12 +137,15 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClCompile Include="src\dx\core\XInfoQueue.cpp" />
     <ClCompile Include="src\dx\memory\XHeap.cpp" />
     <ClCompile Include="src\dx\memory\XResource.cpp" />
+    <ClCompile Include="src\dx\pso\PsoFile.cpp" />
     <ClCompile Include="src\dx\setup\GIAdapter.cpp" />
     <ClCompile Include="src\dx\setup\GIDebug.cpp" />
     <ClCompile Include="src\dx\setup\GIFactory.cpp" />
     <ClCompile Include="src\dx\setup\GIOutput.cpp" />
     <ClCompile Include="src\dx\shader\Shader.cpp" />
     <ClCompile Include="src\dx\shader\ShaderCompiler.cpp" />
+    <ClCompile Include="src\dx\strconverter\dx12str.cpp" />
+    <ClCompile Include="src\dx\strconverter\gistr.cpp" />
     <ClCompile Include="src\dx\window\GfxWindow.cpp" />
     <ClCompile Include="src\dx\window\GISwapChain.cpp" />
     <ClCompile Include="src\engine\resources\copyProviders\GpuUploadRingbuffer.cpp" />
@@ -171,6 +176,9 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="src\common\Image\WICMeta.h" />
     <ClInclude Include="src\common\Memory\QuadTreePoolAllocator.h" />
     <ClInclude Include="src\common\MT\Locks\SpinLock.h" />
+    <ClInclude Include="src\common\String\StrAllocator.h" />
+    <ClInclude Include="src\common\String\StrConverter.h" />
+    <ClInclude Include="src\common\String\StrHash.h" />
     <ClInclude Include="src\common\Time\StopWatch.h" />
     <ClInclude Include="src\DefHeader.h" />
     <ClInclude Include="src\dx\cmds\CommandListAccessObject.h" />
@@ -186,6 +194,8 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="src\dx\core\XInfoQueue.h" />
     <ClInclude Include="src\dx\memory\XHeap.h" />
     <ClInclude Include="src\dx\memory\XResource.h" />
+    <ClInclude Include="src\dx\pso\PsoFile.h" />
+    <ClInclude Include="src\dx\pso\PsoState.h" />
     <ClInclude Include="src\dx\setup\GIDebug.h" />
     <ClInclude Include="src\dx\setup\GIFactory.h" />
     <ClInclude Include="src\dx\setup\GIAdapter.h" />
@@ -193,6 +203,8 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="src\dx\shader\Shader.h" />
     <ClInclude Include="src\dx\shader\ShaderCompiler.h" />
     <ClInclude Include="src\dx\shader\ShaderTypes.h" />
+    <ClInclude Include="src\dx\strconverter\dx12str.h" />
+    <ClInclude Include="src\dx\strconverter\gistr.h" />
     <ClInclude Include="src\dx\window\GfxWindow.h" />
     <ClInclude Include="src\dx\window\GISwapChain.h" />
     <ClInclude Include="src\engine\resources\copyProviders\GpuUploadRingbuffer.h" />

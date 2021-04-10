@@ -85,8 +85,14 @@ bool dx::ShaderCompiler::createCompilerArgs(IDxcCompilerArgs* ptrArgs, LPCWSTR i
     EVALUATE_HRESULT(ptrArgs->AddArguments(&inputFile, 1), "IDxcCompilerArgs->AddArguments(...)");
 
     // Add edntry point and target switch
-    LPCWSTR entryArgs[] = {L"-E", L"main", L"-T" };
-    EVALUATE_HRESULT(ptrArgs->AddArguments(entryArgs, 3), "IDxcCompilerArgs->AddArguments(...)");
+    if (type != SHADER_TYPE_ROOTSIGNATURE) {
+        LPCWSTR entryArgs[] = { L"-E", L"main", L"-T" };
+        EVALUATE_HRESULT(ptrArgs->AddArguments(entryArgs, 3), "IDxcCompilerArgs->AddArguments(...)");
+    }
+    else {
+        LPCWSTR entryArgs[] = { L"-E", L"ROOTSIG", L"-T" };
+        EVALUATE_HRESULT(ptrArgs->AddArguments(entryArgs, 3), "IDxcCompilerArgs->AddArguments(...)");
+    }
 
     // Add target (Shader Modell 6.4)
     switch (type) {
@@ -101,6 +107,27 @@ bool dx::ShaderCompiler::createCompilerArgs(IDxcCompilerArgs* ptrArgs, LPCWSTR i
         case SHADER_TYPE_PIXEL: {
             LPCWSTR psArg = L"ps_6_4";
             EVALUATE_HRESULT(ptrArgs->AddArguments(&psArg, 1), "IDxcCompilerArgs->AddArguments(...)");
+            break;
+        }
+
+        // Hull Shader 
+        case SHADER_TYPE_HULL: {
+            LPCWSTR hsArg = L"hs_6_4";
+            EVALUATE_HRESULT(ptrArgs->AddArguments(&hsArg, 1), "IDxcCompilerArgs->AddArguments(...)");
+            break;
+        }
+
+        // Domain Shader 
+        case SHADER_TYPE_DOMAIN: {
+            LPCWSTR dsArg = L"ds_6_4";
+            EVALUATE_HRESULT(ptrArgs->AddArguments(&dsArg, 1), "IDxcCompilerArgs->AddArguments(...)");
+            break;
+        }
+
+        // Pixel Shader 
+        case SHADER_TYPE_ROOTSIGNATURE: {
+            LPCWSTR rsArg = L"rootsig_1_0";
+            EVALUATE_HRESULT(ptrArgs->AddArguments(&rsArg, 1), "IDxcCompilerArgs->AddArguments(...)");
             break;
         }
 
