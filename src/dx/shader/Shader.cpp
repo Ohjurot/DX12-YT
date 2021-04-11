@@ -127,19 +127,19 @@ void dx::Shader::reload() {
 	// Check if recompile is required
 	if (sourceRecompile) {
 		// Compile shader
-		dx::ShaderCompiler::compileShader(sourceFileName.c_str(), targetBinFileName.c_str(), targetDebugFileName.c_str(), m_type);
+		if (dx::ShaderCompiler::compileShader(sourceFileName.c_str(), targetBinFileName.c_str(), targetDebugFileName.c_str(), m_type)) {
+			// Close current hash file
+			if (hFileCurrentHash) {
+				hFileCurrentHash.close();
+			}
 
-		// Close current hash file
-		if (hFileCurrentHash) {
-			hFileCurrentHash.close();
+			// Reopen for write
+			hFileCurrentHash = CreateFile(targetHashFileName.c_str(), GENERIC_WRITE, NULL, NULL, OPEN_ALWAYS, NULL, NULL);
+
+			// Write new hash
+			SetFilePointer(hFileCurrentHash, 0, NULL, FILE_BEGIN);
+			EXPP_ASSERT(WriteFile(hFileCurrentHash, &sourceHash, sizeof(XXH128_hash_t), NULL, NULL), "Failed to write hash");
 		}
-
-		// Reopen for write
-		hFileCurrentHash = CreateFile(targetHashFileName.c_str(), GENERIC_WRITE, NULL, NULL, OPEN_ALWAYS, NULL, NULL);
-
-		// Write new hash
-		SetFilePointer(hFileCurrentHash, 0, NULL, FILE_BEGIN);
-		EXPP_ASSERT(WriteFile(hFileCurrentHash, &sourceHash, sizeof(XXH128_hash_t), NULL, NULL), "Failed to write hash");
 	}
 
 	// Load shader

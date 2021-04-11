@@ -128,19 +128,6 @@ bool dx::PsoFile::read_gfx(json& refJson, dx::PsoState& refPsoState) {
                 return false;
             }
         }
-
-        // Find ROOTSIGNATURE shader
-        auto itRootsignatureShader = jsonNodeShaders.find("rootsignature");
-        if (itRootsignatureShader != jsonNodeShaders.end()) {
-            // Convert to wide string
-            WCHAR shaderNameW[255] = {};
-            common::String::Converter::ansiToWide<255>(((std::string)itRootsignatureShader.value()).c_str(), shaderNameW);
-
-            refPsoState.p_rootSignature = dx::Shader(shaderNameW, SHADER_TYPE_ROOTSIGNATURE);
-            if (!refPsoState.p_rootSignature) {
-                return false;
-            }
-        }
     }
 
     // === Read Stream Output ===
@@ -436,7 +423,7 @@ bool dx::PsoFile::read_gfx(json& refJson, dx::PsoState& refPsoState) {
 
         // Read forcedSampleCount
         auto itRForcedSampleCount = nodeRasterizer.find("forcedSampleCount");
-        if (itRFillMode != nodeRasterizer.end() && itRAntialiasedLineEnable.value().is_number_unsigned()) {
+        if (itRForcedSampleCount != nodeRasterizer.end() && itRAntialiasedLineEnable.value().is_number_unsigned()) {
             refPsoState.p_psoDescC.gfxDesc.RasterizerState.ForcedSampleCount = itRForcedSampleCount.value();
         }
 

@@ -138,6 +138,7 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClCompile Include="src\dx\memory\XHeap.cpp" />
     <ClCompile Include="src\dx\memory\XResource.cpp" />
     <ClCompile Include="src\dx\pso\PsoFile.cpp" />
+    <ClCompile Include="src\dx\pso\PsoState.cpp" />
     <ClCompile Include="src\dx\setup\GIAdapter.cpp" />
     <ClCompile Include="src\dx\setup\GIDebug.cpp" />
     <ClCompile Include="src\dx\setup\GIFactory.cpp" />

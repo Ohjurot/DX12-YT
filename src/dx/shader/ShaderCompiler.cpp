@@ -126,7 +126,7 @@ bool dx::ShaderCompiler::createCompilerArgs(IDxcCompilerArgs* ptrArgs, LPCWSTR i
 
         // Pixel Shader 
         case SHADER_TYPE_ROOTSIGNATURE: {
-            LPCWSTR rsArg = L"rootsig_1_0";
+            LPCWSTR rsArg = L"rootsig_1_1";
             EVALUATE_HRESULT(ptrArgs->AddArguments(&rsArg, 1), "IDxcCompilerArgs->AddArguments(...)");
             break;
         }

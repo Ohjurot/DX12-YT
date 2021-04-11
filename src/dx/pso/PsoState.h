@@ -36,6 +36,13 @@ namespace dx {
 	class PsoState {
 		public:
 
+			/// <summary>
+			/// Compile root signature
+			/// </summary>
+			/// <param name="ptrDevice">Device pointer</param>
+			/// <returns>true if compilation suceeded</returns>
+			bool compile(ID3D12Device* ptrDevice);
+
 		protected:
 			friend class PsoFile;
 
@@ -67,7 +74,7 @@ namespace dx {
 			/// <summary>
 			/// PSO Shaders
 			/// </summary>
-			dx::Shader p_rootSignature, p_vertexShader, p_pixelShader, p_hullShader, p_domainShader, p_geometryShader;
+			dx::Shader p_vertexShader, p_pixelShader, p_hullShader, p_domainShader, p_geometryShader;
 
 			/// <summary>
 			/// String allocator
@@ -75,6 +82,11 @@ namespace dx {
 			common::String::Allocator<CHAR, 2048> p_strAllocator;
 
 		private:
+			/// <summary>
+			/// Root signature
+			/// </summary>
+			ScopedComPointer<ID3D12RootSignature> m_ptrRootSignature;
+
 			/// <summary>
 			/// DX Pipelinestate
 			/// </summary>

@@ -1,10 +1,9 @@
 {
     "type": "gfx",
     
-    "(no)_shaders": {
-        "rootsignature": "myroot",
-        "vertex": "vertexShader",
-        "pixel": "pixelShader"
+    "shaders": {
+        "vertex": "vs_demo",
+        "pixel": "ps_demo"
     },
 
     "streamOutput": {

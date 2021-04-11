@@ -17,8 +17,9 @@
 
 MAIN_JOB(ytDirectXMain) {
 	JOB_EXECUTE_FUNCTION(unsigned int index) {
-		dx::PsoState state;
-		dx::PsoFile::read(L"./source/pstates/test.json", state);
+		// Enable and validate debug interface
+		DEBUG_ONLY_EXECUTE(DX::XDebug::getInstance().enable());
+		DEBUG_ONLY_EXECUTE(DX::GIDebug::getInstance().validate());
 
 		// Create Factory and adapter
 		DX::GIFactory factory;
@@ -46,6 +47,12 @@ MAIN_JOB(ytDirectXMain) {
 
 		// AO
 		DX::CommandListAccessObject lao(D3D12_COMMAND_LIST_TYPE_DIRECT);
+
+		// TEMP
+		dx::PsoState state;
+		EXPP_ASSERT(dx::PsoFile::read(L"./source/pstates/demo.json", state), "Failed to read pipeline state");
+		EXPP_ASSERT(state.compile(xDevice), "Failed to compile PSO");
+		// TEMP
 
 		// Window job
 		while (window) {

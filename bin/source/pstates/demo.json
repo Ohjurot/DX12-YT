@@ -1,0 +1,62 @@
+{
+    "type": "gfx",
+    
+    "shaders": {
+        "vertex": "vs_demo",
+        "pixel": "ps_demo"
+    },
+    "blend" : {
+        "alphaToCoverage" : false,
+        "independentBlend" : false,
+        "blends" : [
+            {
+                "enable" : true,
+                "srcBlend" : "D3D12_BLEND_ONE",
+                "destBlend" : "D3D12_BLEND_ZERO",
+                "blendOp" : "D3D12_BLEND_OP_ADD",
+                "srcBlendAlpha" : "D3D12_BLEND_ONE",
+                "destBlendAlpha" : "D3D12_BLEND_ZERO",
+                "blendOpAlpha" : "D3D12_BLEND_OP_ADD",
+
+                "logicOpEnable" : false,
+                "logicOp" : "D3D12_LOGIC_OP_SET",
+                
+                "writeMask" : "*"
+            }
+        ]
+    },
+
+    "sampleMask" : 255,
+
+    "rasterizer" : {
+        "fillMode" : "D3D12_FILL_MODE_SOLID",
+        "cullMode" : "D3D12_CULL_MODE_BACK",
+        "frontCounterClockwise" : false
+    },
+
+    "inputLayout" : [
+        {
+            "name" : "POSITION",
+            "format" : "DXGI_FORMAT_R32G32_FLOAT",
+            "offset" : 0,
+            "class" : "D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA"
+        },
+        {
+            "name" : "COLOR",
+            "format" : "DXGI_FORMAT_R32G32B32_FLOAT",
+            "offset" : 8,
+            "class" : "D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA"
+        }
+    ],
+
+    "primitiveTopology" : "D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE",
+    "renderTargetCount" : 1,
+    "renderTargetFormats" : [
+        "DXGI_FORMAT_R8G8B8A8_UNORM"
+    ],
+    
+    "sample" : {
+        "count" : 1,
+        "quality" : 0
+    }
+}
