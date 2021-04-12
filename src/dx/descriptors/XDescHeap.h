@@ -66,6 +66,12 @@ namespace dx {
 			/// <returns>Handles</returns>
 			dx::DescHeapHandles operator[](unsigned int index);
 
+			/// <summary>
+			/// Retrive heap size
+			/// </summary>
+			/// <returns>Size of heap</returns>
+			UINT size() noexcept;
+
 		private:
 			/// <summary>
 			/// Heap size

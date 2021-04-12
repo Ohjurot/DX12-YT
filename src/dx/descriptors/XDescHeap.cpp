@@ -52,6 +52,10 @@ dx::DescHeapHandles dx::XDescHeap::operator[](unsigned int index) {
 	return get(index);
 }
 
+UINT dx::XDescHeap::size() noexcept {
+	return m_size;
+}
+
 dx::XDescHeap::XDescHeap_Itterator::XDescHeap_Itterator(XDescHeap& refHeap, UINT index) :
 	m_refHeap(refHeap),
 	m_itIndex(index)
