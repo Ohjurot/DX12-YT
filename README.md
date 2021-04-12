@@ -41,9 +41,9 @@ German video playlist: [YouTube](https://youtube.com/playlist?list=PL-m4pn2uJvXF
 
 **IV. GPU Pipeline**
 
-| Video | Topic                             | Code                                                         | :gb: Video-Link       | :de: Video-Link          |
-| ----- | --------------------------------- | :----------------------------------------------------------- | --------------------- | ------------------------ |
-| 1     | GPU Pipeline State                | [Code for VIV.1](https://github.com/Ohjurot/DX12-YT/releases/tag/VIV.1) | :tv: Watch on YouTube | :tv: Auf YouTube ansehen |
-| 2     | GPU Descriptors & Root-Signatures | [Code for VIV.2](https://github.com/Ohjurot/DX12-YT/releases/tag/VIV.2) | :tv: Watch on YouTube | :tv: Auf YouTube ansehen |
-| 3     | Shader (GPU Programs)             | [Code for VIV.3](https://github.com/Ohjurot/DX12-YT/releases/tag/VIV.3) | :tv: Watch on YouTube | :tv: Auf YouTube ansehen |
+| Video | Topic                             | Code                                                         | :gb: Video-Link                                       | :de: Video-Link                                          |
+| ----- | --------------------------------- | :----------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
+| 1     | GPU Pipeline State                | [Code for VIV.1](https://github.com/Ohjurot/DX12-YT/releases/tag/VIV.1) | [:tv: Watch on YouTube](https://youtu.be/wTweGut-K8o) | [:tv: Auf YouTube ansehen](https://youtu.be/91xCeOC3QHc) |
+| 2     | Shader (GPU Programs)             | [Code for VIV.2](https://github.com/Ohjurot/DX12-YT/releases/tag/VIV.2) | [:tv: Watch on YouTube](https://youtu.be/hfHzkLIMJRE) | [:tv: Auf YouTube ansehen](https://youtu.be/AOicsEvae6k) |
+| 3     | GPU Descriptors & Root-Signatures | [Code for VIV.3](https://github.com/Ohjurot/DX12-YT/releases/tag/VIV.3) | :tv: Watch on YouTube | :tv: Auf YouTube ansehen |
 
