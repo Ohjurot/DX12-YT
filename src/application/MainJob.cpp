@@ -14,6 +14,7 @@
 #include <dx/cmds/CommandListAccessObject.h>
 
 #include <dx/pso/PsoFile.h>
+#include <dx/descriptors/XDescHeap.h>
 
 MAIN_JOB(ytDirectXMain) {
 	JOB_EXECUTE_FUNCTION(unsigned int index) {
@@ -52,6 +53,10 @@ MAIN_JOB(ytDirectXMain) {
 		dx::PsoState state;
 		EXPP_ASSERT(dx::PsoFile::read(L"./source/pstates/demo.json", state), "Failed to read pipeline state");
 		EXPP_ASSERT(state.compile(xDevice), "Failed to compile PSO");
+
+		
+		dx::XDescHeap dh = dx::XDescHeap(xDevice, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 16);
+		dh.name(L"My Desc Heap");
 		// TEMP
 
 		// Window job

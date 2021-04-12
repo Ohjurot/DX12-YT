@@ -36,6 +36,20 @@ namespace common {
 					EXPP_ASSERT(m_ptrBuffer, "Memory allocator failed!");
 				}
 
+				/// <summary>
+				/// Move constructor
+				/// </summary>
+				/// <param name="other">other</param>
+				Allocator(Allocator&& other) {
+					// Set own
+					m_ptrBuffer = other.m_ptrBuffer;
+					m_size = other.m_size;
+					m_head = other.m_head;
+
+					// Clear other
+					other.m_ptrBuffer = nullptr;
+				};
+
 				// Delete
 				Allocator(const Allocator&) = delete;
 
@@ -51,6 +65,29 @@ namespace common {
 
 				// Delete
 				Allocator& operator=(const Allocator&) = delete;
+
+				/// <summary>
+				/// Move assign 
+				/// </summary>
+				/// <param name="other">Other</param>
+				/// <returns>ref</returns>
+				Allocator& operator=(Allocator&& other) {
+					EXPP_ASSERT(other.m_size == m_size, "Size missmatch!");
+					
+					// Clear own
+					if (m_ptrBuffer) {
+						free(m_ptrBuffer);
+					}
+
+					// Set own
+					m_ptrBuffer = other.m_ptrBuffer;
+					m_head = other.m_head;
+
+					// Clear other
+					other.m_ptrBuffer = nullptr;
+
+					return *this;
+				}
 
 				/// <summary>
 				/// Reset the allocator

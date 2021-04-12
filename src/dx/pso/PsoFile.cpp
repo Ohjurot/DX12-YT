@@ -143,13 +143,13 @@ bool dx::PsoFile::read_gfx(json& refJson, dx::PsoState& refPsoState) {
                     auto nodeSOSematicEntry = itSemanticEntry.value();
                     
                     // Get and set default
-                    unsigned int semanticIndex = itSemanticEntry - itSemantics.value().begin();
+                    size_t semanticIndex = itSemanticEntry - itSemantics.value().begin();
                     EXPP_ASSERT(semanticIndex < 16, "To many Stream Output semantics");
                     D3D12_SO_DECLARATION_ENTRY* ptrSoEntry = &refPsoState.p_soDescs[semanticIndex];
                     ZeroMemory(ptrSoEntry, sizeof(D3D12_SO_DECLARATION_ENTRY));
 
                     // Count
-                    refPsoState.p_psoDescC.gfxDesc.StreamOutput.NumEntries = semanticIndex + 1;
+                    refPsoState.p_psoDescC.gfxDesc.StreamOutput.NumEntries = (UINT)semanticIndex + 1;
                     refPsoState.p_psoDescC.gfxDesc.StreamOutput.pSODeclaration = refPsoState.p_soDescs;
 
                     // === Parse Semantic ===
@@ -204,13 +204,13 @@ bool dx::PsoFile::read_gfx(json& refJson, dx::PsoState& refPsoState) {
         if (itSOStrides != itStreamOutput.value().end() && itSOStrides.value().is_array()) {
             for (auto itSOStrideEntrys = itSOStrides.value().begin(); itSOStrideEntrys != itSOStrides.value().end(); itSOStrideEntrys++) {
                 // Index
-                unsigned int index = itSOStrideEntrys - itSOStrides.value().begin();
+                size_t index = itSOStrideEntrys - itSOStrides.value().begin();
 
                 // Check value
                 if (itSOStrideEntrys.value().is_number_unsigned()) {
                     refPsoState.p_soStrides[index] = itSOStrideEntrys.value();
                     refPsoState.p_psoDescC.gfxDesc.StreamOutput.pBufferStrides = refPsoState.p_soStrides;
-                    refPsoState.p_psoDescC.gfxDesc.StreamOutput.NumStrides = index + 1;
+                    refPsoState.p_psoDescC.gfxDesc.StreamOutput.NumStrides = (UINT)index + 1;
                 }
             }
         }
@@ -246,7 +246,7 @@ bool dx::PsoFile::read_gfx(json& refJson, dx::PsoState& refPsoState) {
                 EXPP_ASSERT(itBBlendsBlend.value().is_object(), "Blend needs to be an object");
 
                 // Index and type
-                unsigned int index = itBBlendsBlend - itBBlends.value().begin();
+                size_t index = itBBlendsBlend - itBBlends.value().begin();
                 EXPP_ASSERT(index < 8, "Render target blends out of bound");
                 D3D12_RENDER_TARGET_BLEND_DESC* ptrBlend = &refPsoState.p_psoDescC.gfxDesc.BlendState.RenderTarget[index];
                 auto nodeBBlendsBlend = itBBlendsBlend.value();
@@ -521,8 +521,8 @@ bool dx::PsoFile::read_gfx(json& refJson, dx::PsoState& refPsoState) {
             
             // Retrive index
             auto IAElementNode = itInputLayoutElement.value();
-            unsigned int index = itInputLayoutElement - itInputLayout.value().begin();
-            refPsoState.p_psoDescC.gfxDesc.InputLayout.NumElements = index + 1;
+            size_t index = itInputLayoutElement - itInputLayout.value().begin();
+            refPsoState.p_psoDescC.gfxDesc.InputLayout.NumElements = (UINT)index + 1;
             D3D12_INPUT_ELEMENT_DESC* ptrIADesc = &refPsoState.p_iaLayoutDescs[index];
 
             // Read Name
@@ -601,7 +601,7 @@ bool dx::PsoFile::read_gfx(json& refJson, dx::PsoState& refPsoState) {
     if (itRenderTargetFormats != refJson.end() && itRenderTargetFormats.value().is_array()) {
         for (auto itRenderTargetFormat = itRenderTargetFormats.value().begin(); itRenderTargetFormat != itRenderTargetFormats.value().end(); itRenderTargetFormat++) {
             // Calulate index
-            unsigned int index = itRenderTargetFormat - itRenderTargetFormats.value().begin();
+            size_t index = itRenderTargetFormat - itRenderTargetFormats.value().begin();
             EXPP_ASSERT(itRenderTargetFormat.value().is_string(), "RTV Format needs to be an string");
 
             std::string rtvFormat = itRenderTargetFormat.value();

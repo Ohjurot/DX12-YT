@@ -35,6 +35,27 @@ namespace dx {
 	/// </summary>
 	class PsoState {
 		public:
+			/// <summary>
+			/// Default constructor
+			/// </summary>
+			PsoState() = default;
+
+			/// <summary>
+			/// Move constructor
+			/// </summary>
+			/// <param name="other">Other</param>
+			PsoState(PsoState&& other) noexcept;
+
+			/// <summary>
+			/// Destructor
+			/// </summary>
+			~PsoState();
+
+			/// <summary>
+			/// Bind PSO and RootSignature to command list
+			/// </summary>
+			/// <param name="ptrCommandList">Pointer to command list</param>
+			void bind(ID3D12GraphicsCommandList* ptrCommandList);
 
 			/// <summary>
 			/// Compile root signature
@@ -42,6 +63,12 @@ namespace dx {
 			/// <param name="ptrDevice">Device pointer</param>
 			/// <returns>true if compilation suceeded</returns>
 			bool compile(ID3D12Device* ptrDevice);
+
+			/// <summary>
+			/// Boolean operator
+			/// </summary>
+			/// <returns>true if valid</returns>
+			operator bool() noexcept;
 
 		protected:
 			friend class PsoFile;

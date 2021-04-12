@@ -135,6 +135,7 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClCompile Include="src\dx\core\XDebugDevice.cpp" />
     <ClCompile Include="src\dx\core\XDevice.cpp" />
     <ClCompile Include="src\dx\core\XInfoQueue.cpp" />
+    <ClCompile Include="src\dx\descriptors\XDescHeap.cpp" />
     <ClCompile Include="src\dx\memory\XHeap.cpp" />
     <ClCompile Include="src\dx\memory\XResource.cpp" />
     <ClCompile Include="src\dx\pso\PsoFile.cpp" />
@@ -193,6 +194,7 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="src\dx\core\XDebugDevice.h" />
     <ClInclude Include="src\dx\core\XDevice.h" />
     <ClInclude Include="src\dx\core\XInfoQueue.h" />
+    <ClInclude Include="src\dx\descriptors\XDescHeap.h" />
     <ClInclude Include="src\dx\memory\XHeap.h" />
     <ClInclude Include="src\dx\memory\XResource.h" />
     <ClInclude Include="src\dx\pso\PsoFile.h" />
