@@ -15,6 +15,7 @@
 
 #include <dx/pso/PsoFile.h>
 #include <dx/descriptors/XDescHeap.h>
+#include <dx/descriptors/RootBindings.h>
 
 MAIN_JOB(ytDirectXMain) {
 	JOB_EXECUTE_FUNCTION(unsigned int index) {
@@ -54,20 +55,37 @@ MAIN_JOB(ytDirectXMain) {
 		EXPP_ASSERT(dx::PsoFile::read(L"./source/pstates/demo.json", state), "Failed to read pipeline state");
 		EXPP_ASSERT(state.compile(xDevice), "Failed to compile PSO");
 
+		float flt[] = {1.0f, 1.0f, 1.0f, 1.0f};
+		dx::RootBindings<1> bd = {
+			dx::ROOT_ELEMENT<DX_ROOT_TYPE_CONSTANT>(sizeof(float) * 4, flt)
+		};
 		
-		dx::XDescHeap dh = dx::XDescHeap(xDevice, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 16);
-		dh.name(L"My Desc Heap");
 		// TEMP
 
 		// Window job
 		while (window) {
+			// Begin frame
+			// window.beginFrame(lao);
+
+			// TEMP
+			// Bind PSO
+			state.bind(lao);
+			bd.bind(lao);
+
 			window.beginFrame(lao);
+
+			// TEMP
+
+			// End frame (present)
 			window.endFrame(lao);
 			lao.executeExchange().wait();
-
 			window.present();
 		}
 		lao.release();
+
+		// TEMP 
+		state.release();
+		// TEMP
 
 		// Destroy window
 		window.release();

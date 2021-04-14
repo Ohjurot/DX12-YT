@@ -199,6 +199,7 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="src\dx\memory\XResource.h" />
     <ClInclude Include="src\dx\pso\PsoFile.h" />
     <ClInclude Include="src\dx\pso\PsoState.h" />
+    <ClInclude Include="src\dx\descriptors\RootBindings.h" />
     <ClInclude Include="src\dx\setup\GIDebug.h" />
     <ClInclude Include="src\dx\setup\GIFactory.h" />
     <ClInclude Include="src\dx\setup\GIAdapter.h" />

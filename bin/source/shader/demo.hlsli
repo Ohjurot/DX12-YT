@@ -11,7 +11,7 @@ struct VS_VertexData {
 /// </summary>
 struct PS_VertexData {
     float4 pos : SV_POSITION;
-    float3 color : COLOR;
+    float4 color : COLOR;
 };
 
 /// <summary>

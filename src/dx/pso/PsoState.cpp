@@ -28,6 +28,10 @@ dx::PsoState::PsoState(PsoState&& other) noexcept {
 }
 
 dx::PsoState::~PsoState() {
+    release();
+}
+
+void dx::PsoState::release() {
     m_ptrRootSignature.release();
     m_ptrPso.release();
 }
@@ -42,11 +46,13 @@ void dx::PsoState::bind(ID3D12GraphicsCommandList* ptrCommandList) {
         case D3D12_COMMAND_LIST_TYPE_DIRECT:
         case D3D12_COMMAND_LIST_TYPE_BUNDLE:
             EXPP_ASSERT(!p_psoDescC.isCompute, "Binding a compute PSO on a gfx command list is not supported!");
+            ptrCommandList->SetGraphicsRootSignature(m_ptrRootSignature);
             break;
         
         // Compute
         case D3D12_COMMAND_LIST_TYPE_COMPUTE:
             EXPP_ASSERT(!p_psoDescC.isCompute, "Binding a gfx PSO on a compute command list is not supported!");
+            ptrCommandList->SetComputeRootSignature(m_ptrRootSignature);
             break;
 
         // 
@@ -57,7 +63,6 @@ void dx::PsoState::bind(ID3D12GraphicsCommandList* ptrCommandList) {
 
     // Bind PSO and RootSignature
     ptrCommandList->SetPipelineState(m_ptrPso);
-    ptrCommandList->SetGraphicsRootSignature(m_ptrRootSignature);
 }
 
 bool dx::PsoState::compile(ID3D12Device* ptrDevice) {

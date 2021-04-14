@@ -52,6 +52,11 @@ namespace dx {
 			~PsoState();
 
 			/// <summary>
+			/// Release
+			/// </summary>
+			void release();
+
+			/// <summary>
 			/// Bind PSO and RootSignature to command list
 			/// </summary>
 			/// <param name="ptrCommandList">Pointer to command list</param>
