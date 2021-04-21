@@ -126,8 +126,8 @@ MAIN_JOB(ytDirectXMain) {
 
 		vPort.TopLeftX = 0;
 		vPort.TopLeftY = 0;
-		vPort.Width = cr.right - cr.left;
-		vPort.Height = cr.bottom - cr.top;
+		vPort.Width = (cr.right - cr.left);
+		vPort.Height = (cr.bottom - cr.top);
 		vPort.MinDepth = 0.0f;
 		vPort.MaxDepth = 1.0f;
 
@@ -162,8 +162,8 @@ MAIN_JOB(ytDirectXMain) {
 			lao->IASetVertexBuffers(0, 1, ptrVBView);
 			lao->IASetIndexBuffer(ptrIBView);
 
-			lao->RSSetScissorRects(1, &scRect);
 			lao->RSSetViewports(1, &vPort);
+			lao->RSSetScissorRects(1, &scRect);
 
 			lao->DrawIndexedInstanced(3, 1, 0, 0, 0);
 
