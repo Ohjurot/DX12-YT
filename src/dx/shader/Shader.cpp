@@ -120,7 +120,8 @@ void dx::Shader::reload() {
 
 		// Check for equality
 		if (sourceHash.low64 == currentHash.low64 && sourceHash.high64 == currentHash.high64) {
-			sourceRecompile = false;
+			// Temporary disable shader reuse
+			// sourceRecompile = false;
 		}
 	}
 

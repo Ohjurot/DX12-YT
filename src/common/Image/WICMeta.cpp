@@ -5,7 +5,7 @@
 const GUID common::image::WicIO::guid_to_dxgi_SOURCE[CLS_COMMONT_IMAGE_WICMETA__NUM_GUID_DXGI] = {
     // 64 BPP
     GUID_WICPixelFormat64bppRGBA,   // R16G16B16A16
-    
+
     // 32 BPP
     GUID_WICPixelFormat32bppBGR,    // B8G8R8X8
     GUID_WICPixelFormat32bppBGRA,   // B8G8R8A8
@@ -20,6 +20,16 @@ const DXGI_FORMAT common::image::WicIO::guid_to_dxgi_TARGET[CLS_COMMONT_IMAGE_WI
     DXGI_FORMAT_B8G8R8X8_UNORM,
     DXGI_FORMAT_B8G8R8A8_UNORM,
     DXGI_FORMAT_R8G8B8A8_UNORM,
+};
+// [GUID] --> GUID
+const GUID common::image::WicIO::guid_to_guid_SOURCE[CLS_COMMONT_IMAGE_WICMETA__NUM_GUID_GUID] = {
+    // 24 BPP
+    GUID_WICPixelFormat24bppBGR,
+};
+// GUID --> [GUID]
+const GUID common::image::WicIO::guid_to_guid_TARGET[CLS_COMMONT_IMAGE_WICMETA__NUM_GUID_GUID] = {
+    // 32 BPP
+    GUID_WICPixelFormat32bppBGR,
 };
 
 bool common::image::WicIO::open(LPCWSTR path, WIC_META& refMeta) noexcept {
@@ -108,8 +118,15 @@ bool common::image::WicIO::open(IWICImagingFactory* ptrFactory, IWICBitmapDecode
             refMeta.targetPixelFormat = refMeta.nativePixelFormat;
         }
         else {
-            // TODO: Try wic converter search
-            return false;
+            // Try wic converter search
+            if (!convert_GUID_to_GUID(refMeta.nativePixelFormat, &refMeta.targetPixelFormat)) {
+                return false;
+            }
+
+            // Find DXGI Format
+            if (!convert_GUID_to_DXGI(refMeta.targetPixelFormat, &refMeta.targetGiFormat)) {
+                return false;
+            }
         }
 
         // Get component info
@@ -144,6 +161,20 @@ bool common::image::WicIO::convert_GUID_to_DXGI(GUID inputGuid, DXGI_FORMAT* ptr
         if (guid_to_dxgi_SOURCE[i] == inputGuid) {
             // Set and return
             *ptrFormat = guid_to_dxgi_TARGET[i];
+            return true;
+        }
+    }
+
+    // Fallback false
+    return false;
+}
+
+bool common::image::WicIO::convert_GUID_to_GUID(GUID inputGuid, GUID* ptrGuid) noexcept {
+    // Find matching GUID
+    for (unsigned int i = 0; i < CLS_COMMONT_IMAGE_WICMETA__NUM_GUID_GUID; i++) {
+        if (guid_to_guid_SOURCE[i] == inputGuid) {
+            // Set and return
+            *ptrGuid = guid_to_guid_TARGET[i];
             return true;
         }
     }

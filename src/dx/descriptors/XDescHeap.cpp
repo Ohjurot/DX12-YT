@@ -1,7 +1,7 @@
 #include "DefHeader.h"
 #include "XDescHeap.h"
 
-dx::XDescHeap::XDescHeap(ID3D12Device* ptrDevice, D3D12_DESCRIPTOR_HEAP_TYPE type, UINT size, bool shaderVisble) {
+DX::XDescHeap::XDescHeap(ID3D12Device* ptrDevice, D3D12_DESCRIPTOR_HEAP_TYPE type, UINT size, bool shaderVisble) {
 	EXPP_ASSERT_DBG(ptrDevice, "Invalid device pointer");
 	EXPP_ASSERT(size, "Descritor Heap size cannot be 0");
 
@@ -24,19 +24,19 @@ dx::XDescHeap::XDescHeap(ID3D12Device* ptrDevice, D3D12_DESCRIPTOR_HEAP_TYPE typ
 	m_size = size;
 }
 
-dx::XDescHeap::XDescHeap_Itterator dx::XDescHeap::begin() {
+DX::XDescHeap::XDescHeap_Itterator DX::XDescHeap::begin() {
 	return Itterator(*this, 0);
 }
 
-dx::XDescHeap::XDescHeap_Itterator dx::XDescHeap::end() {
+DX::XDescHeap::XDescHeap_Itterator DX::XDescHeap::end() {
 	return Itterator(*this, m_size);
 }
 
-dx::DescHeapHandles dx::XDescHeap::get(unsigned int index) {
+DX::DescHeapHandles DX::XDescHeap::get(unsigned int index) {
 	EXPP_ASSERT(index < m_size, "Descritor heap index out of range");
 
 	// Build start handles
-	dx::DescHeapHandles handles;
+	DX::DescHeapHandles handles;
 	handles.cpuHandle = m_comPointer->GetCPUDescriptorHandleForHeapStart();
 	handles.gpuHandle = m_comPointer->GetGPUDescriptorHandleForHeapStart();
 
@@ -48,15 +48,15 @@ dx::DescHeapHandles dx::XDescHeap::get(unsigned int index) {
 	return handles;
 }
 
-dx::DescHeapHandles dx::XDescHeap::operator[](unsigned int index) {
+DX::DescHeapHandles DX::XDescHeap::operator[](unsigned int index) {
 	return get(index);
 }
 
-UINT dx::XDescHeap::size() noexcept {
+UINT DX::XDescHeap::size() noexcept {
 	return m_size;
 }
 
-dx::XDescHeap::XDescHeap_Itterator::XDescHeap_Itterator(XDescHeap& refHeap, UINT index) :
+DX::XDescHeap::XDescHeap_Itterator::XDescHeap_Itterator(XDescHeap& refHeap, UINT index) :
 	m_refHeap(refHeap),
 	m_itIndex(index)
 {
@@ -64,88 +64,88 @@ dx::XDescHeap::XDescHeap_Itterator::XDescHeap_Itterator(XDescHeap& refHeap, UINT
 	EXPP_ASSERT(refHeap, "Itterator cannot be constructed from invalid heap");
 }
 
-dx::XDescHeap::XDescHeap_Itterator& dx::XDescHeap::XDescHeap_Itterator::operator=(const XDescHeap_Itterator& other) {
+DX::XDescHeap::XDescHeap_Itterator& DX::XDescHeap::XDescHeap_Itterator::operator=(const XDescHeap_Itterator& other) {
 	EXPP_ASSERT(&m_refHeap == &other.m_refHeap, "Assigning itterators of diffrent heaps in not allowed!");
 
 	m_itIndex = other.m_itIndex;
 	return *this;
 }
 
-dx::XDescHeap::XDescHeap_Itterator dx::XDescHeap::XDescHeap_Itterator::operator++(int) {
+DX::XDescHeap::XDescHeap_Itterator DX::XDescHeap::XDescHeap_Itterator::operator++(int) {
 	EXPP_ASSERT(m_itIndex < m_refHeap.m_size, "Incrementing itterator past end is invalid");
 	m_itIndex++;
 
 	return *this;
 }
 
-dx::XDescHeap::XDescHeap_Itterator dx::XDescHeap::XDescHeap_Itterator::operator--(int) {
+DX::XDescHeap::XDescHeap_Itterator DX::XDescHeap::XDescHeap_Itterator::operator--(int) {
 	EXPP_ASSERT(m_itIndex > 0, "Decrementing itterator before begin is invalid");
 	m_itIndex--;
 
 	return *this;
 }
 
-dx::XDescHeap::XDescHeap_Itterator& dx::XDescHeap::XDescHeap_Itterator::operator+(unsigned int offset) {
+DX::XDescHeap::XDescHeap_Itterator& DX::XDescHeap::XDescHeap_Itterator::operator+(unsigned int offset) {
 	EXPP_ASSERT((m_itIndex + offset) <= m_refHeap.m_size, "Incrementing itterator past end is invalid");
 	m_itIndex += offset;
 
 	return *this;
 }
 
-dx::XDescHeap::XDescHeap_Itterator& dx::XDescHeap::XDescHeap_Itterator::operator+(const dx::XDescHeap::XDescHeap_Itterator& other) {
+DX::XDescHeap::XDescHeap_Itterator& DX::XDescHeap::XDescHeap_Itterator::operator+(const DX::XDescHeap::XDescHeap_Itterator& other) {
 	EXPP_ASSERT((m_itIndex + other.m_itIndex) <= m_refHeap.m_size, "Incrementing itterator past end is invalid");
 	m_itIndex += other.m_itIndex;
 
 	return *this;
 }
 
-dx::XDescHeap::XDescHeap_Itterator& dx::XDescHeap::XDescHeap_Itterator::operator+=(unsigned int offset) {
+DX::XDescHeap::XDescHeap_Itterator& DX::XDescHeap::XDescHeap_Itterator::operator+=(unsigned int offset) {
 	EXPP_ASSERT((m_itIndex + offset) <= m_refHeap.m_size, "Incrementing itterator past end is invalid");
 	m_itIndex += offset;
 
 	return *this;
 }
 
-dx::XDescHeap::XDescHeap_Itterator& dx::XDescHeap::XDescHeap_Itterator::operator-(unsigned int offset) {
+DX::XDescHeap::XDescHeap_Itterator& DX::XDescHeap::XDescHeap_Itterator::operator-(unsigned int offset) {
 	EXPP_ASSERT(offset <= m_itIndex, "Decrementing itterator before begin is invalid");
 	m_itIndex -= offset;
 
 	return *this;
 }
 
-dx::XDescHeap::XDescHeap_Itterator& dx::XDescHeap::XDescHeap_Itterator::operator-(const dx::XDescHeap::XDescHeap_Itterator& other) {
+DX::XDescHeap::XDescHeap_Itterator& DX::XDescHeap::XDescHeap_Itterator::operator-(const DX::XDescHeap::XDescHeap_Itterator& other) {
 	EXPP_ASSERT(other.m_itIndex <= m_itIndex, "Decrementing itterator before begin is invalid");
 	m_itIndex -= other.m_itIndex;
 
 	return *this;
 }
 
-dx::XDescHeap::XDescHeap_Itterator& dx::XDescHeap::XDescHeap_Itterator::operator-=(unsigned int offset) {
+DX::XDescHeap::XDescHeap_Itterator& DX::XDescHeap::XDescHeap_Itterator::operator-=(unsigned int offset) {
 	EXPP_ASSERT(offset <= m_itIndex, "Decrementing itterator before begin is invalid");
 	m_itIndex -= offset;
 
 	return *this;
 }
 
-bool dx::XDescHeap::XDescHeap_Itterator::operator==(const dx::XDescHeap::XDescHeap_Itterator& other) const {
+bool DX::XDescHeap::XDescHeap_Itterator::operator==(const DX::XDescHeap::XDescHeap_Itterator& other) const {
 	EXPP_ASSERT(&m_refHeap == &other.m_refHeap, "Comparing itterators of diffrent heaps in not allowed!");
 
 	// Compare indicies
 	return m_itIndex == other.m_itIndex;
 }
 
-dx::XDescHeap::XDescHeap_Itterator::operator unsigned int() noexcept {
+DX::XDescHeap::XDescHeap_Itterator::operator unsigned int() noexcept {
 	return m_itIndex;
 }
 
-dx::DescHeapHandles dx::XDescHeap::XDescHeap_Itterator::operator*() {
+DX::DescHeapHandles DX::XDescHeap::XDescHeap_Itterator::operator*() {
 	return m_refHeap.get(m_itIndex);
 }
 
-dx::DescHeapHandles dx::XDescHeap::XDescHeap_Itterator::second() {
+DX::DescHeapHandles DX::XDescHeap::XDescHeap_Itterator::second() {
 	return m_refHeap.get(m_itIndex);
 }
 
-dx::XDescHeap& dx::XDescHeap::XDescHeap_Itterator::first() noexcept{
+DX::XDescHeap& DX::XDescHeap::XDescHeap_Itterator::first() noexcept{
 	return m_refHeap;
 }

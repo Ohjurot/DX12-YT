@@ -3,6 +3,7 @@
 #include <DefHeader.h>
 
 #define CLS_COMMONT_IMAGE_WICMETA__NUM_GUID_DXGI 4
+#define CLS_COMMONT_IMAGE_WICMETA__NUM_GUID_GUID 1
 
 namespace common {
 	namespace image {
@@ -117,6 +118,14 @@ namespace common {
 				static bool convert_GUID_to_DXGI(GUID inputGuid, DXGI_FORMAT* ptrFormat) noexcept;
 
 				/// <summary>
+				/// GUID to GUID format conversion
+				/// </summary>
+				/// <param name="inputGuid">Input WIC GUID</param>
+				/// <param name="ptrGuid">Pointer to output GUID</param>
+				/// <returns>true if conversion succeeded</returns>
+				static bool convert_GUID_to_GUID(GUID inputGuid, GUID* ptrGuid) noexcept;
+
+				/// <summary>
 				/// Lookup table GUID -> DXIG / GUID Source
 				/// </summary>
 				static const GUID guid_to_dxgi_SOURCE[CLS_COMMONT_IMAGE_WICMETA__NUM_GUID_DXGI];
@@ -125,6 +134,16 @@ namespace common {
 				/// Lookup table GUID -> DXIG / DXGI Target
 				/// </summary>
 				static const DXGI_FORMAT guid_to_dxgi_TARGET[CLS_COMMONT_IMAGE_WICMETA__NUM_GUID_DXGI];
+
+				/// <summary>
+				/// Lookup table GUID -> GUID / GUID Source
+				/// </summary>
+				static const GUID guid_to_guid_SOURCE[CLS_COMMONT_IMAGE_WICMETA__NUM_GUID_GUID];
+
+				/// <summary>
+				/// Lookup table GUID -> GUID / GUID Target
+				/// </summary>
+				static const GUID guid_to_guid_TARGET[CLS_COMMONT_IMAGE_WICMETA__NUM_GUID_GUID];
 		};
 	}
 }

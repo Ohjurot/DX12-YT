@@ -67,9 +67,34 @@ bool common::image::WICImageProcessor::wicToMemory(const WIC_META& inputMeta, vo
             return false;
         }
     }
+    // Conversion required
     else {
-        // TODO: Conversion
-        return false;
+        // Create converter
+        ScopedComPointer<IWICFormatConverter> ptrFormatConverter;
+        if (FAILED(ptrFactory->CreateFormatConverter(ptrFormatConverter.to()))) {
+            return false;
+        }
+
+        // Check if conversion is right
+        BOOL conversionAvailible = FALSE;
+        if (FAILED(ptrFormatConverter->CanConvert(inputMeta.nativePixelFormat, inputMeta.targetPixelFormat, &conversionAvailible)) || !conversionAvailible) {
+            return false;
+        }
+
+        // Init converter
+        if (FAILED(ptrFormatConverter->Initialize(ptrFrame, inputMeta.targetPixelFormat, WICBitmapDitherTypeNone, NULL, 0.0f, WICBitmapPaletteTypeCustom))) {
+            return false;
+        }
+
+        // Copy output
+        WICRect rcDest;
+        rcDest.X = 0;
+        rcDest.Y = 0;
+        rcDest.Width = inputMeta.width;
+        rcDest.Height = inputMeta.height;
+        if (FAILED(ptrFormatConverter->CopyPixels(&rcDest, targetSize / inputMeta.height, targetSize, (BYTE*)targetMemory))) {
+            return false;
+        }
     }
 
     // Passed --> true

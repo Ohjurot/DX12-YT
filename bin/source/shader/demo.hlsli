@@ -3,7 +3,7 @@
 /// </summary>
 struct VS_VertexData { 
     float2 pos : POSITION;
-    float3 color : COLOR;
+    float2 uv : TEXTCORDS;
 };
 
 /// <summary>
@@ -11,7 +11,7 @@ struct VS_VertexData {
 /// </summary>
 struct PS_VertexData {
     float4 pos : SV_POSITION;
-    float3 color : COLOR; 
+    float2 uv : TEXTCORDS;
 };
 
 /// <summary>

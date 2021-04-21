@@ -42,8 +42,8 @@
             "class" : "D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA"
         },
         {
-            "name" : "COLOR",
-            "format" : "DXGI_FORMAT_R32G32B32_FLOAT",
+            "name" : "TEXTCORDS",
+            "format" : "DXGI_FORMAT_R32G32_FLOAT",
             "offset" : 8,
             "class" : "D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA"
         }

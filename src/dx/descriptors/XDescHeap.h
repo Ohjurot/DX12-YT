@@ -2,7 +2,7 @@
 
 #include <DefHeader.h>
 
-namespace dx {
+namespace DX {
 	/// <summary>
 	/// Handle compund
 	/// </summary>
@@ -44,27 +44,27 @@ namespace dx {
 			/// Retrive begin itterator
 			/// </summary>
 			/// <returns>itterator</returns>
-			dx::XDescHeap::XDescHeap_Itterator begin();
+			DX::XDescHeap::XDescHeap_Itterator begin();
 			
 			/// <summary>
 			/// Retrive end itterator
 			/// </summary>
 			/// <returns></returns>
-			dx::XDescHeap::XDescHeap_Itterator end();
+			DX::XDescHeap::XDescHeap_Itterator end();
 
 			/// <summary>
 			/// Get handle at index
 			/// </summary>
 			/// <param name="index">Index to retrive handle</param>
 			/// <returns>Handles</returns>
-			dx::DescHeapHandles get(unsigned int index);
+			DX::DescHeapHandles get(unsigned int index);
 
 			/// <summary>
 			/// Array operator
 			/// </summary>
 			/// <param name="index">Index to retrive</param>
 			/// <returns>Handles</returns>
-			dx::DescHeapHandles operator[](unsigned int index);
+			DX::DescHeapHandles operator[](unsigned int index);
 
 			/// <summary>
 			/// Retrive heap size
@@ -100,34 +100,34 @@ namespace dx {
 					XDescHeap_Itterator(const XDescHeap_Itterator& other) = default;
 
 					// Assign
-					dx::XDescHeap::XDescHeap_Itterator& operator=(const XDescHeap_Itterator& other);
+					DX::XDescHeap::XDescHeap_Itterator& operator=(const XDescHeap_Itterator& other);
 
 					// Increment
-					dx::XDescHeap::XDescHeap_Itterator operator++(int);
+					DX::XDescHeap::XDescHeap_Itterator operator++(int);
 
 					// Decrement
-					dx::XDescHeap::XDescHeap_Itterator operator--(int);
+					DX::XDescHeap::XDescHeap_Itterator operator--(int);
 
 					// Add
-					dx::XDescHeap::XDescHeap_Itterator& operator+(unsigned int offset);
+					DX::XDescHeap::XDescHeap_Itterator& operator+(unsigned int offset);
 
 					// Add Type
-					dx::XDescHeap::XDescHeap_Itterator& operator+(const dx::XDescHeap::XDescHeap_Itterator& other);
+					DX::XDescHeap::XDescHeap_Itterator& operator+(const DX::XDescHeap::XDescHeap_Itterator& other);
 
 					// Add assign
-					dx::XDescHeap::XDescHeap_Itterator& operator+=(unsigned int offset);
+					DX::XDescHeap::XDescHeap_Itterator& operator+=(unsigned int offset);
 
 					// Sub 
-					dx::XDescHeap::XDescHeap_Itterator& operator-(unsigned int offset);
+					DX::XDescHeap::XDescHeap_Itterator& operator-(unsigned int offset);
 
 					// Sub Type
-					dx::XDescHeap::XDescHeap_Itterator& operator-(const dx::XDescHeap::XDescHeap_Itterator& other);
+					DX::XDescHeap::XDescHeap_Itterator& operator-(const DX::XDescHeap::XDescHeap_Itterator& other);
 
 					// Sub assign
-					dx::XDescHeap::XDescHeap_Itterator& operator-=(unsigned int offset);
+					DX::XDescHeap::XDescHeap_Itterator& operator-=(unsigned int offset);
 
 					// Other itterator
-					bool operator==(const dx::XDescHeap::XDescHeap_Itterator& other) const;
+					bool operator==(const DX::XDescHeap::XDescHeap_Itterator& other) const;
 
 					// UInt converter
 					operator unsigned int() noexcept;
@@ -139,13 +139,13 @@ namespace dx {
 					/// Get heap handles
 					/// </summary>
 					/// <returns>Heap handles</returns>
-					dx::DescHeapHandles second();
+					DX::DescHeapHandles second();
 
 					/// <summary>
 					/// Itterator first (parent) object
 					/// </summary>
 					/// <returns>Heap ref</returns>
-					dx::XDescHeap& first() noexcept;
+					DX::XDescHeap& first() noexcept;
 
 				private:
 					/// <summary>
