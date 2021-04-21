@@ -211,6 +211,7 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="src\dx\strconverter\gistr.h" />
     <ClInclude Include="src\dx\window\GfxWindow.h" />
     <ClInclude Include="src\dx\window\GISwapChain.h" />
+    <ClInclude Include="src\engine\rendering\buffer\FixedBuffer.h" />
     <ClInclude Include="src\engine\resources\copyProviders\GpuUploadRingbuffer.h" />
     <ClInclude Include="src\engine\resources\copyProviders\GpuUploadStackBuffer.h" />
     <ClInclude Include="src\engine\resources\copyProviders\GpuUploadTexturePool.h" />

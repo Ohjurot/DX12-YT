@@ -11,8 +11,8 @@ const float4 myCFloat : register(b0);
 PS_VertexData main(in VS_VertexData vertex){
     PS_VertexData vertexOut;
 
-    vertexOut.pos = float4(vertex.pos, 0.0f, 0.0f);
-    vertexOut.color = float4(vertex.color, 1.0f) * myCFloat;
+    vertexOut.pos = float4(vertex.pos, 0.0f, 1.0f);
+    vertexOut.color = vertex.color * myCFloat.rgb;
 
     return vertexOut;
 }
