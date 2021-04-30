@@ -4,6 +4,8 @@
 #include <dx/memory/XHeap.h>
 #include <dx/memory/XResource.h>
 
+#include <xxh3.h>
+
 #include <engine/resources/heapTools/GpuStackHeap.h>
 
 
@@ -24,7 +26,7 @@ namespace engine {
 		/// Fixed Typed and Sized GPU buffer
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
-		template<typename T, unsigned int N>
+		template<typename T, unsigned int N = 1>
 		class FixedBuffer {
 			public:
 				/// <summary>
@@ -85,6 +87,25 @@ namespace engine {
 					m_gpuBuffer = std::move(other.m_gpuBuffer);
 					// Copy data
 					memcpy(m_cpuBuffer, other.m_cpuBuffer, sizeof(T) * N);
+				}
+
+				/// <summary>
+				/// Checks weather or not the buffer was changed. Will only return true once for a change
+				/// </summary>
+				/// <returns>true if changes exist</returns>
+				bool hasChanges() {
+					// Compute new hash
+					XXH128_hash_t newHash = XXH3_128bits((void*)m_cpuBuffer, sizeof(T) * N);
+					
+					// Compare
+					if (memcmp(&newHash, &m_hash, sizeof(XXH128_hash_t)) != 0) {
+						// Store new hash and return true
+						m_hash = newHash;
+						return true;
+					}
+
+					// No change
+					return false;
 				}
 
 				/// <summary>
@@ -181,6 +202,11 @@ namespace engine {
 				}
 
 			private:
+				/// <summary>
+				/// Last computed hash
+				/// </summary>
+				XXH128_hash_t m_hash = 0;
+
 				/// <summary>
 				/// CPU Sided buffer
 				/// </summary>

@@ -35,6 +35,12 @@ namespace Time {
 			/// <returns></returns>
 			UINT64 deltaMs() noexcept;
 
+			/// <summary>
+			/// Get delta time in us
+			/// </summary>
+			/// <returns></returns>
+			UINT64 deltaUs() noexcept;
+
 		private:
 			/// <summary>
 			/// Timer freqency

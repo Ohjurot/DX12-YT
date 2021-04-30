@@ -53,3 +53,19 @@ UINT64 Time::StopWatch::deltaMs() noexcept {
 	deltaTime.QuadPart /= m_timerFreqency.QuadPart;
 	return deltaTime.QuadPart;
 }
+
+UINT64 Time::StopWatch::deltaUs() noexcept {
+	// Build time
+	LARGE_INTEGER deltaTime = m_timerElapsed;
+	if (m_bRunning) {
+		// Add stop timer
+		LARGE_INTEGER stopTime;
+		QueryPerformanceCounter(&stopTime);
+		deltaTime.QuadPart += (stopTime.QuadPart - m_timerCurrentStartTime.QuadPart);
+	}
+
+	// Convert to ms
+	deltaTime.QuadPart *= 1000000;
+	deltaTime.QuadPart /= m_timerFreqency.QuadPart;
+	return deltaTime.QuadPart;
+}

@@ -21,10 +21,15 @@
 #include <engine/resources/copyProviders/GpuUploadTexturePool.h>
 #include <common/Image/WICMeta.h>
 #include <common/Image/WICImageProcessor.h>
+#include <common/Time/StopWatch.h>
 
 struct Vertex {
 	float pos[2];
 	float tex[2];
+};
+
+struct ConstantBuffer {
+	float scale[2];
 };
 
 MAIN_JOB(ytDirectXMain) {
@@ -179,6 +184,11 @@ MAIN_JOB(ytDirectXMain) {
 		// Delete local memory
 		free(memoryImage);
 
+		// Constant buffer
+		engine::rendering::FixedBuffer<ConstantBuffer> constantBuffer(xDevice, &stackHeap);
+		constantBuffer[0].scale[0] = 0.5f;
+		constantBuffer[0].scale[1] = 0.5f;
+
 		// Views
 		D3D12_VERTEX_BUFFER_VIEW* ptrVBView = vertexBuffer.createVertexBufferView();
 		D3D12_INDEX_BUFFER_VIEW* ptrIBView = indexBuffer.createIndexBufferView();
@@ -208,15 +218,59 @@ MAIN_JOB(ytDirectXMain) {
 		EXPP_ASSERT(state.compile(xDevice), "Failed to compile PSO");
 
 		float flt[] = {1.0f, 1.0f, 1.0f, 1.0f};
-		dx::RootBindings<2> bd = {
+		dx::RootBindings<3> bd = {
 			dx::ROOT_ELEMENT<DX_ROOT_TYPE_CONSTANT>(sizeof(float) * 4, flt),
-			dx::ROOT_ELEMENT<DX_ROOT_TYPE_TABLE>(srvHeap->GetGPUDescriptorHandleForHeapStart())
+			dx::ROOT_ELEMENT<DX_ROOT_TYPE_CBV>(constantBuffer.res()->GetGPUVirtualAddress()),
+			dx::ROOT_ELEMENT<DX_ROOT_TYPE_TABLE>(srvHeap->GetGPUDescriptorHandleForHeapStart()),
 		};
 		
 		// TEMP
 
+		// Frame timer
+		Time::StopWatch frameTimer;
+		frameTimer.start();
+
 		// Window job
 		while (window) {
+			float deltaTMs = frameTimer.deltaUs() / 1000.0f;
+			frameTimer.reset();
+
+			// === LOGIC ===
+			if (GetAsyncKeyState(VK_LEFT)) {
+				constantBuffer[0].scale[0] = std::min<float>(constantBuffer[0].scale[0] + 0.2f * (deltaTMs / 1000.0f), 1.0f);
+			}
+			if (GetAsyncKeyState(VK_RIGHT)) {
+				constantBuffer[0].scale[0] = std::max<float>(constantBuffer[0].scale[0] - 0.2f * (deltaTMs / 1000.0f), 0);
+			}
+			if (GetAsyncKeyState(VK_UP)) {
+				constantBuffer[0].scale[1] = std::min<float>(constantBuffer[0].scale[1] + 0.2f * (deltaTMs / 1000.0f), 1.0f);
+			}
+			if (GetAsyncKeyState(VK_DOWN)) {
+				constantBuffer[0].scale[1] = std::max<float>(constantBuffer[0].scale[1] - 0.2f * (deltaTMs / 1000.0f), 0);
+			}
+
+			// Upadate const buffer to gpu
+			if (constantBuffer.hasChanges()) {
+				// Copy dest
+				constantBuffer.res().resourceTransition(lao, D3D12_RESOURCE_STATE_COPY_DEST);
+
+				// IO / Wait object
+				DX::XCommandList::WaitObject wo;
+				rb.queueUpload(constantBuffer.res(), constantBuffer.ptr(), 0, constantBuffer.size(), wo, lao.createWaitObject());
+
+				// Lao execute
+				lao.executeExchange();
+
+				// RB Kickoff
+				rb.kickoff();
+
+				// Lao back transition
+				constantBuffer.res().resourceTransition(lao, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
+				lao.addDependency(wo);
+			}
+
+
+			// === RENDERING ===
 			// Begin frame
 			window.beginFrame(lao);
 
@@ -245,6 +299,7 @@ MAIN_JOB(ytDirectXMain) {
 		lao.release();
 
 		// TEMP 
+		constantBuffer.release();
 		srvHeap.release();
 		state.release();
 		indexBuffer.release();
