@@ -14,7 +14,7 @@ ConstantBuffer<TriangleParameters> parameters : register(b1);
 PS_VertexData main(in VS_VertexData vertex){
     PS_VertexData vertexOut;
 
-    vertexOut.pos = float4(vertex.pos.x * parameters.scaling.x, vertex.pos.y * parameters.scaling.y, 0.0f, 1.0f);
+    vertexOut.pos = float4(vertex.pos * parameters.scaling, 0.0f, 1.0f);
     vertexOut.uv = vertex.uv;
 
     return vertexOut;
