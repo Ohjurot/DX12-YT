@@ -237,16 +237,16 @@ MAIN_JOB(ytDirectXMain) {
 
 			// === LOGIC ===
 			if (GetAsyncKeyState(VK_LEFT)) {
-				constantBuffer[0].scale[0] = std::min<float>(constantBuffer[0].scale[0] + 0.2f * (deltaTMs / 1000.0f), 1.0f);
+				constantBuffer[0].scale[0] = std::min<float>(constantBuffer[0].scale[0] + 0.2f * (deltaTMs / 1000.0f), 1.5f);
 			}
 			if (GetAsyncKeyState(VK_RIGHT)) {
-				constantBuffer[0].scale[0] = std::max<float>(constantBuffer[0].scale[0] - 0.2f * (deltaTMs / 1000.0f), 0);
+				constantBuffer[0].scale[0] = std::max<float>(constantBuffer[0].scale[0] - 0.2f * (deltaTMs / 1000.0f), 0.0f);
 			}
 			if (GetAsyncKeyState(VK_UP)) {
-				constantBuffer[0].scale[1] = std::min<float>(constantBuffer[0].scale[1] + 0.2f * (deltaTMs / 1000.0f), 1.0f);
+				constantBuffer[0].scale[1] = std::min<float>(constantBuffer[0].scale[1] + 0.2f * (deltaTMs / 1000.0f), 1.5f);
 			}
 			if (GetAsyncKeyState(VK_DOWN)) {
-				constantBuffer[0].scale[1] = std::max<float>(constantBuffer[0].scale[1] - 0.2f * (deltaTMs / 1000.0f), 0);
+				constantBuffer[0].scale[1] = std::max<float>(constantBuffer[0].scale[1] - 0.2f * (deltaTMs / 1000.0f), 0.0f);
 			}
 
 			// Upadate const buffer to gpu
@@ -254,12 +254,13 @@ MAIN_JOB(ytDirectXMain) {
 				// Copy dest
 				constantBuffer.res().resourceTransition(lao, D3D12_RESOURCE_STATE_COPY_DEST);
 
+				// Lao execute
+				auto laoW = lao.createWaitObject();
+				lao.executeExchange();
+
 				// IO / Wait object
 				DX::XCommandList::WaitObject wo;
-				rb.queueUpload(constantBuffer.res(), constantBuffer.ptr(), 0, constantBuffer.size(), wo, lao.createWaitObject());
-
-				// Lao execute
-				lao.executeExchange();
+				rb.queueUpload(constantBuffer.res(), constantBuffer.ptr(), 0, constantBuffer.size(), wo, laoW);
 
 				// RB Kickoff
 				rb.kickoff();

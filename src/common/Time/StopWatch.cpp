@@ -64,7 +64,7 @@ UINT64 Time::StopWatch::deltaUs() noexcept {
 		deltaTime.QuadPart += (stopTime.QuadPart - m_timerCurrentStartTime.QuadPart);
 	}
 
-	// Convert to ms
+	// Convert to us
 	deltaTime.QuadPart *= 1000000;
 	deltaTime.QuadPart /= m_timerFreqency.QuadPart;
 	return deltaTime.QuadPart;

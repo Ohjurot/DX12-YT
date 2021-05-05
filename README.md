@@ -49,9 +49,9 @@ German video playlist: [YouTube](https://youtube.com/playlist?list=PL-m4pn2uJvXF
 
 **V. Drawing Stuff**
 
-| Video | Topic                      | Code                                                         | :gb: Video-Link             | :de: Video-Link                |
-| ----- | -------------------------- | :----------------------------------------------------------- | --------------------------- | ------------------------------ |
-| 1     | Drawing a Triangle         | [Code for V-V.1](https://github.com/Ohjurot/DX12-YT/releases/tag/VV.1) | [:tv: Watch on YouTube](#!) | [:tv: Auf YouTube ansehen](#!) |
-| 2     | Texturing the Triangle     | [Code for V-V.2](https://github.com/Ohjurot/DX12-YT/releases/tag/VV.2) | [:tv: Watch on YouTube](#!) | [:tv: Auf YouTube ansehen](#!) |
-| 3     | Constant Buffer (Triangle) | [Code for V-V.3](https://github.com/Ohjurot/DX12-YT/releases/tag/VV.3) | [:tv: Watch on YouTube](#!) | [:tv: Auf YouTube ansehen](#!) |
+| Video | Topic                      | Code                                                         | :gb: Video-Link                                       | :de: Video-Link                                          |
+| ----- | -------------------------- | :----------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
+| 1     | Drawing a Triangle         | [Code for V-V.1](https://github.com/Ohjurot/DX12-YT/releases/tag/VV.1) | [:tv: Watch on YouTube](https://youtu.be/AvPt1_lLsAg) | [:tv: Auf YouTube ansehen](https://youtu.be/AvPt1_lLsAg) |
+| 2     | Texturing the Triangle     | [Code for V-V.2](https://github.com/Ohjurot/DX12-YT/releases/tag/VV.2) | [:tv: Watch on YouTube](https://youtu.be/Om3uPGSPGfw) | [:tv: Auf YouTube ansehen](https://youtu.be/CXoyYleHmPc) |
+| 3     | Constant Buffer (Triangle) | [Code for V-V.3](https://github.com/Ohjurot/DX12-YT/releases/tag/VV.3) | [:tv: Watch on YouTube](#!)                           | [:tv: Auf YouTube ansehen](#!)                           |
 
