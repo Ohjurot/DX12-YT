@@ -154,7 +154,7 @@ void dx::Shader::reload() {
 
 	// Read shader file content
 	SetFilePointer(hFileShaderBinary, 0, NULL, FILE_BEGIN);
-	EXPP_ASSERT(ReadFile(hFileShaderBinary, m_ptrBlob, m_size, NULL, NULL), "Failed to read shader binary");
+	EXPP_ASSERT(ReadFile(hFileShaderBinary, m_ptrBlob, (DWORD)m_size, NULL, NULL), "Failed to read shader binary");
 }
 
 bool dx::Shader::isUptodata() {

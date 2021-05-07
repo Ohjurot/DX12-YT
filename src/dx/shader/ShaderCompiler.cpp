@@ -68,13 +68,13 @@ bool dx::ShaderCompiler::compileShader(LPCWSTR inputFile, LPCWSTR outputFile, LP
     ScopedHandle hFileShaderOutput = CreateFile(outputFile, GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, NULL, NULL);
     EXPP_ASSERT(hFileShaderOutput, "Cannot access shader output file");
     SetFilePointer(hFileShaderOutput, 0, NULL, FILE_BEGIN);
-    EXPP_ASSERT(WriteFile(hFileShaderOutput, ptrShaderBlob->GetBufferPointer(), ptrShaderBlob->GetBufferSize(), NULL, NULL), "Cannor write shader output file");
+    EXPP_ASSERT(WriteFile(hFileShaderOutput, ptrShaderBlob->GetBufferPointer(), (DWORD)ptrShaderBlob->GetBufferSize(), NULL, NULL), "Cannor write shader output file");
 
     // Safe debug
     ScopedHandle hFileDebugOutput = CreateFile(debugFile, GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, NULL, NULL);
     EXPP_ASSERT(hFileDebugOutput, "Cannot access debug output file");
     SetFilePointer(hFileDebugOutput, 0, NULL, FILE_BEGIN);
-    EXPP_ASSERT(WriteFile(hFileDebugOutput, ptrDebugBlob->GetBufferPointer(), ptrDebugBlob->GetBufferSize(), NULL, NULL), "Cannor write debug output file");
+    EXPP_ASSERT(WriteFile(hFileDebugOutput, ptrDebugBlob->GetBufferPointer(), (DWORD)ptrDebugBlob->GetBufferSize(), NULL, NULL), "Cannor write debug output file");
 
     // Passed
     return true;
