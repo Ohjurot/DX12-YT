@@ -65,6 +65,12 @@ namespace engine {
 			/// <returns>Wait object of current execution (can be null!)</returns>
 			DX::XCommandList::WaitObject execute(DX::XCommandList::WaitObject dependency = DX::XCommandList::WaitObject());
 
+			/// <summary>
+			/// Inject dependency to upload buffer
+			/// </summary>
+			/// <param name="dependency">Dependant wait object</param>
+			void addDependency(DX::XCommandList::WaitObject dependency);
+
 		private:
 			/// <summary>
 			/// Spin lock for concurrent access

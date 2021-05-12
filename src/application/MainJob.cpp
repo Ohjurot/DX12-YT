@@ -13,6 +13,8 @@
 #include <dx/cmds/CommandListManager.h>
 #include <dx/cmds/CommandListAccessObject.h>
 
+#include <engine/ui/UIRenderState.h>
+
 MAIN_JOB(ytDirectXMain) {
 	JOB_EXECUTE_FUNCTION(unsigned int index) {
 		// Enable and validate debug interface
@@ -43,10 +45,95 @@ MAIN_JOB(ytDirectXMain) {
 		DX::GfxWindow window(cls, xDevice, factory2, L"DirectX 12", DX::GfxWindow_Stlye::BORDERLESS);
 		window.setWindowVisibility(true);
 
+		// Get window dimensions
+		RECT cr;
+		GetClientRect((HWND)window, &cr);
+		UINT width = cr.right - cr.left;
+		UINT height = cr.bottom - cr.top;
+
+		// DEBUG UI
+		engine::GpuStackHeap uplHeap(xDevice, MEM_MiB(64), D3D12_HEAP_TYPE_UPLOAD);
+		HEAP_ALLOCATION upAlloc;
+		uplHeap.alloc(upAlloc, MEM_MiB(64));
+		engine::GpuUploadStackBuffer uploadStack(xDevice, upAlloc, MEM_MiB(64));
+
+		engine::ui::UIRenderState* uiState = new engine::ui::UIRenderState(xDevice, width, height);
+		const UINT anchor = uiState->createAnchor();
+
+		// DEBUG UI
+
+		// LAO
+		DX::CommandListAccessObject lao(D3D12_COMMAND_LIST_TYPE_DIRECT);
+
 		// Window job
 		while (window) {
+			// Begin frame
+			window.beginFrame(lao);
+			
+			// UPDAT
+			engine::ui::UIRenderState_vertex vtx;
+			vtx.anchor = anchor;
+
+			vtx.pos = { -1.0f, 1.0f };
+			vtx.size = { 1.0f, -1.0f };
+			uiState->draw_addVertex(vtx);
+
+			vtx.pos = { 0.0f, 0.0f };
+			vtx.size = { 0.5f, -0.5f };
+			uiState->draw_addVertex(vtx);
+
+			vtx.pos = { 0.5f, -0.5f };
+			vtx.size = { 0.25f, -0.25f };
+			uiState->draw_addVertex(vtx);
+
+			vtx.pos = { 0.75f, -0.75f };
+			vtx.size = { 0.125f, -0.125f };
+			uiState->draw_addVertex(vtx);
+
+			vtx.pos = { 0.875f, -0.875f };
+			vtx.size = { 0.0625f, -0.0625f };
+			uiState->draw_addVertex(vtx);
+			
+			vtx.pos = { 0.9375f, -0.9375f };
+			vtx.size = { 0.03125f, -0.03125f };
+			uiState->draw_addVertex(vtx);
+
+			vtx.pos = { 0.96875f, -0.96875f };
+			vtx.size = { 0.016125f, -0.016125f };
+			uiState->draw_addVertex(vtx);
+
+			vtx.pos = { 0.984875f, -0.984875f };
+			vtx.size = { 0.0080625f, -0.0080625f };
+			uiState->draw_addVertex(vtx);
+
+			vtx.pos = { 0.9929375f, -0.9929375f };
+			vtx.size = { 0.00403125f, -0.00403125f };
+			uiState->draw_addVertex(vtx);
+
+			uiState->update(uploadStack);
+			auto uplWo = uploadStack.execute();
+
+			// RENDER
+			lao.addDependency(uplWo);
+			uiState->render(lao);
+
+			// End frame render
+			window.endFrame(lao);
+			lao.executeExchange().wait();
+
+			// Dispatch
 			window.present();
 		}
+
+		// Destroy lao
+		lao.executeClose();
+
+		// DBG
+		uploadStack.release();
+		uplHeap.release();
+		uiState->release();
+		delete uiState;
+		// DBG
 
 		// Destroy window
 		window.release();

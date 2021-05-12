@@ -34,11 +34,15 @@ DX::XCommandList::WaitObject DX::CommandListAccessObject::executeExchange() {
 }
 
 DX::XCommandList::WaitObject DX::CommandListAccessObject::executeClose() {
-	EXPP_ASSERT(m_ptrCommandList, "Invalid call on empty access object");
-	
+	// EXPP_ASSERT(m_ptrCommandList, "Invalid call on empty access object");
+
 	// NULL wait object
 	XCommandList::WaitObject wo;
 	
+	if (!m_ptrCommandList) {
+		return wo;
+	}
+
 	// Only is list was used
 	if (m_bIsDirty) {
 		// Close list

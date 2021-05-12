@@ -2,8 +2,9 @@
     "type": "gfx",
     
     "shaders": {
-        "vertex": "vs_demo",
-        "pixel": "ps_demo"
+        "vertex": "ui_vertex",
+        "geometry": "ui_geometry",
+        "pixel": "ui_pixel"
     },
 
     "streamOutput": {

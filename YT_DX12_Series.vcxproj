@@ -154,6 +154,7 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClCompile Include="src\engine\resources\copyProviders\GpuUploadStackBuffer.cpp" />
     <ClCompile Include="src\engine\resources\copyProviders\GpuUploadTexturePool.cpp" />
     <ClCompile Include="src\engine\resources\heapTools\GpuStackHeap.cpp" />
+    <ClCompile Include="src\engine\ui\UIRenderState.cpp" />
     <ClCompile Include="src\job\system\EntryJob.cpp" />
     <ClCompile Include="src\job\system\IJob.cpp" />
     <ClCompile Include="src\job\system\JobFiberPool.cpp" />
@@ -212,11 +213,13 @@ xcopy "$(ProjectDir)src\vendor\lz4\bin\liblz4.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="src\dx\window\GfxWindow.h" />
     <ClInclude Include="src\dx\window\GISwapChain.h" />
     <ClInclude Include="src\engine\rendering\buffer\FixedBuffer.h" />
+    <ClInclude Include="src\engine\rendering\RenderingTypes.h" />
     <ClInclude Include="src\engine\resources\copyProviders\GpuUploadRingbuffer.h" />
     <ClInclude Include="src\engine\resources\copyProviders\GpuUploadStackBuffer.h" />
     <ClInclude Include="src\engine\resources\copyProviders\GpuUploadTexturePool.h" />
     <ClInclude Include="src\engine\resources\heapTools\GpuStackHeap.h" />
     <ClInclude Include="src\engine\resources\heapTools\HeapAllocation.h" />
+    <ClInclude Include="src\engine\ui\UIRenderState.h" />
     <ClInclude Include="src\job\system\IJob.h" />
     <ClInclude Include="src\job\system\Job.h" />
     <ClInclude Include="src\job\system\JobData.h" />

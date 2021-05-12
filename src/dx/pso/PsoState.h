@@ -70,6 +70,18 @@ namespace dx {
 			bool compile(ID3D12Device* ptrDevice);
 
 			/// <summary>
+			/// Name the pipeline state
+			/// </summary>
+			/// <param name="name">Name of pipeline state</param>
+			void namePSO(LPCWSTR name);
+
+			/// <summary>
+			/// Name Rootsignature
+			/// </summary>
+			/// <param name="name">Name of root signature</param>
+			void nameRS(LPCWSTR name);
+
+			/// <summary>
 			/// Boolean operator
 			/// </summary>
 			/// <returns>true if valid</returns>

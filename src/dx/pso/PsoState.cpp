@@ -98,6 +98,14 @@ bool dx::PsoState::compile(ID3D12Device* ptrDevice) {
     return true;
 }
 
+void dx::PsoState::namePSO(LPCWSTR name) {
+    m_ptrPso.name(name);
+}
+
+void dx::PsoState::nameRS(LPCWSTR name) {
+    m_ptrRootSignature.name(name);
+}
+
 dx::PsoState::operator bool() noexcept {
     return m_bCompileDataValid;
 }

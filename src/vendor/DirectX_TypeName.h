@@ -98,3 +98,14 @@ inline const wchar_t* typeNameW<ID3D12Resource2>() { return L"ID3D12Resource2"; 
 
 template <>
 inline const wchar_t* typeNameW<ID3D12DescriptorHeap>() { return L"ID3D12DescriptorHeap"; }
+
+// Root Signature
+
+template <>
+inline const wchar_t* typeNameW<ID3D12RootSignature>() { return L"ID3D12RootSignature"; }
+
+
+// Pipeline state
+
+template <>
+inline const wchar_t* typeNameW<ID3D12PipelineState>() { return L"ID3D12PipelineState"; }

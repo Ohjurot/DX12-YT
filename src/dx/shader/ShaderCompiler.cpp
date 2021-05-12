@@ -103,6 +103,13 @@ bool dx::ShaderCompiler::createCompilerArgs(IDxcCompilerArgs* ptrArgs, LPCWSTR i
             break;
         }
 
+        // Gemerty Shader 
+        case SHADER_TYPE_GEOMETRY: {
+            LPCWSTR gsArg = L"gs_6_4";
+            EVALUATE_HRESULT(ptrArgs->AddArguments(&gsArg, 1), "IDxcCompilerArgs->AddArguments(...)");
+            break;
+        }
+
         // Pixel Shader 
         case SHADER_TYPE_PIXEL: {
             LPCWSTR psArg = L"ps_6_4";

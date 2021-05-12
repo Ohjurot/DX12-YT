@@ -1,0 +1,85 @@
+{
+    "type": "gfx",
+    
+    "shaders": {
+        "vertex": "ui_vertex",
+        "geometry": "ui_geometry",
+        "pixel": "ui_pixel"
+    },
+
+    "blend" : {
+        "alphaToCoverage" : false,
+        "independentBlend" : false,
+        "blends" : [
+            {
+                "enable" : true,
+                "srcBlend" : "D3D12_BLEND_SRC_ALPHA",
+                "destBlend" : "D3D12_BLEND_INV_SRC_ALPHA",
+                "blendOp" : "D3D12_BLEND_OP_ADD",
+                "srcBlendAlpha" : "D3D12_BLEND_ONE",
+                "destBlendAlpha" : "D3D12_BLEND_ZERO",
+                "blendOpAlpha" : "D3D12_BLEND_OP_ADD",
+
+                "logicOpEnable" : false,
+                "logicOp" : "D3D12_LOGIC_OP_CLEAR",
+                
+                "writeMask" : "RGBA"
+            }
+        ]
+    },
+
+    "sampleMask" : 255,
+
+    "rasterizer" : {
+        "fillMode" : "D3D12_FILL_MODE_SOLID",
+        "cullMode" : "D3D12_CULL_MODE_NONE",
+        "frontCounterClockwise" : false,
+        "multisampleEnable" : false,
+        "conservativeRasterizer" : false
+    },
+
+    "depth" : {
+        "buffer" : {
+            "enable" : false,
+            "depthWrite" : false,
+            "function" : "D3D12_COMPARISON_FUNC_GREATER"
+        },
+
+        "stencil" : {
+            "enable" : false
+        }
+    },
+
+    "inputLayout" : [
+        {
+            "name" : "SV_POSITION",
+            "index" : 0,
+            "format" : "DXGI_FORMAT_R32G32B32A32_FLOAT",
+            "inputSlot" : 0,
+            "offset" : 0,
+            "class" : "D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA",
+            "stepRate" : 0
+        },
+        {
+            "name" : "REF_SCALE",
+            "index" : 0,
+            "format" : "DXGI_FORMAT_R32_UINT",
+            "inputSlot" : 0,
+            "offset" : 16,
+            "class" : "D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA",
+            "stepRate" : 0
+        }
+    ],
+
+    "primitiveTopology" : "D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT",
+    "renderTargetCount" : 1,
+    "renderTargetFormats" : [
+        "DXGI_FORMAT_R8G8B8A8_UNORM"
+    ],
+    "depthFormat" : "DXGI_FORMAT_UNKNOWN",
+    
+    "sample" : {
+        "count" : 1,
+        "quality" : 0
+    }
+}

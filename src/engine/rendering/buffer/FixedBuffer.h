@@ -40,6 +40,15 @@ namespace engine {
 				/// <param name="ptrDevice">Device pointer</param>
 				/// <param name="ptrAllocator">Pointer to allocator</param>
 				FixedBuffer(ID3D12Device* ptrDevice, engine::GpuStackHeap* ptrAllocator) {
+					init(ptrDevice, ptrAllocator);
+				}
+
+				/// <summary>
+				/// Init the buffer
+				/// </summary>
+				/// <param name="ptrDevice">Device pointer</param>
+				/// <param name="ptrAllocator">Pointer to allocator</param>
+				void init(ID3D12Device* ptrDevice, engine::GpuStackHeap* ptrAllocator) {
 					// Create descritpor
 					D3D12_RESOURCE_DESC bufferDesc;
 					ZeroMemory(&bufferDesc, sizeof(D3D12_RESOURCE_DESC));
@@ -112,7 +121,7 @@ namespace engine {
 				/// Move assign
 				/// </summary>
 				/// <param name="other">Other class</param>
-				FixedBuffer& operator=(const FixedBuffer&& other) {
+				FixedBuffer& operator=(FixedBuffer&& other) {
 					// Move resource
 					m_gpuBuffer = std::move(other.m_gpuBuffer);
 					// Copy data

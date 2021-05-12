@@ -82,7 +82,7 @@ bool engine::GpuUploadStackBuffer::queueCopy(ID3D12Resource* ptrTarget, UINT64 t
 	}
 
 	// Check if sufficent
-	if (m_writeHead + copySize <= copySize) {
+	if (m_writeHead + copySize <= m_size) {
 		// Prepare maping
 		BYTE* ptrBuffer = nullptr;
 		D3D12_RANGE mapRange;
@@ -99,6 +99,9 @@ bool engine::GpuUploadStackBuffer::queueCopy(ID3D12Resource* ptrTarget, UINT64 t
 
 		// Increment write head
 		m_writeHead += copySize;
+
+		// Pass 
+		return true;
 	}
 
 	// Fallback false
@@ -131,4 +134,10 @@ DX::XCommandList::WaitObject engine::GpuUploadStackBuffer::execute(DX::XCommandL
 
 	// Return null object
 	return DX::XCommandList::WaitObject();
+}
+
+void engine::GpuUploadStackBuffer::addDependency(DX::XCommandList::WaitObject dependency) {
+	if (dependency) {
+		m_accessObject.addDependency(dependency);
+	}
 }
